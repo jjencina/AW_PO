@@ -1,0 +1,33 @@
+.cnt-login{
+  margin-top:150px;
+}
+
+.cnt-login h2{
+    text-align: center;
+}
+#formulario{
+    margin: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+    width: 27%;
+    position:relative;
+    left:35%;
+}
+#formulario input{
+    width:60%;
+}
+#formulario label{
+    width: 40%;
+}
+
+#cnt-credencial{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+#cnt-credencial input{
+    padding: 5px;
+}

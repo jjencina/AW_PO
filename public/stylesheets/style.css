@@ -1,0 +1,272 @@
+/* Estilos generales */
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+body {
+  background: rgb(201, 83, 5);
+}
+/* Estilos del encabezado */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: #3b7bea;
+  box-shadow: 0 4px 25px -22px black;
+  color:white;
+  z-index: 10;
+}
+
+.header-content{
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+ 
+}
+
+.logo{
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+r{
+  color: #fd8f46;
+}
+
+/* Estilos de la barra de navegación */
+
+.navbar a {
+  color: #fff;
+  text-decoration: none;
+  margin-right: 18px;
+  font-weight: bold;
+  transition: all 300ms;
+}
+
+.navbar a:hover {
+  color: black;
+}
+
+.nav{
+  color: #fff;
+  text-decoration: none;
+  margin-right: 16px;
+  font-weight: bold;
+ 
+}
+
+.nav-desplegable span {
+  display: block;
+  width: 30px;
+  height: 3px;
+  margin: 6px 0;
+  background-color: #ffffff;
+  transition: 0.4s;
+}
+
+.navi{
+  display: flex;
+  list-style-type: none;
+  flex-direction: row;
+  font-size: 16px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+.nav-item {
+  font-size: 16px;
+  align-self: center;
+}
+/*Se adapta al tamaño de la pantalla*/
+@media (max-width: 768px){
+  .navi{
+      display: none;
+  }
+  
+  .navbar-nav{
+    background: #3b7bea;
+      padding: 1px;
+      font-size: 10px;
+      display: block;
+  }
+
+  #ctn-icon-search{
+    position: absolute;
+    right: 85px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media(min-width: 768px){
+  .nav-desplegable{
+      display: none;
+      cursor: pointer;
+  }
+
+  #collapse-navi{
+      display: none;
+  }
+
+  #ctn-icon-search{
+    position: absolute;
+    right: 400px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+}
+
+/* Estilos titulo */
+h1 {
+  font-size: 36px;
+  text-align: center;
+  margin-top: 30px;
+  color: #333;
+}
+
+p {
+  font-size: 16px;
+  text-align: center;
+  margin: 10px 0;
+  color: #555;
+}
+
+/*Estilo botón fijo
+#botonFijo {
+  position: fixed;
+  bottom: 20px;
+  right: 20px; 
+  padding: 10px;
+  background-color: #3b7bea;
+  border: none;
+}
+
+#botonFijo span{
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid white;
+  display: block;
+  
+}
+
+/*Estilo barra de contactos*/
+.contactosBar{
+  background-color: #3b7bea;
+  padding: 10px;
+  font-size: 10px;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+.contactosBar w{
+  color:white;
+}
+.contactosBar a{
+  color:#fd8f46;
+  text-decoration: bold;
+}
+
+.container{
+  margin:20px 10px 20px 10px;
+}
+
+/*Estilo de la barra de busqueda*/
+
+
+#icon-search{
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 300ms;
+}
+
+#ctn-icon-search i:hover{
+  color:black;
+}
+
+#ctn-bars-search{
+  position: fixed;
+  top: -10px;
+  width: 100%;
+  padding: 15px;
+  transition: all 600ms;
+  z-index: 9;
+}
+
+#ctn-bars-search input{
+  display: block;
+  width: 1200px;
+  margin: auto;
+  padding: 10px;
+  font-size: 18px;
+  outline: 0;
+}
+#box-search{
+  position: fixed;
+  top: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1200px;
+  background: #fff;
+  z-index: 8;
+  overflow: hidden;
+  list-style: none;
+  display: none;
+}
+
+#box-search li a{
+  display: block;
+  width: 100%;
+  color: #777777;
+  padding: 12px 20px;
+}
+
+#box-search li a:hover{
+  background: #f3f3f3;
+}
+
+#box-search li a i{
+  margin-right: 10px;
+  color: #777777;
+}
+
+#cover-ctn-search{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top:80px;
+  background: rgba(0,0,0,0.5);
+  z-index: 7;
+  display: none;
+}
+
+/* Responsive*/
+@media screen and (max-width: 1220px){
+
+  .header-content,
+  .container-footer footer{
+      max-width: 1000px;
+      padding: 0 20px;
+  }
+
+  #ctn-bars-search,
+  #ctn-bars-search input,
+  #box-search{
+      width: 100%;
+  }
+}

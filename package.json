@@ -1,16 +1,22 @@
 {
-  "dependencies": {
-    "ejs": "^3.1.9",
-    "express": "^4.18.2"
-  },
-  "name": "aw_po",
-  "version": "1.0.0",
-  "description": "práctica final AW",
-  "main": "index.js",
+  "name": "aw-po",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./bin/www"
   },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {}
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-mysql-session": "^3.0.0",
+    "express-session": "^1.17.3",
+    "express-validator": "^7.0.1",
+    "http-errors": "^2.0.0",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.6.5",
+    "node": "^21.2.0",
+    "nodemon": "^3.0.1"
+  }
 }
