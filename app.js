@@ -45,6 +45,7 @@ app.use(express.urlencoded({ extended: true }));
 
 //Ruta en indexRouter
 app.use('/', indexRouter);
+app.use('/', usersRouter)
 
 //Abre el servidor
 app.listen(port, () => {
