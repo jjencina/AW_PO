@@ -89,12 +89,11 @@ const integracion = {
     });
   },
 
-  // Consulta Buscar destino por nombre
-  buscarDestinoPorNombre: function(nombre_destino, callback){
+  buscarImagenesPorTipoIns: function(tipo_ins, callback){
     pool.getConnection(function(err, conexion){
       if(err){callback(err);}
       else {
-        conexion.query('SELECT * FROM destinos WHERE nombre = ?', [nombre_destino], function (err, rows) {
+        conexion.query('SELECT * FROM ucm_aw_riu_img_imagenes WHERE nombre_ins = ?', [tipo_ins], function (err, rows) {
           conexion.release();
           if (err) {
             callback(err);
@@ -105,55 +104,5 @@ const integracion = {
       }
     });
   },
-
-  buscarImagenesPorDestino: function(nombre_destino, callback){
-    pool.getConnection(function(err, conexion){
-      if(err){callback(err);}
-      else {
-        conexion.query('SELECT * FROM imagenes WHERE nombre_destino = ?', [nombre_destino], function (err, rows) {
-          conexion.release();
-          if (err) {
-            callback(err);
-          } else {
-            callback(null, rows);
-          }
-        });
-      }
-    });
-  },
-
-  insertarComentario: function(destino_id, nombre_usuario, comentario, fecha, callback) {
-    pool.getConnection((err, conexion) => {
-      if (err) {callback(err);}
-      else{
-        const sql = 'INSERT INTO comentarios (destino_id, nombre_usuario, comentario, fecha_comentario) VALUES (?, ?, ?, ?)';
-        const values = [destino_id, nombre_usuario, comentario, fecha];
-        conexion.query(sql, values, (error, results) => {
-          conexion.release(); 
-          if (error) {
-            callback(error);
-          } else {
-            callback(null, results);
-          }
-        });
-      }
-    });
-  },
-  buscarComentarioPorDestino: function(destino_id, callback){
-    pool.getConnection((err, conexion) => {
-      if(err){callback(err);}
-      else {
-        conexion.query('SELECT * FROM comentarios WHERE destino_id = ?', [destino_id], function (err, rows) {
-          conexion.release();
-          if (err) {
-            callback(err);
-          } else {
-            callback(null, rows);
-          }
-        });
-      }
-    }
-    );
-  }
 };
 module.exports = integracion;

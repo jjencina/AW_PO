@@ -42,11 +42,12 @@ router.get('/', (req, res) => {
 
 
 // Mandar al usuario a la página de reserva del destino seleccionado
-router.get('/reserva/:nombre', (req, res) => {
-  const nombre_destino = req.params.nombre;
+router.get('/reserva/:tipo', (req, res) => {
+  const tipo_ins = req.params.tipo;
   usuario = req.session.currentUser;
-  var imagenes,destino;
-  integracion.buscarImagenesPorDestino(nombre_destino, function (err, resultados) {
+  var imagenes;
+  console.log(tipo_ins);
+  integracion.buscarImagenesPorTipoIns(tipo_ins, function (err, resultados) {
     if (err) {
       console.error('Error al buscar el imagen por destino:', err);
       res.status(500).send('Error interno del servidor');
@@ -55,21 +56,9 @@ router.get('/reserva/:nombre', (req, res) => {
     
     }
   });
-  integracion.buscarDestinoPorNombre(nombre_destino, function (err, resultados) {
-    if (err) {
-      console.error('Error al buscar el destino por nombre:', err);
-      res.status(500).send('Error interno del servidor');
-    } else {
-      destino = resultados[0];
-      
-    }
-  });
   setTimeout(function(){
-    console.log(imagenes);
-    console.log(destino);
     res.render('reserva', { 
       imagenes, 
-      destino, 
       usuario , 
       errors: [] , 
       reservaExitosa: false, 
