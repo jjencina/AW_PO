@@ -35,12 +35,12 @@ const integracion = {
     });
   },
   // Insertar reserva en la bd
-  registrarUsuario: function(nombre, correo, contrasena, callback) {
+  registrarUsuario: function(nombre, correo,apellido1, apellido2, contrasena, callback) {
     pool.getConnection((err, conexion) => {
       if (err) {callback(err);}
       else{
-        const sql = 'INSERT INTO usuarios (nombre, correo, contrasena) VALUES (?, ?, ?)';
-        const values = [nombre, correo, contrasena];
+        const sql = 'INSERT INTO usuarios (nombre, apellido1, apellido2, correo, contrasena, admin) VALUES (?, ?, ?, ?, ?, ?)';
+        const values = [nombre,apellido1,apellido2, correo, contrasena, 0];
         conexion.query(sql, values, (error, results) => {
           conexion.release(); 
           if (error) {
@@ -53,12 +53,12 @@ const integracion = {
     });
   },
 
-  // Consulta Buscar usuario por nombre
-  buscarUsuarioPorNombre: function(nombre, callback){
+  // Consulta Buscar usuario por correo
+  buscarUsuarioPorCorreo: function(correo, callback){
     pool.getConnection(function(err, conexion){
       if(err){callback(err);}
       else {
-          conexion.query('SELECT * FROM usuarios WHERE nombre = ?', [nombre], function (err, rows) {
+          conexion.query('SELECT * FROM ucm_aw_riu_usu_usuarios WHERE correo = ?', [correo], function (err, rows) {
           conexion.release();
           if (err) {
             callback(err);
