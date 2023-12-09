@@ -28,6 +28,19 @@ router.use((req, res, next) => {
   next();
 });
 
+//Carga la pagina principal
+router.get('/', (req, res) => {
+  integracion.leerTodosLosTiposIns((err, instalaciones) => {
+    if (err) {
+      console.error('Error al obtener instalaciones:', err);
+      res.status(500).send('Error interno del servidor');
+    } else {
+      res.render('index', { destinos , isAuthenticated: res.locals.isAuthenticated });
+    }
+  });
+});
+
+
 // Mandar al usuario a la página de reserva del destino seleccionado
 router.get('/reserva/:nombre', (req, res) => {
   const nombre_destino = req.params.nombre;
@@ -163,24 +176,6 @@ router.post('/reservar', [
     });
   }
 });
-
-// Ruta para la página de éxito
-router.get('/exito', (req, res) => {
-  res.render('exito', { isAuthenticated: res.locals.isAuthenticated });
-});
-
-//Carga la pagina principal
-router.get('/', (req, res) => {
-  integracion.leerTodosLosDestinos((err, destinos) => {
-    if (err) {
-      console.error('Error al obtener destinos:', err);
-      res.status(500).send('Error interno del servidor');
-    } else {
-      res.render('index', { destinos , isAuthenticated: res.locals.isAuthenticated });
-    }
-  });
-});
-
 //Cerrar sesion o logout
 // Cerrar sesión
 router.get('/logout', (req, res) => {

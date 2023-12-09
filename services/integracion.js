@@ -1,7 +1,39 @@
 const pool = require('../db');
 
 const integracion = {
+  // Devuelve todos los tipos de instalaciones de la bd
+  leerTodosLosTiposIns: function(callback) {
+    pool.getConnection((err, conexion) => {
+      if (err) {callback(err);} 
+      else {
+        conexion.query('SELECT * FROM ucm_aw_riu_ins_tipos_instalaciones', (err, results) => {
+          conexion.release();
+          if (err) {
+            callback(err);
+          } else {
+            callback(null, results);
+          }
+        });
+      }
+    });
+  },
   
+   // Devuelve todas las instalaciones de la bd
+   leerInstalacionesPorTipo: function(callback) {
+    pool.getConnection((err, conexion) => {
+      if (err) {callback(err);} 
+      else {
+        conexion.query('SELECT * FROM ucm_aw_riu_ins_instalaciones', (err, results) => {
+          conexion.release();
+          if (err) {
+            callback(err);
+          } else {
+            callback(null, results);
+          }
+        });
+      }
+    });
+  },
   // Insertar reserva en la bd
   registrarUsuario: function(nombre, correo, contrasena, callback) {
     pool.getConnection((err, conexion) => {
@@ -89,24 +121,6 @@ const integracion = {
       }
     });
   },
-
-  // Devuelve todos los destinos de la bd
-  leerTodosLosDestinos: function(callback) {
-    pool.getConnection((err, conexion) => {
-      if (err) {callback(err);} 
-      else {
-        conexion.query('SELECT * FROM destinos', (err, results) => {
-          conexion.release();
-          if (err) {
-            callback(err);
-          } else {
-            callback(null, results);
-          }
-        });
-      }
-    });
-  },
-
 
   insertarComentario: function(destino_id, nombre_usuario, comentario, fecha, callback) {
     pool.getConnection((err, conexion) => {

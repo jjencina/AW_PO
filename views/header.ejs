@@ -1,7 +1,7 @@
 <header id="inicio">
     <div class="header-content">
     <div class="logo">
-        <h1>Six-Faced World <r>Agency</r></h1>
+        <h1>UCM-<r>RIU</r></h1>
     </div>
     <div>
         <nav class="container navbar navbar_default">
@@ -13,38 +13,21 @@
                     <span></span>
                 </button>
             </div>   
-                <!--Barra de navegacion desplegable-->
+            <!--Barra de navegacion desplegable-->
             <div class="collapse navbar-collapse" id="nav">
                 <ul class="navbar-nav" id="collapse-navi">
                     <li class="nav-item"><a href="/#inicio">Inicio</a></li>
-                    <li class="nav-item"><a href="/#destinos">Destinos</a></li>
-                    <li class="nav-item"><a href="/#contactos">Contacto</a></li>
-                    <li class="nav-item" id="user-menu">
-                        <% if (isAuthenticated) { %>
-                            <div id="cnt-nombreUsuario">
-                                <a href="#"><%= currentUser %></a>
-                                <a href="/logout">Log out</a>
-                            </div>
-                        <% } else { %>
-                            <a class="nav-link" href="/login">Login</a>
-                        <% } %>
-                    </li>
+                    <li class="nav-item"><a href="/#instalaciones">Instalaciones</a></li>
+                    <li class="nav-item"><a href="/#mensajes">Mensajes</a></li>
+                    <li class="nav-item" id="user-menu"><a class="nav-link" href="/login">Login</a></li>
+                </ul>
             </div>
             <!--Barra de navegacion normal-->
                 <ul class="navi">
                     <li><a href="/#inicio">Inicio</a></li>
-                    <li><a href="/#destinos">Destinos</a></li>
-                    <li><a href="/#contactos">Contacto</a></li>
-                    <li class="nav-item" id="user-menu">
-                        <% if (isAuthenticated) { %>
-                            <div id="cnt-nombreUsuario">
-                                <a href="#"><%= currentUser %></a>
-                                <a href="/logout">Log out</a>
-                            </div>
-                        <% } else { %>
-                            <a class="nav-link" href="/login">Login</a>
-                        <% } %>
-                    </li>
+                    <li><a href="/#instalaciones">Instalaciones</a></li>
+                    <li><a href="/#mensajes">Mensajes</a></li>
+                    <li class="nav-item" id="user-menu"><a class="nav-link" href="/login">Login</a></li>
                 </ul>
                 <div id="ctn-icon-search">
                     <i class="bi bi-search" id="icon-search"></i>
@@ -58,12 +41,10 @@
     <input type="text" id="inputSearch" placeholder="Buscar...">
 </div>
 <ul id="box-search">
-    <li><a href="/reserva/Buena Village"><i class="bi bi-search"></i>Buena Village</a></li>
-    <li><a href="/reserva/Great Forest"><i class="bi bi-search"></i>Great Forest</a></li>
-    <li><a href="/reserva/Millishion"><i class="bi bi-search"></i>Millishion</a></li>
-    <li><a href="/reserva/Citadel de Roa"><i class="bi bi-search"></i>Citadel de Roa</a></li>
-    <li><a href="/reserva/Rikarisu"><i class="bi bi-search"></i>Rikarisu</a></li>
-    <li><a href="/reserva/Universidad Mágica de Ranoa"><i class="bi bi-search"></i>Universidad Mágica de Ranoa</a></li>
+    <li><a href="/reserva/Laboratorios"><i class="bi bi-search"></i>Laboratorios</a></li>
+    <li><a href="/reserva/Salas de grados"><i class="bi bi-search"></i>Salas de grados</a></li>
+    <li><a href="/reserva/Salón de actos"><i class="bi bi-search"></i>Salón de actos</a></li>
+    <li><a href="/reserva/Salas de reunión"><i class="bi bi-search"></i>Salas de reunión</a></li>
 </ul>
 <div id="cover-ctn-search"></div>
 
@@ -122,9 +103,4 @@
            }
        }
    }
-
-
-
-
-
 </script>
