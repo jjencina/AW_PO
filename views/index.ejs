@@ -17,12 +17,12 @@
     </div>     
     <div class="container">
         <div class="row">
-        <!--Carga de forma dinámica los destinos de la base de datos-->
+        <!--Carga de forma dinámica los destinos de la base de datos>
         <% for (let i = 0; i < instalaciones.length; i++) { %>
             <div class="col-md-4 mb-4">
                 <div class="card mx-auto" id="mainCard">
-                    <a href="/reserva/<%= destinos[i].nombre%>" class="text-decoration-none">
-                        <img src="img/<%=destinos[i].imagen %>" class="card-img" alt="<%= destinos[i].nombre %>">                
+                    <a href="/reserva/<%= .nombre%>" class="text-decoration-none">
+                        <img src="img/<%=.imagen %>" class="card-img" alt="<%= .nombre %>">                
                         <div class="card-body">
                             <h5 class="card-title"><%= destinos[i].nombre %></h5>
                             <p class="card-text"><%= destinos[i].descripcion %></p>                        
@@ -30,8 +30,8 @@
                     </a>                
                 </div>  
             </div>      
-        <% } %>
-    </div>
+        <% } %-->
+        </div>
     </div>
     <!--button id="botonFijo"><a href="#inicio"><span></span></a></button-->
     <%- include("footer") %>

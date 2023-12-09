@@ -25,7 +25,7 @@ const sessionStore = new MySQLStore({
   host: "localhost",
   user: "root",
   password: "",
-  database: "aw"
+  database: "ucm_riu",
 });
 
 const middlewareSession = session({
@@ -38,7 +38,7 @@ const middlewareSession = session({
 app.use(middlewareSession);
 
 /*-----Cosas Añadidas------*/
-const port = 5500;
+const port = 3000;
 
 // Middleware para recibir formularios
 app.use(express.urlencoded({ extended: true }));

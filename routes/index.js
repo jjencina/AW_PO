@@ -35,7 +35,7 @@ router.get('/', (req, res) => {
       console.error('Error al obtener instalaciones:', err);
       res.status(500).send('Error interno del servidor');
     } else {
-      res.render('index', { destinos , isAuthenticated: res.locals.isAuthenticated });
+      res.render('index', { instalaciones , isAuthenticated: res.locals.isAuthenticated });
     }
   });
 });
