@@ -42,7 +42,7 @@ router.get('/login', (req, res) => {
 //Iniciar Sesion Usuario
 router.post('/login',  [
   //Validar el formulario
-  body('usuario').notEmpty().withMessage('El nombre es obligatorio'),
+  body('correo').notEmpty().withMessage('El correo es obligatorio'),
   body('password').notEmpty().withMessage('La contraseña es obligatoria')
 ], async (req, res) => {
   try {
@@ -56,11 +56,11 @@ router.post('/login',  [
       });
     } 
 
-    const nombreUsuario = req.body.usuario;
+    const correoUsuario = req.body.correo;
     const contraseniaUsuario = req.body.password;
 
     //Consultar si el usuario existe en la db
-    integracion.buscarUsuarioPorNombre(nombreUsuario, (error, results) => {
+    integracion.buscarUsuarioPorCorreo(correoUsuario, (error, results) => {
       if (error) {
         console.error('Error al buscar usuario:', error);
         return res.status(500).send('Error interno del servidor');
@@ -85,7 +85,7 @@ router.post('/login',  [
       }
 
       //Autenticación exitosa, almacenar usuario en la sesión
-      req.session.currentUser =  nombreUsuario;
+      req.session.currentUser =  correoUsuario;
       console.log(req.session.currentUser);
       res.redirect('/');
     });
@@ -108,6 +108,7 @@ router.get('/register', (req, res) => {
  //Registrar Usuario
 router.post('/register', [
   body('nombre').notEmpty().withMessage('El nombre es obligatorio'),
+  body('apellido1').notEmpty().withMessage('El primer apellido es obligatorio'),
   body('correo').isEmail().withMessage('El correo electrónico no es válido'),
   body('password').notEmpty().withMessage('La contraseña es obligatoria'),
   body('confirmPassword').custom((value, { req }) => {
@@ -133,9 +134,10 @@ router.post('/register', [
       FormData: req.body, 
     });
   } else {
-      const nombreUsuario = req.body.nombre;
+      
+      const correoUsuario = req.body.correo;
       // Consultar si el usuario ya existe en la base de datos
-      integracion.buscarUsuarioPorNombre(nombreUsuario, (error, results) => {
+      integracion.buscarUsuarioPorCorreo(correoUsuario, (error, results) => {
         if (error) {
           console.error('Error al insertar reserva:', error);
           res.status(500).send('Error interno del servidor');
@@ -144,15 +146,17 @@ router.post('/register', [
           // Si ya existe un usuario con ese nombre, mostrar un error
           if (results.length > 0) {
             return res.render('register', { 
-              errors: [{ msg: 'El nombre de usuario ya está registrado' }], 
+              errors: [{ msg: 'El correo ya está registrado' }], 
               exito: false, isAuthenticated: 
               res.locals.isAuthenticated,
               FormData: req.body, 
             });
           }
-          const correo = req.body.correo;
+          const nombreUsuario = req.body.nombre;
           const password = req.body.password[0];
-          integracion.registrarUsuario(nombreUsuario, correo, password, function (err, resultados) {
+          const apellido1 = req.body.apellido1;
+          const apellido2 = req.body.apellido2;
+          integracion.registrarUsuario(nombreUsuario, correoUsuario, apellido1, apellido2, password, function (err, resultados) {
             if (err) {
               console.error('Error al registrar usuario:', err);
               return res.status(500).send('Error interno del servidor');
