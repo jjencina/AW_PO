@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Dec 08, 2023 at 07:56 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 09-12-2023 a las 12:42:23
+-- Versión del servidor: 10.4.28-MariaDB
+-- Versión de PHP: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `ucm_riu`
+-- Base de datos: `ucm_riu`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table ` ucm_aw_riu_img_imagenes`
+-- Estructura de tabla para la tabla ` ucm_aw_riu_img_imagenes`
 --
 
 CREATE TABLE ` ucm_aw_riu_img_imagenes` (
@@ -36,7 +36,7 @@ CREATE TABLE ` ucm_aw_riu_img_imagenes` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `  ucm_aw_riu_ins_instalaciones`
+-- Estructura de tabla para la tabla `  ucm_aw_riu_ins_instalaciones`
 --
 
 CREATE TABLE `  ucm_aw_riu_ins_instalaciones` (
@@ -50,7 +50,28 @@ CREATE TABLE `  ucm_aw_riu_ins_instalaciones` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ucm_aw_riu_res_reservas`
+-- Estructura de tabla para la tabla `ucm_aw_riu_ins_tipo`
+--
+
+CREATE TABLE `ucm_aw_riu_ins_tipo` (
+  `id` int(255) NOT NULL,
+  `tipo` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `ucm_aw_riu_ins_tipo`
+--
+
+INSERT INTO `ucm_aw_riu_ins_tipo` (`id`, `tipo`) VALUES
+(2, 'Sala de Grados'),
+(3, 'Salón de actos'),
+(4, ' Sala de reunión'),
+(1, 'Laboratorio');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ucm_aw_riu_res_reservas`
 --
 
 CREATE TABLE `ucm_aw_riu_res_reservas` (
@@ -66,7 +87,7 @@ CREATE TABLE `ucm_aw_riu_res_reservas` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table ` ucm_aw_riu_usu_usuarios`
+-- Estructura de tabla para la tabla ` ucm_aw_riu_usu_usuarios`
 --
 
 CREATE TABLE ` ucm_aw_riu_usu_usuarios` (
@@ -78,6 +99,16 @@ CREATE TABLE ` ucm_aw_riu_usu_usuarios` (
   `contrasena` varchar(255) NOT NULL,
   `admin` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `ucm_aw_riu_ins_tipo`
+--
+ALTER TABLE `ucm_aw_riu_ins_tipo`
+  ADD KEY `id` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
