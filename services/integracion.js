@@ -39,7 +39,7 @@ const integracion = {
     pool.getConnection((err, conexion) => {
       if (err) {callback(err);}
       else{
-        const sql = 'INSERT INTO usuarios (nombre, apellido1, apellido2, correo, contrasena, admin) VALUES (?, ?, ?, ?, ?, ?)';
+        const sql = 'INSERT INTO ucm_aw_riu_usu_usuarios (nombre, apellido1, apellido2, correo, contrasena, admin) VALUES (?, ?, ?, ?, ?, ?)';
         const values = [nombre,apellido1,apellido2, correo, contrasena, 0];
         conexion.query(sql, values, (error, results) => {
           conexion.release(); 

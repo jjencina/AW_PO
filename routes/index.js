@@ -35,7 +35,7 @@ router.get('/', (req, res) => {
       console.error('Error al obtener tipos de instalaciones:', err);
       res.status(500).send('Error interno del servidor');
     } else {
-      res.render('index', { tipo_ins , isAuthenticated: res.locals.isAuthenticated });
+      res.render('index', { tipo_ins, isAuthenticated: res.locals.isAuthenticated });
     }
   });
 });
