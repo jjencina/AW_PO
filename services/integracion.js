@@ -6,7 +6,7 @@ const integracion = {
     pool.getConnection((err, conexion) => {
       if (err) {callback(err);} 
       else {
-        conexion.query('SELECT * FROM ucm_aw_riu_ins_tipos_instalaciones', (err, results) => {
+        conexion.query('SELECT * FROM  ucm_aw_riu_ins_tipo', (err, results) => {
           conexion.release();
           if (err) {
             callback(err);

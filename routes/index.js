@@ -30,12 +30,12 @@ router.use((req, res, next) => {
 
 //Carga la pagina principal
 router.get('/', (req, res) => {
-  integracion.leerTodosLosTiposIns((err, instalaciones) => {
+  integracion.leerTodosLosTiposIns((err, tipo_ins) => {
     if (err) {
-      console.error('Error al obtener instalaciones:', err);
+      console.error('Error al obtener tipos de instalaciones:', err);
       res.status(500).send('Error interno del servidor');
     } else {
-      res.render('index', { destinos , isAuthenticated: res.locals.isAuthenticated });
+      res.render('index', { tipo_ins , isAuthenticated: res.locals.isAuthenticated });
     }
   });
 });
