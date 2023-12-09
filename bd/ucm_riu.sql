@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 09, 2023 at 01:08 PM
+-- Generation Time: Dec 09, 2023 at 01:28 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -36,10 +36,10 @@ CREATE TABLE `sessions` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table ` ucm_aw_riu_img_imagenes`
+-- Table structure for table `ucm_aw_riu_img_imagenes`
 --
 
-CREATE TABLE ` ucm_aw_riu_img_imagenes` (
+CREATE TABLE `ucm_aw_riu_img_imagenes` (
   `id` int(11) NOT NULL,
   `nombre_ins` varchar(255) NOT NULL,
   `nombre_imagen` varchar(255) NOT NULL
@@ -48,10 +48,10 @@ CREATE TABLE ` ucm_aw_riu_img_imagenes` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `  ucm_aw_riu_ins_instalaciones`
+-- Table structure for table `ucm_aw_riu_ins_instalaciones`
 --
 
-CREATE TABLE `  ucm_aw_riu_ins_instalaciones` (
+CREATE TABLE `ucm_aw_riu_ins_instalaciones` (
   `id` int(11) NOT NULL,
   `nombre` varchar(255) NOT NULL,
   `colectivo` tinyint(1) NOT NULL,
@@ -62,24 +62,24 @@ CREATE TABLE `  ucm_aw_riu_ins_instalaciones` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table ` ucm_aw_riu_ins_tipo`
+-- Table structure for table `ucm_aw_riu_ins_tipo`
 --
 
-CREATE TABLE ` ucm_aw_riu_ins_tipo` (
+CREATE TABLE `ucm_aw_riu_ins_tipo` (
   `id` int(255) NOT NULL,
   `tipo` varchar(200) NOT NULL,
   `imagen` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table ` ucm_aw_riu_ins_tipo`
+-- Dumping data for table `ucm_aw_riu_ins_tipo`
 --
 
-INSERT INTO ` ucm_aw_riu_ins_tipo` (`id`, `tipo`, `imagen`) VALUES
-(1, 'Laboratorios', 'Lab1.png'),
-(2, 'Sala de grados', 'grados1.png'),
-(3, 'Salón de actos', 'actos1.png'),
-(4, 'Sala de reunión', 'reunion1.png');
+INSERT INTO `ucm_aw_riu_ins_tipo` (`id`, `tipo`, `imagen`) VALUES
+(1, 'Laboratorios', 'lab1.jpg'),
+(2, 'Sala de grados', 'grados1.jpg'),
+(3, 'Salón de actos', 'actos1.jpg'),
+(4, 'Sala de reunión', 'reuniones1.jpg');
 
 -- --------------------------------------------------------
 
@@ -100,10 +100,10 @@ CREATE TABLE `ucm_aw_riu_res_reservas` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table ` ucm_aw_riu_usu_usuarios`
+-- Table structure for table `ucm_aw_riu_usu_usuarios`
 --
 
-CREATE TABLE ` ucm_aw_riu_usu_usuarios` (
+CREATE TABLE `ucm_aw_riu_usu_usuarios` (
   `id` int(11) NOT NULL,
   `nombre` varchar(255) NOT NULL,
   `apellido1` varchar(255) NOT NULL,
