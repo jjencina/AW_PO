@@ -276,3 +276,13 @@ p {
       width: 100%;
   }
 }
+
+
+/*Estilo de menu desplegable en el header*/
+#user-menu-list {
+ background-color: #3b7bea;
+}
+
+#user-menu-list li {
+  margin-bottom: 1px; /* Espaciado entre elementos de la lista */
+}

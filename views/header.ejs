@@ -13,13 +13,24 @@
                     <span></span>
                 </button>
             </div>   
-            <!--Barra de navegacion desplegable-->
+            <!--Barra de navegacion desplegable -->
             <div class="collapse navbar-collapse" id="nav">
                 <ul class="navbar-nav " id="collapse-navi">
                     <li class="nav-item"><a href="/#inicio">Inicio</a></li>
                     <li class="nav-item"><a href="/#instalaciones">Instalaciones</a></li>
                     <li class="nav-item"><a href="/#mensajes">Mensajes</a></li>
-                    <li class="nav-item" id="user-menu"><a class="nav-link" href="/login">Login</a></li>
+                    <li class="nav-item" id="user-menu">
+                        <% if (isAuthenticated) { %>
+                            <a class="nav-link" href="#"><%= currentUser %></a>
+                            <ul class="navbar-nav" id="user-menu-list">
+                                <li class="nav-item"><a href="/#inicio">Perfil(por hacer)</a></li>
+                                <li class="nav-item"><a href="/#instalaciones">Administrador(si es administrador)</a></li>
+                                <li class="nav-item"></li><a href="/logout">Logout</a></li>
+                            </ul>
+                        <% } else { %>
+                            <a class="nav-link" href="/login">Login</a>
+                        <% } %>
+                    </li>
                 </ul>
             </div>
             <!--Barra de navegacion normal-->
@@ -27,7 +38,18 @@
                     <li><a href="/#inicio">Inicio</a></li>
                     <li><a href="/#instalaciones">Instalaciones</a></li>
                     <li><a href="/#mensajes">Mensajes</a></li>
-                    <li id="user-menu"><a class="nav-link" href="/login">Login</a></li>
+                    <li id="user-menu">
+                        <% if (isAuthenticated) { %>
+                            <a class="nav-link" href="#"><%= currentUser %></a>
+                            <ul class="navbar-nav" id="user-menu-list">
+                                <li><a href="/#inicio">Perfil(por hacer)</a></li>
+                                <li><a href="/#instalaciones">Administrador(si es administrador)</a></li>
+                                <li><a href="/logout">Logout</a></li>
+                            </ul>
+                        <% } else { %>
+                            <a class="nav-link" href="/login">Login</a>
+                        <% } %>
+                    </li>
                 </ul>
                 <div id="ctn-icon-search">
                     <i class="bi bi-search" id="icon-search"></i>
@@ -47,6 +69,30 @@
     <li><a href="/reserva/Salas de reunión"><i class="bi bi-search"></i>Salas de reunión</a></li>
 </ul>
 <div id="cover-ctn-search"></div>
+
+<script>
+    $(document).ready(function () {
+        var userMenuList = $('#user-menu-list');
+        userMenuList.hide();
+
+        // Mostrar la lista de enlaces al pasar el ratón sobre el nombre del usuario
+        $('#user-menu').on("mouseenter", function () {
+            userMenuList.show();
+        });
+
+        // Ocultar la lista de enlaces al quitar el ratón del nombre del usuario
+        $('#user-menu').on("mouseleave", function () {
+            userMenuList.hide();
+        });
+
+        // Cerrar la lista si se hace clic en el nombre del usuario cuando está abierta
+        $('#user-menu a').on("click", function () {
+            if (userMenuList.is(':visible')) {
+                userMenuList.hide();
+            }
+        });
+    });
+</script>
 
 <script>
     //Ejecutando funciones
@@ -103,4 +149,6 @@
            }
        }
    }
+
+
 </script>
