@@ -29,6 +29,8 @@
                                 <th>Segundo Nombre</th>
                                 <th>Correo</th>
                                 <th>Admin</th>
+                                <th>Validado</th>
+                                <th>Validar</th>
                                 <th>Expulsar</th>
                             </tr>
                         </thead>
@@ -58,13 +60,21 @@
                         } else {
                             user.admin = "No";
                         }
+                        var validationButton = user.validado
+                        ? '<button class="btn btn-danger" onclick="toggleValidation(\'' + user.correo + '\', true)"><i class="bi bi-x"></i> Desvalidar</button>'
+                        : '<button class="btn btn-success" onclick="toggleValidation(\'' + user.correo + '\', false)"><i class="bi bi-check"></i> Validar</button>';
+                        var invalidateButton = '<button class="btn btn-warning" onclick="invalidateUser(\'' + user.correo + '\')"><i class="bi bi-x"></i> Desvalidar</button>';
+
+                        
                         var row = '<tr>' +
                             '<td>' + user.nombre + '</td>' +
                             '<td>' + user.apellido1 + '</td>' +
                             '<td>' + user.apellido2 + '</td>' +
                             '<td>' + user.correo + '</td>' +
                             '<td>' + user.admin + '</td>' +
-                            '<td><button class="btn btn-primary" onclick="expelUser(\'' + user.correo + '\')">Expulsar</button></td>' +
+                            '<td>' + (user.validado ? 'SI' : 'NO') + '</td>' +
+                            '<td>' +  validationButton + '</td>' +
+                            '<td><button class="btn btn-danger" onclick="expelUser(\'' + user.correo + '\')"><i class="bi bi-x"></i> Expulsar</button></td>' +
                             '</tr>';
                         $('#user-list').append(row);
                     });
@@ -90,6 +100,25 @@
                 }
             });
         }
+
+
+        // Llamada AJAX para desvalidar usuarios
+        function invalidateUser(correoUsuario) {
+            console.log('Desvalidar usuario: ' + correoUsuario);
+            // Llamada AJAX para desvalidar al usuario
+            $.ajax({
+                url: '/admin/invalidate-users/' + correoUsuario, 
+                type: 'POST',
+                success: function(data) {
+                    console.log('Usuario desvalidado');
+                    location.reload();
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+    
     </script>
 </body>
 </html>
