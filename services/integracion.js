@@ -156,6 +156,27 @@ const integracion = {
     });
   },
 
+//Expulsar usuario
+  expulsarUsuario: function(correo, callback) {
+    pool.getConnection((err, conexion) => {
+      if (err) {callback(err);}
+      else{
+        const sql = 'DELETE FROM ucm_aw_riu_usu_usuarios WHERE correo = ?';
+        const values = [correo];
+        conexion.query(sql, values, (error, results) => {
+          conexion.release(); 
+          if (error) {
+            callback(error);
+          } else {
+            callback(null, results);
+          }
+        });
+      }
+    });
+  },
+
+
+
   buscarImagenesPorTipoIns: function(tipo_ins, callback){
     pool.getConnection(function(err, conexion){
       if(err){callback(err);}
