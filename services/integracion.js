@@ -34,6 +34,23 @@ const integracion = {
       }
     });
   },
+
+  //Devuelve todas las instalaciones de un tipo de una facultad
+  buscarInstalacionesPorTipoFacultad: function(tipo_ins, facultad, callback){
+    pool.getConnection(function(err, conexion){
+      if(err){callback(err);}
+      else {
+        conexion.query('SELECT * FROM ucm_aw_riu_ins_instalaciones WHERE tipo = ? AND facultad = ?', [tipo_ins, facultad], function (err, rows) {
+          conexion.release();
+          if (err) {
+            callback(err);
+          } else {
+            callback(null, rows);
+          }
+        });
+      }
+    });
+  },
   // Insertar reserva en la bd
   registrarUsuario: function(nombre, correo,apellido1, apellido2, contrasena, callback) {
     pool.getConnection((err, conexion) => {

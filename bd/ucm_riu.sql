@@ -50,10 +50,10 @@ CREATE TABLE `ucm_aw_riu_img_imagenes` (
 --
 
 INSERT INTO `ucm_aw_riu_img_imagenes` (`id`, `nombre_ins`, `nombre_imagen`) VALUES
-(1, 'Salon de actos', 'actos1.jpg'),
+(1, 'Salon de acto', 'actos1.jpg'),
 (2, 'Sala de grados', 'grados1.jpg'),
-(3, 'Laboratorios', 'lab1.jpg'),
-(1, 'Sala de reuniones', 'reuniones1.jpg');
+(3, 'Laboratorio', 'lab1.jpg'),
+(4, 'Sala de reuniones', 'reuniones1.jpg');
 
 -- --------------------------------------------------------
 
@@ -67,7 +67,7 @@ CREATE TABLE `ucm_aw_riu_ins_instalaciones` (
   `colectivo` tinyint(1) NOT NULL,
   `aforo` int(20) DEFAULT NULL,
   `tipo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
-  `facultad` varchar(255) DEFAULT NULL
+  `facultad` varchar(255)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -85,13 +85,22 @@ CREATE TABLE `ucm_aw_riu_ins_tipo` (
   `hora_de_cierre` time DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+INSERT INTO `ucm_aw_riu_ins_instalaciones`(`id`, `nombre`, `colectivo`, `aforo`, `tipo`, `facultad`) VALUES 
+('1','Lab 1','0','20','Laboratorio','Informática'),
+('2','Lab 2','0','20','Laboratorio','Informática'),
+('3','Lab 3','0','20','Laboratorio','Informática'),
+('4','Lab 1','0','20','Laboratorio','Biología'),
+('5','Lab 2','0','20','Laboratorio','Biología'),
+('6','Lab 3','0','20','Laboratorio','Biología'),
+('7','Salon de actos','1','155','Salon de actos','Informática');
+
 --
 -- Dumping data for table `ucm_aw_riu_ins_tipo`
 --
 
 INSERT INTO `ucm_aw_riu_ins_tipo` (`id`, `tipo`, `imagen`, `descripcion`, `hora_de_apertura`, `hora_de_cierre`) VALUES
-(1, 'Laboratorios', 'lab1.jpg', 'Reserva un puesto de laboratorio durante dos horas', 9, 21),
-(2, 'Sala de grados', 'grados1.jpg', 'Reserva una sala de grados durante dos horas', 10, 20),
+(1, 'Laboratorio', 'lab1.jpg', 'Reserva un puesto de laboratorio durante dos horas', 9, 21),
+(2, 'Sala de grado', 'grados1.jpg', 'Reserva una sala de grados durante dos horas', 10, 20),
 (3, 'Salón de actos', 'actos1.jpg', 'Reserva un salón de actos durante dos horas', 10, 20),
 (4, 'Sala de reunión', 'reuniones1.jpg', 'Reserva una sala de reunión durante dos horas', 9, 21);
 

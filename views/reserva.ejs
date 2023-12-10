@@ -38,7 +38,7 @@
                 <div class="container" id="descripcionInstalacion">
                     <h5 id="tipoIns"><%=tipo_ins%></h5>
                     <!--Primero selecciona la facultad en la que quiere reservar-->
-                    <label for="facultades">Selecciona la facultad:</label>
+                    <label for="facultades">Facultad:</label>
                     <select id="facultades">
                         <option value="" disabled selected>Selecciona una facultad</option>
                         <option value="Informática">Informática</option>
@@ -51,9 +51,8 @@
                         <input type = "hidden" name = "facultad" id="facultadCampo">             
                         <!-- Campos existentes -->
                         <div class="form-group" id="instalacionCampo">
-                            <label for="instalaciones">Elige la instalación</label>
+                            <label for="instalaciones">Instalación</label>
                             <select id="instalaciones">
-                                <option value="" disabled selected>Selecciona una instalación</option>
                             </select>
                         <div class="form-group" id="fechaCampo ">
                             <label for="fecha">Selecciona el día</label>
@@ -109,8 +108,8 @@
                 type: 'POST',
                 data: {facultad: facultad, tipo: tipo_ins},
                 success: function(response){
-                    let instalaciones = JSON.parse(response);
-                    let template = '';
+                    let instalaciones = response;
+                    let template = '<option value="" disabled selected>Selecciona una instalación</option>';
                     instalaciones.forEach(instalacion => {
                         template += `
                             <option value="${instalacion.nombre}">${instalacion.nombre}</option>

@@ -67,7 +67,21 @@ router.get('/reserva/:tipo', (req, res) => {
     }); // Pasa un array vacío si no hay errores
   },100);
 });
-
+//Ruta para obtener las instalaciones de un tipo de cada facultad
+router.post('/instalaciones', (req, res) => {
+  const tipo_ins = req.body.tipo;
+  const facultad = req.body.facultad;
+  console.log(tipo_ins);
+  console.log(facultad);
+  integracion.buscarInstalacionesPorTipoFacultad(tipo_ins, facultad, function (err, resultados) {
+    if (err) {
+      console.error('Error al buscar el imagen por destino:', err);
+      res.status(500).send('Error interno del servidor');
+    } else {
+      res.json(resultados);
+    }
+  });
+});
 // Ruta para manejar la reserva
 router.post('/reservar', [
   // Validación de campos
