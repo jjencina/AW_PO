@@ -60,9 +60,9 @@
                         </div>
 
                         <div class="form-group d-none" id="horaCampo" >
-                            <label for="hora">Selecciona la hora</label>
+                            <label for="hora">Hora</label>
                             <select id="hora">
-                                <option value="" disabled selected>Selecciona una hora a reservar</option>
+                             
                             </select>
                         </div>
                         <!-- Botón "Aceptar" -->
@@ -102,14 +102,13 @@
         var tipo_ins = $("#tipoIns").text();
         function obtenerInstalaciones(facultad){
             $.ajax({
-                //TODO
-                //En el POST obtener todas las instalaciones del tipo_ins de esa facultad
                 url: '/instalaciones',
                 type: 'POST',
                 data: {facultad: facultad, tipo: tipo_ins},
                 success: function(response){
                     let instalaciones = response;
                     let template = '<option value="" disabled selected>Selecciona una instalación</option>';
+                    //Obtenemos las instalaciones de la facultad seleccionada con el tipo seleccionado
                     instalaciones.forEach(instalacion => {
                         template += `
                             <option value="${instalacion.nombre}">${instalacion.nombre}</option>
@@ -124,22 +123,21 @@
             var fecha = $("#fecha").val();
             var facultad = $("#facultadCampo").val();
             var instalacion = $("#instalaciones").val();
+            var tipo_ins = $("#tipoIns").text();
             $.ajax({
                 url: '/horasDisponibles',
-                //En el POST obtener todas las horas de esa fecha y las que ya estén reservadas
-                //Si la fecha es hoy, no mostrar las horas que ya han pasado
                 type: 'POST', 
-                data: {fecha: fecha, facultad: facultad, instalacion: instalacion},
+                data: {fecha: fecha, instalacion: instalacion, tipo_ins:tipo_ins, facultad:facultad},
                 success: function(response){
-                    let horas = JSON.parse(response);
+                    let horas = response;
                     if(horas.length == 0){
                         $("#hora").html('<option value="" disabled selected>No hay horas disponibles</option>');
                         return;
                     }
-                    let template = '';
+                    let template = '<option value="" disabled selected>Selecciona la hora</option>';
                     horas.forEach(hora => {
                         template += `
-                            <option value="${hora.hora}">${hora.hora}</option>
+                            <option value="${hora}">${hora}</option>
                         `
                     });
                     $('#hora').html(template);
