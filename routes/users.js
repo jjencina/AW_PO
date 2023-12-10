@@ -225,6 +225,20 @@ router.get('/admin/users', (req, res) => {
   });
 });
 
+//post para borrar usuarios
+router.post('/admin/expel-users/:correo', (req, res) => {
+  const correoUsuario = req.params.correo;
+  console.log("HDKAJSHAKAJHS");
+  console.log(correoUsuario);
+  integracion.expulsarUsuario(correoUsuario, (error, results) => {
+    if (error) {
+      console.error('Error al borrar usuario:', error);
+      return res.status(500).send('Error interno del servidor');
+    }
+    res.redirect('/users/admin/user');
+  });
+});
+
 //Cerrar sesion o logout
 router.get('/logout', (req, res) => {
   try {
