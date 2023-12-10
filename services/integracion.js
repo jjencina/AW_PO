@@ -17,6 +17,23 @@ const integracion = {
       }
     });
   },
+
+  //Devuelve el tipo de instalacion
+  buscarTipoIns: function(tipo_ins, callback){
+    pool.getConnection(function(err, conexion){
+      if(err){callback(err);}
+      else {
+        conexion.query('SELECT * FROM ucm_aw_riu_ins_tipo WHERE tipo = ?', [tipo_ins], function (err, rows) {
+          conexion.release();
+          if (err) {
+            callback(err);
+          } else {
+            callback(null, rows);
+          }
+        });
+      }
+    });
+  },
   
    // Devuelve todas las instalaciones de la bd
    leerInstalacionesPorTipo: function(callback) {
@@ -41,6 +58,22 @@ const integracion = {
       if(err){callback(err);}
       else {
         conexion.query('SELECT * FROM ucm_aw_riu_ins_instalaciones WHERE tipo = ? AND facultad = ?', [tipo_ins, facultad], function (err, rows) {
+          conexion.release();
+          if (err) {
+            callback(err);
+          } else {
+            callback(null, rows);
+          }
+        });
+      }
+    });
+  },
+  //Devuelve las horas que están reservadas ese día en esa instalación
+  buscarHorasReservadas: function(instalacion, fecha, facultad, callback){
+    pool.getConnection(function(err, conexion){
+      if(err){callback(err);}
+      else {
+        conexion.query('SELECT * FROM ucm_aw_riu_res_reservas WHERE nombre_ins = ? AND fecha_res = ? AND facultad = ?', [instalacion, fecha, facultad], function (err, rows) {
           conexion.release();
           if (err) {
             callback(err);

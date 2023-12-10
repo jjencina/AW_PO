@@ -72,11 +72,9 @@ router.get('/reserva/:tipo', (req, res) => {
 router.post('/instalaciones', (req, res) => {
   const tipo_ins = req.body.tipo;
   const facultad = req.body.facultad;
-  console.log(tipo_ins);
-  console.log(facultad);
   integracion.buscarInstalacionesPorTipoFacultad(tipo_ins, facultad, function (err, resultados) {
     if (err) {
-      console.error('Error al buscar el imagen por destino:', err);
+      console.error('Error al buscar instalaciones por tipo y facultad:', err);
       res.status(500).send('Error interno del servidor');
     } else {
       res.json(resultados);
@@ -84,7 +82,67 @@ router.post('/instalaciones', (req, res) => {
   });
 });
 //Ruta para obtener las horas disponibles de una instalacion
-router.post('/horas', (req, res) => { });
+router.post('/horasDisponibles', (req, res) => { 
+  const nombre_ins= req.body.instalacion;
+  const fecha = req.body.fecha;
+  const tipo_ins = req.body.tipo_ins;
+  const facultad = req.body.facultad;
+  var hReservadas = [];
+  var collectivo, aforo;;
+  var hApertura,hCierre = '';
+  integracion.buscarTipoIns(tipo_ins, function (err, resultados) {
+    if (err) {
+      console.error('Error al buscar el imagen por destino:', err);
+      res.status(500).send('Error interno del servidor');
+    } else {
+      hApertura = parseInt(resultados[0].hora_de_apertura.split(":")[0]);
+      hCierre = parseInt(resultados[0].hora_de_cierre.split(":")[0]);
+      collectivo = 0;
+      aforo = resultados[0].aforo;
+    }
+  });
+  var comprobar = Array.from({ length: 24 }).fill(0);
+  //Obtenemos las horas reservadas de esa instalacion
+  integracion.buscarHorasReservadas(nombre_ins, fecha, facultad, function (err, resultados) {
+    if (err) {
+      console.error('Error al buscar las horas reservadas de una fecha:', err);
+      res.status(500).send('Error interno del servidor');
+    } else {
+      for(var i = 0; i < resultados.length; i++){
+        var elemento = parseInt(resultados[i].hora_res.split(":")[0])
+        if(collectivo == 0){
+          //Por cada reserva en esa hora sumamos 1
+         comprobar[elemento]++;
+        }
+        hReservadas.push(elemento);
+      }      
+    }
+  });
+  
+  var returnArray = [];
+  setTimeout(function(){  
+    //Si es individual, comprobamos que no está lleno los puestos de cada hora
+    if(collectivo == 0){
+      for(var i = hApertura; i < hCierre; i+=2){
+        if(comprobar[i] < aforo){
+          var elemento = i.toString() + ":00";
+          returnArray.push(elemento);
+        }
+      }
+    }
+    //Si es colectivo, comprobamos que no está reservada la hora
+    else{
+      for(var i = hApertura; i < hCierre; i+=2){
+        if(!hReservadas.includes(i)){
+          var elemento = i.toString() + ":00";
+          returnArray.push(elemento);
+        }
+      }
+  }
+
+  res.json(returnArray);
+  }, 100);
+});
 // Ruta para manejar la reserva
 router.post('/reservar', [
   // Validación de campos
