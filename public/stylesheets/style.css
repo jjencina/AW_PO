@@ -283,6 +283,14 @@ p {
  background-color: #3b7bea;
 }
 
+#user-menu-list-2 {
+  background-color: #3b7bea;
+ }
+
 #user-menu-list li {
+  margin-bottom: 1px; /* Espaciado entre elementos de la lista */
+}
+
+#user-menu-list-2 li {
   margin-bottom: 1px; /* Espaciado entre elementos de la lista */
 }

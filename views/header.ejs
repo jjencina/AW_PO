@@ -23,8 +23,8 @@
                         <% if (isAuthenticated) { %>
                             <a class="nav-link" href="#"><%= currentUser %></a>
                             <ul class="navbar-nav" id="user-menu-list">
-                                <li class="nav-item"><a href="/#inicio">Perfil(por hacer)</a></li>
-                                <li class="nav-item"><a href="/#instalaciones">Administrador(si es administrador)</a></li>
+                                <li class="nav-item"><a href="/profile">Perfil</a></li>
+                                <li class="nav-item"><a href="/admin">Administrador</a></li>
                                 <li class="nav-item"></li><a href="/logout">Logout</a></li>
                             </ul>
                         <% } else { %>
@@ -38,16 +38,16 @@
                     <li><a href="/#inicio">Inicio</a></li>
                     <li><a href="/#instalaciones">Instalaciones</a></li>
                     <li><a href="/#mensajes">Mensajes</a></li>
-                    <li id="user-menu">
+                    <li id="user-menu-2">
                         <% if (isAuthenticated) { %>
-                            <a class="nav-link" href="#"><%= currentUser %></a>
-                            <ul class="navbar-nav" id="user-menu-list">
-                                <li><a href="/#inicio">Perfil(por hacer)</a></li>
-                                <li><a href="/#instalaciones">Administrador(si es administrador)</a></li>
+                            <a href="#"><%= currentUser %></a>
+                            <ul class="navbar-nav" id="user-menu-list-2">
+                                <li><a href="/profile">Perfil</a></li>
+                                <li><a href="/admin">Administador</a></li>
                                 <li><a href="/logout">Logout</a></li>
                             </ul>
                         <% } else { %>
-                            <a class="nav-link" href="/login">Login</a>
+                            <a href="/login">Login</a>
                         <% } %>
                     </li>
                 </ul>
@@ -70,28 +70,41 @@
 </ul>
 <div id="cover-ctn-search"></div>
 
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 <script>
-    $(document).ready(function () {
         var userMenuList = $('#user-menu-list');
-        userMenuList.hide();
-
-        // Mostrar la lista de enlaces al pasar el ratón sobre el nombre del usuario
-        $('#user-menu').on("mouseenter", function () {
-            userMenuList.show();
-        });
-
-        // Ocultar la lista de enlaces al quitar el ratón del nombre del usuario
-        $('#user-menu').on("mouseleave", function () {
-            userMenuList.hide();
-        });
-
-        // Cerrar la lista si se hace clic en el nombre del usuario cuando está abierta
-        $('#user-menu a').on("click", function () {
+        $('#user-menu-list').hide();
+        // Mostrar u ocultar la lista al hacer clic en el nombre del usuario
+        $('#user-menu').on("click", function () {
             if (userMenuList.is(':visible')) {
                 userMenuList.hide();
+            } else {
+                userMenuList.show();
             }
         });
-    });
+        // Cerrar la lista si se hace clic en algún enlace dentro de la lista
+        $('#user-menu-list a').on("click", function () {
+            userMenuList.hide();
+        });
+</script>
+<script>
+        //Lo mismo pero para el que esta en parte de arriba
+        var userMenuList2 = $('#user-menu-list-2');
+        $('#user-menu-list-2').hide();
+        // Mostrar u ocultar la lista al hacer clic en el nombre del usuario
+        $('#user-menu-2').on("click", function () {
+            if (userMenuList2.is(':visible')) {
+                userMenuList2.hide();
+            } else {
+                userMenuList2.show();
+            }
+        });
+        // Cerrar la lista si se hace clic en algún enlace dentro de la lista
+        $('#user-menu-list-2 a').on("click", function () {
+            userMenuList2.hide();
+        });
 </script>
 
 <script>
@@ -148,7 +161,9 @@
                li[i].style.display = "none";
            }
        }
-   }
-
-
+   }  
 </script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+

@@ -168,6 +168,38 @@ router.post('/register', [
     }
   });
 
+//Llamar a perfil
+router.get('/profile', (req, res) => {
+  //Leer usuario por correo
+  const correoUsuario = req.session.currentUser;
+  integracion.buscarUsuarioPorCorreo(correoUsuario, (error, results) => {
+    if (error) {
+      console.error('Error al buscar usuario:', error);
+      return res.status(500).send('Error interno del servidor');
+    }
+    const usuario = results[0];
+    res.render('profile', { 
+      errors: [], 
+      isAuthenticated: res.locals.isAuthenticated,
+      FormData: req.body,
+      correo: req.session.currentUser,
+      usuario
+    });
+  });
+});
+
+//Actualizar perfil
+//TODO
+
+//Llamar admin
+router.get('/admin', (req, res) => {
+  res.render('admin', { 
+    errors: [], 
+    isAuthenticated: res.locals.isAuthenticated,
+    FormData: req.body,
+  });
+});
+
 //Cerrar sesion o logout
 router.get('/logout', (req, res) => {
   try {
