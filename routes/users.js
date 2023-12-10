@@ -200,6 +200,28 @@ router.get('/admin', (req, res) => {
   });
 });
 
+//Llamar a admin/usuarios
+router.get('/admin/user', (req, res) => {
+    usuarios = {};
+    res.render('admin/users', { 
+      errors: [], 
+      isAuthenticated: res.locals.isAuthenticated,
+      FormData: req.body,  
+      usuarios    
+    });
+  
+});
+
+//Mediante Ajax devolver usuarios de la base de datos a la vista
+router.get('/admin/users', (req, res) => {
+  //TODO: Leer usuarios de la base de datos
+  const users = [
+      { id: 1, name: 'Usuario1', email: 'usuario1@example.com' },
+      { id: 2, name: 'Usuario2', email: 'usuario2@example.com' },
+  ];
+  res.json(users);
+});
+
 //Cerrar sesion o logout
 router.get('/logout', (req, res) => {
   try {
