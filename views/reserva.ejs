@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Instalaciones UCM</title>
+    <title>Reserva de <%=tipo_ins%></title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel='stylesheet' href='/stylesheets/style.css' />
@@ -35,27 +35,37 @@
             </div>
             <!--La segunda columna es la descripción del destino-->
             <div class="col-md-4">
-                <div class="container" id="descripcionDestino">
-                    <!--Botón mostrar-->
-                    <input type="checkbox" id="mostrarFormulario" class="d-none">
-                    <label for="mostrarFormulario" class="btn btn-primary">Reserva ya</label>
+                <div class="container" id="descripcionInstalacion">
+                    <h5 id="tipoIns"><%=tipo_ins%></h5>
+                    <!--Primero selecciona la facultad en la que quiere reservar-->
+                    <label for="facultades">Selecciona la facultad:</label>
+                    <select id="facultades">
+                        <option value="" disabled selected>Selecciona una facultad</option>
+                        <option value="Informática">Informática</option>
+                        <option value="Biología">Biología</option>
+                        <option value="Información">Información</option>
+                    </select>
         
                     <!-- Formulario de reserva -->
-                    <form id="reservaForm" action='/reservar' method="post" class="d-none">                  
+                    <form id="reservaForm" action='/reservar' method="post" class="d-none">     
+                        <input type = "hidden" name = "facultad" id="facultadCampo">             
                         <!-- Campos existentes -->
-                        <div class="form-group">
-                            <label for="nombre_usuario">Nombre del cliente:</label>
-                            <input type="text" class="form-control" id="nombre_cliente" name="nombre_cliente" required autocomplete="nombre_cliente" value="<%= FormData.nombre_cliente || '' %>">
+                        <div class="form-group" id="instalacionCampo">
+                            <label for="instalaciones">Elige la instalación</label>
+                            <select id="instalaciones">
+                                <option value="" disabled selected>Selecciona una instalación</option>
+                            </select>
+                        <div class="form-group" id="fechaCampo ">
+                            <label for="fecha">Selecciona el día</label>
+                            <input type="date" class="form-control" id="fecha" name="fecha" required>
                         </div>
-                        <div class="form-group">
-                            <label for="email">Correo electrónico:</label>
-                            <input type="email" class="form-control" id="email" name="email" required autocomplete="email" value="<%= FormData.email || '' %>">
+
+                        <div class="form-group d-none" id="horaCampo" >
+                            <label for="hora">Selecciona la hora</label>
+                            <select id="hora">
+                                <option value="" disabled selected>Selecciona una hora a reservar</option>
+                            </select>
                         </div>
-                        <div class="form-group">
-                            <label for="fechaReserva">Fecha de reserva:</label>
-                            <input type="date" class="form-control" id="fechaReserva" name="fechaReserva" required autocomplete="off" %>">
-                        </div>
-                        
                         <!-- Botón "Aceptar" -->
                         <button type="submit" class="btn btn-primary">Aceptar</button>
                         
@@ -83,24 +93,60 @@
     
     <!--Funcionamiento del boton mostrar-->
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-        var mostrarFormularioBtn = document.getElementById('mostrarFormulario');
-        var reservaForm = document.getElementById('reservaForm');
-        
-        // Verifica el estado del checkbox al cargar la página
-        if (mostrarFormularioBtn.checked) {
-            reservaForm.classList.remove('d-none');
-        } else {
-            reservaForm.classList.add('d-none');
-        }
-        
-        mostrarFormularioBtn.addEventListener('change', function () {
+       document.getElementById('facultades').addEventListener('change', function() {
+        var facultad = document.getElementById('facultades').value;
             // Mostrar el formulario al marcar el checkbox
-            if (mostrarFormularioBtn.checked) {
+            document.getElementById('facultadCampo').value = facultad;
+            obtenerInstalaciones(facultad);
             reservaForm.classList.remove('d-none');
-            } else {
-            reservaForm.classList.add('d-none');
-            }
+        });
+        var tipo_ins = $("#tipoIns").text();
+        function obtenerInstalaciones(facultad){
+            $.ajax({
+                //TODO
+                //En el POST obtener todas las instalaciones del tipo_ins de esa facultad
+                url: '/instalaciones',
+                type: 'POST',
+                data: {facultad: facultad, tipo: tipo_ins},
+                success: function(response){
+                    let instalaciones = JSON.parse(response);
+                    let template = '';
+                    instalaciones.forEach(instalacion => {
+                        template += `
+                            <option value="${instalacion.nombre}">${instalacion.nombre}</option>
+                        `
+                    });
+                    $('#instalaciones').html(template);
+                }
+            });
+        }
+
+        $("#fecha").change(function(){
+            var fecha = $("#fecha").val();
+            var facultad = $("#facultadCampo").val();
+            var instalacion = $("#instalaciones").val();
+            $.ajax({
+                url: '/horasDisponibles',
+                //En el POST obtener todas las horas de esa fecha y las que ya estén reservadas
+                //Si la fecha es hoy, no mostrar las horas que ya han pasado
+                type: 'POST', 
+                data: {fecha: fecha, facultad: facultad, instalacion: instalacion},
+                success: function(response){
+                    let horas = JSON.parse(response);
+                    if(horas.length == 0){
+                        $("#hora").html('<option value="" disabled selected>No hay horas disponibles</option>');
+                        return;
+                    }
+                    let template = '';
+                    horas.forEach(hora => {
+                        template += `
+                            <option value="${hora.hora}">${hora.hora}</option>
+                        `
+                    });
+                    $('#hora').html(template);
+                    $("#horaCampo").removeClass("d-none");
+                }
+            });
         });
         
         // Verifica si hay errores o éxito al cargar la página y muestra el formulario si es necesario
@@ -108,10 +154,8 @@
         var successExist = document.querySelector('.alert-success');
         
         if (errorsExist || successExist) {
-            mostrarFormularioBtn.checked = true;
             reservaForm.classList.remove('d-none');
-        }
-        });
+        };
     </script>
    
     <%- include("footer") %>

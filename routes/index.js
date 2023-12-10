@@ -46,7 +46,6 @@ router.get('/reserva/:tipo', (req, res) => {
   const tipo_ins = req.params.tipo;
   usuario = req.session.currentUser;
   var imagenes;
-  console.log(tipo_ins);
   integracion.buscarImagenesPorTipoIns(tipo_ins, function (err, resultados) {
     if (err) {
       console.error('Error al buscar el imagen por destino:', err);
@@ -59,6 +58,7 @@ router.get('/reserva/:tipo', (req, res) => {
   setTimeout(function(){
     res.render('reserva', { 
       imagenes, 
+      tipo_ins,
       usuario , 
       errors: [] , 
       reservaExitosa: false, 
@@ -71,18 +71,18 @@ router.get('/reserva/:tipo', (req, res) => {
 // Ruta para manejar la reserva
 router.post('/reservar', [
   // Validación de campos
-  //body('nombre_cliente').notEmpty().withMessage('El nombre del cliente es obligatorio'),
-  body('email').isEmail().withMessage('El correo electrónico no es válido'), 
-  body('clase_tp').notEmpty().withMessage('La clase de teletransporte es obligatoria'),
-  body('num_entradas').isInt({ min: 1 }).withMessage('El número de entradas debe ser al menos 1'),
-  body('tamano_maleta').notEmpty().withMessage('El tamaño de la maleta es obligatorio'),
-  body('fechaReserva').custom((value) => {
+  body('fecha').custom((value) => {
     // Validar que la fecha de reserva sea menor que la fecha actual
     const today = new Date();
     const selectedDate = new Date(value);
     if (selectedDate < today || selectedDate.getTime() < 0) {
       throw new Error('La fecha de reserva debe ser mayor o igual a la fecha actual');
     }
+    //Comprobar que no es fin de semana
+    else if(selectedDate.getDay() == 0 || selectedDate.getDay() == 6){
+      throw new Error('No se puede reservar en fin de semana');
+    }
+
     return true;
   }),
 
@@ -100,29 +100,20 @@ router.post('/reservar', [
       res.status(500).send('Error interno del servidor');
     } else {
       imagenes = resultados;
-    
     }
   });
   
   if (!errors.isEmpty()) {
     // Si hay errores de validación, renderiza la vista de reserva con los errores    
-    integracion.buscarDestinoPorNombre(nombre_destino, function (err, resultados) {
-      if (err) {
-        console.error('Error al buscar el destino por nombre:', err);
-        return res.status(500).send('Error interno del servidor');
-      }
-
-      const destino = resultados[0];
-      return res.render('reserva', { 
+   res.render('reserva', { 
         imagenes,
-        destino,
         usuario, 
         errors: errors.array(), 
         reservaExitosa: false, 
         isAuthenticated: res.locals.isAuthenticated,
         FormData: req.body,
       });
-    });
+   
   } else {
     // Si no hay errores de validación, proceder con la inserción en la base de datos
     const nombre_cliente = req.body.nombre_cliente;
