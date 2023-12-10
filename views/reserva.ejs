@@ -74,7 +74,7 @@
                             </select>
                         </div>
                         <!-- Botón "Aceptar" -->
-                        <button type="submit" class="btn btn-primary">Aceptar</button>
+                        <button type="submit" class="btn btn-primary d-none" id="aceptarB">Aceptar</button>
                         
                         <!-- Mostrar mensaje de éxito -->
                         <% if (reservaExitosa) { %>
@@ -109,6 +109,7 @@
             $('#instalacionCampo').removeClass('d-none');
             $('#fechaCampo').removeClass('d-none');
             $('#horaCampo').removeClass('d-none');
+            $('#aceptarB').removeClass('d-none');
         });
 
         var tipo_ins = $("#tipoIns").text();

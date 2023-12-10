@@ -45,6 +45,7 @@ router.get('/', (req, res) => {
 router.get('/reserva/:tipo', (req, res) => {
   const tipo_ins = req.params.tipo;
   usuario = req.session.currentUser;
+  console.log(usuario);
   var imagenes;
   integracion.buscarImagenesPorTipoIns(tipo_ins, function (err, resultados) {
     if (err) {
