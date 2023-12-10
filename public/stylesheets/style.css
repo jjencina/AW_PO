@@ -79,6 +79,11 @@ r{
   margin-top: 3px;
   margin-bottom: 3px;
 }
+#cnt-navi{
+  position:absolute;
+  right:45px;
+  top:5px;
+}
 .navi a{
   margin-right: 18px;
 
@@ -126,7 +131,7 @@ r{
 
   #ctn-icon-search{
     position: absolute;
-    right: 380px;
+    right: 25px;
     top: 7px;
     height: 100%;
     justify-content: center;
