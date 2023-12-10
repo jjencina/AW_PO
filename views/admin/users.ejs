@@ -24,9 +24,11 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Nombre</th>
+                                <th>Primer Apellido</th>
+                                <th>Segundo Nombre</th>
                                 <th>Correo</th>
+                                <th>Admin</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -53,10 +55,17 @@
                 success: function(data) {
                     // Iterar sobre la lista de usuarios y agregar filas a la tabla
                     data.forEach(function(user) {
+                        if(user.admin == 1){
+                            user.admin = "Si";
+                        }else{
+                            user.admin = "No";
+                        }
                         var row = '<tr>' +
-                                    '<td>' + user.id + '</td>' +
-                                    '<td>' + user.name + '</td>' +
-                                    '<td>' + user.email + '</td>' +
+                                    '<td>' + user.nombre + '</td>' +
+                                    '<td>' + user.apellido1 + '</td>' +
+                                    '<td>' + user.apellido2 + '</td>' +
+                                    '<td>' + user.correo + '</td>' +
+                                    '<td>' + user.admin + '</td>' +
                                     '<td><button class="btn btn-primary" onclick="editUser(' + user.id + ')">Editar</button></td>' +
                                  '</tr>';
                         $('#user-list').append(row);

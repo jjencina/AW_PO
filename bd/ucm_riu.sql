@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Dec 10, 2023 at 01:26 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 10-12-2023 a las 14:34:39
+-- Versión del servidor: 10.4.28-MariaDB
+-- Versión de PHP: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `ucm_riu`
+-- Base de datos: `ucm_riu`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `sessions`
+-- Estructura de tabla para la tabla `sessions`
 --
 
 CREATE TABLE `sessions` (
@@ -33,10 +33,17 @@ CREATE TABLE `sessions` (
   `data` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
+--
+-- Volcado de datos para la tabla `sessions`
+--
+
+INSERT INTO `sessions` (`session_id`, `expires`, `data`) VALUES
+('ish0sSLCfwF5RkZxrtA4py-JCVKQ44DY', 1702301622, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":\"a@ucm.es\"}');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ucm_aw_riu_img_imagenes`
+-- Estructura de tabla para la tabla `ucm_aw_riu_img_imagenes`
 --
 
 CREATE TABLE `ucm_aw_riu_img_imagenes` (
@@ -46,7 +53,7 @@ CREATE TABLE `ucm_aw_riu_img_imagenes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Dumping data for table `ucm_aw_riu_img_imagenes`
+-- Volcado de datos para la tabla `ucm_aw_riu_img_imagenes`
 --
 
 INSERT INTO `ucm_aw_riu_img_imagenes` (`id`, `nombre_ins`, `nombre_imagen`) VALUES
@@ -58,7 +65,7 @@ INSERT INTO `ucm_aw_riu_img_imagenes` (`id`, `nombre_ins`, `nombre_imagen`) VALU
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ucm_aw_riu_ins_instalaciones`
+-- Estructura de tabla para la tabla `ucm_aw_riu_ins_instalaciones`
 --
 
 CREATE TABLE `ucm_aw_riu_ins_instalaciones` (
@@ -67,13 +74,26 @@ CREATE TABLE `ucm_aw_riu_ins_instalaciones` (
   `colectivo` tinyint(1) NOT NULL,
   `aforo` int(20) DEFAULT NULL,
   `tipo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
-  `facultad` varchar(255)
+  `facultad` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `ucm_aw_riu_ins_instalaciones`
+--
+
+INSERT INTO `ucm_aw_riu_ins_instalaciones` (`id`, `nombre`, `colectivo`, `aforo`, `tipo`, `facultad`) VALUES
+(1, 'Lab 1', 0, 20, 'Laboratorio', 'Informática'),
+(2, 'Lab 2', 0, 20, 'Laboratorio', 'Informática'),
+(3, 'Lab 3', 0, 20, 'Laboratorio', 'Informática'),
+(4, 'Lab 1', 0, 20, 'Laboratorio', 'Biología'),
+(5, 'Lab 2', 0, 20, 'Laboratorio', 'Biología'),
+(6, 'Lab 3', 0, 20, 'Laboratorio', 'Biología'),
+(7, 'Salon de actos', 1, 155, 'Salon de actos', 'Informática');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ucm_aw_riu_ins_tipo`
+-- Estructura de tabla para la tabla `ucm_aw_riu_ins_tipo`
 --
 
 CREATE TABLE `ucm_aw_riu_ins_tipo` (
@@ -85,29 +105,20 @@ CREATE TABLE `ucm_aw_riu_ins_tipo` (
   `hora_de_cierre` time DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `ucm_aw_riu_ins_instalaciones`(`id`, `nombre`, `colectivo`, `aforo`, `tipo`, `facultad`) VALUES 
-('1','Lab 1','0','20','Laboratorio','Informática'),
-('2','Lab 2','0','20','Laboratorio','Informática'),
-('3','Lab 3','0','20','Laboratorio','Informática'),
-('4','Lab 1','0','20','Laboratorio','Biología'),
-('5','Lab 2','0','20','Laboratorio','Biología'),
-('6','Lab 3','0','20','Laboratorio','Biología'),
-('7','Salon de actos','1','155','Salon de actos','Informática');
-
 --
--- Dumping data for table `ucm_aw_riu_ins_tipo`
+-- Volcado de datos para la tabla `ucm_aw_riu_ins_tipo`
 --
 
 INSERT INTO `ucm_aw_riu_ins_tipo` (`id`, `tipo`, `imagen`, `descripcion`, `hora_de_apertura`, `hora_de_cierre`) VALUES
-(1, 'Laboratorio', 'lab1.jpg', 'Reserva un puesto de laboratorio durante dos horas', 9, 21),
-(2, 'Sala de grado', 'grados1.jpg', 'Reserva una sala de grados durante dos horas', 10, 20),
-(3, 'Salón de actos', 'actos1.jpg', 'Reserva un salón de actos durante dos horas', 10, 20),
-(4, 'Sala de reunión', 'reuniones1.jpg', 'Reserva una sala de reunión durante dos horas', 9, 21);
+(1, 'Laboratorio', 'lab1.jpg', 'Reserva un puesto de laboratorio durante dos horas', '00:00:09', '00:00:21'),
+(2, 'Sala de grado', 'grados1.jpg', 'Reserva una sala de grados durante dos horas', '00:00:10', '00:00:20'),
+(3, 'Salón de actos', 'actos1.jpg', 'Reserva un salón de actos durante dos horas', '00:00:10', '00:00:20'),
+(4, 'Sala de reunión', 'reuniones1.jpg', 'Reserva una sala de reunión durante dos horas', '00:00:09', '00:00:21');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ucm_aw_riu_res_reservas`
+-- Estructura de tabla para la tabla `ucm_aw_riu_res_reservas`
 --
 
 CREATE TABLE `ucm_aw_riu_res_reservas` (
@@ -123,7 +134,7 @@ CREATE TABLE `ucm_aw_riu_res_reservas` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ucm_aw_riu_usu_usuarios`
+-- Estructura de tabla para la tabla `ucm_aw_riu_usu_usuarios`
 --
 
 CREATE TABLE `ucm_aw_riu_usu_usuarios` (
@@ -137,11 +148,22 @@ CREATE TABLE `ucm_aw_riu_usu_usuarios` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Indexes for dumped tables
+-- Volcado de datos para la tabla `ucm_aw_riu_usu_usuarios`
+--
+
+INSERT INTO `ucm_aw_riu_usu_usuarios` (`id`, `nombre`, `apellido1`, `apellido2`, `correo`, `contrasena`, `admin`) VALUES
+(0, 'pepe', 'pepo', 'pepu', 'pepe@gmail.com', 'a', 0),
+(0, 'a', 'a', 'a', 'a@gmail.com', 'a', 0),
+(0, 'Gustabo', 'Adolfo', 'Roberto', 'gustabo@ucm.es', 'a', 0),
+(0, 'a', 'a', 'a', 'a@ucm.es', 'a', 0),
+(0, 'Josefa', 'Pérez', 'García', 'josefa@ucm.es', 'a', 0);
+
+--
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `sessions`
+-- Indices de la tabla `sessions`
 --
 ALTER TABLE `sessions`
   ADD PRIMARY KEY (`session_id`);
