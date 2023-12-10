@@ -143,6 +143,7 @@ router.post('/horasDisponibles', (req, res) => {
   res.json(returnArray);
   }, 100);
 });
+
 // Ruta para manejar la reserva
 router.post('/reservar', [
   // Validación de campos
@@ -166,18 +167,18 @@ router.post('/reservar', [
   const errors = validationResult(req);
 
   console.log(errors);
+  const tipo_ins = req.params.tipo;
   var usuario = req.session.currentUser;
   var imagenes;
-  const nombre_destino = req.body.nombre;
-  integracion.buscarImagenesPorDestino(nombre_destino, function (err, resultados) {
+  integracion.buscarImagenesPorTipoIns(tipo_ins, function (err, resultados) {
     if (err) {
       console.error('Error al buscar el imagen por destino:', err);
       res.status(500).send('Error interno del servidor');
     } else {
       imagenes = resultados;
+    
     }
   });
-  
   if (!errors.isEmpty()) {
     // Si hay errores de validación, renderiza la vista de reserva con los errores    
    res.render('reserva', { 
@@ -191,17 +192,7 @@ router.post('/reservar', [
    
   } else {
     // Si no hay errores de validación, proceder con la inserción en la base de datos
-    const nombre_cliente = req.body.nombre_cliente;
-    const email = req.body.email;
-    const fechaReserva = req.body.fechaReserva;
-    const id_destino = req.body.id_destino;
-    const clase_tp = req.body.clase_tp;
-    const num_entradas = req.body.num_entradas;
-    const tamano_maleta = req.body.tamano_maleta;
-    const precio_destino = req.body.precio_destino;
-
-    // Calcula el precio total
-    var precio_total = num_entradas * precio_destino;
+    //TODO 
 
     // Inserta los datos en la base de datos
     integracion.insertarReserva(id_destino, nombre_cliente, email, fechaReserva, clase_tp, num_entradas, tamano_maleta, precio_total, (error, results) => {

@@ -37,32 +37,40 @@
             <div class="col-md-4">
                 <div class="container" id="descripcionInstalacion">
                     <h5 id="tipoIns"><%=tipo_ins%></h5>
-                    <!--Primero selecciona la facultad en la que quiere reservar-->
-                    <label for="facultades">Facultad:</label>
-                    <select id="facultades">
-                        <option value="" disabled selected>Selecciona una facultad</option>
-                        <option value="Informática">Informática</option>
-                        <option value="Biología">Biología</option>
-                        <option value="Información">Información</option>
-                    </select>
-        
+                       
                     <!-- Formulario de reserva -->
-                    <form id="reservaForm" action='/reservar' method="post" class="d-none">     
-                        <input type = "hidden" name = "facultad" id="facultadCampo">             
-                        <!-- Campos existentes -->
-                        <div class="form-group" id="instalacionCampo">
-                            <label for="instalaciones">Instalación</label>
-                            <select id="instalaciones">
+                    <form id="reservaForm" action='/reservar' method="post" >     
+                        <!-- Campos ocultos -->  
+                        <input type = "hidden" name = "tipo_ins" value="<%=tipo_ins%>">
+                        <!--TODO no sé cómo pillar info del usuario-->
+                        <input type = "hidden" name = "nombre_usu" >
+                        <input type = "hidden" name = "correo_usu" >
+                        <!--Primero selecciona la facultad en la que quiere reservar-->
+                        <div class="form-group" id="facultadCampo">
+                            <label for="facultades">Facultad:</label>
+                            <select class="form-control" id="facultades">
+                                <option value="" disabled selected>Selecciona una facultad</option>
+                                <option value="Informática">Informática</option>
+                                <option value="Biología">Biología</option>
+                                <option value="Información">Información</option>
                             </select>
-                        <div class="form-group" id="fechaCampo ">
+                        </div>
+                        <!-- Aparecerán después de seleccionar la facultad -->
+                        <!--Eligirá la instalacion que se quiera reservar-->
+                        <div class="form-group d-none" id="instalacionCampo">
+                            <label for="instalaciones">Instalación</label>
+                            <select class="form-control" id="instalaciones" name="instalacion" required>
+                            </select>
+                        </div>
+                        <!--Eligirá el día y la hora que se quiera reservar-->
+                        <div class="form-group d-none" id="fechaCampo">
                             <label for="fecha">Selecciona el día</label>
                             <input type="date" class="form-control" id="fecha" name="fecha" required>
                         </div>
-
                         <div class="form-group d-none" id="horaCampo" >
                             <label for="hora">Hora</label>
-                            <select id="hora">
-                             
+                            <select class="form-control" id="hora" name="hora" required>
+                                <option value="" disabled selected>Selecciona primero la fecha</option>
                             </select>
                         </div>
                         <!-- Botón "Aceptar" -->
@@ -92,14 +100,19 @@
     
     <!--Funcionamiento del boton mostrar-->
     <script>
-       document.getElementById('facultades').addEventListener('change', function() {
-        var facultad = document.getElementById('facultades').value;
-            // Mostrar el formulario al marcar el checkbox
-            document.getElementById('facultadCampo').value = facultad;
+        $('#facultades').change(function() {
+           //Asignamos el valor de la facultad seleccionada al campo oculto
+            var facultad = $('#facultades').val();
+            $('#facultadCampo').val = facultad;
+            //Obtenemos las instalaciones de la facultad seleccionada y hacemos visible el resto del formulario
             obtenerInstalaciones(facultad);
-            reservaForm.classList.remove('d-none');
+            $('#instalacionCampo').removeClass('d-none');
+            $('#fechaCampo').removeClass('d-none');
+            $('#horaCampo').removeClass('d-none');
         });
+
         var tipo_ins = $("#tipoIns").text();
+        //Obtenemos las instalaciones de la facultad seleccionada
         function obtenerInstalaciones(facultad){
             $.ajax({
                 url: '/instalaciones',
@@ -114,16 +127,20 @@
                             <option value="${instalacion.nombre}">${instalacion.nombre}</option>
                         `
                     });
+                    //Añadimos las instalaciones al select
                     $('#instalaciones').html(template);
                 }
             });
         }
 
+        //Obtenemos las horas disponibles una vez selecciona el día
         $("#fecha").change(function(){
+            //Obtenemos los datos necesarios para la consulta
             var fecha = $("#fecha").val();
             var facultad = $("#facultadCampo").val();
             var instalacion = $("#instalaciones").val();
             var tipo_ins = $("#tipoIns").text();
+            
             $.ajax({
                 url: '/horasDisponibles',
                 type: 'POST', 
@@ -141,7 +158,6 @@
                         `
                     });
                     $('#hora').html(template);
-                    $("#horaCampo").removeClass("d-none");
                 }
             });
         });
