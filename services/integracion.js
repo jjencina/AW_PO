@@ -139,6 +139,23 @@ const integracion = {
     });
   },
 
+  //LeerTodosLosUsuarios
+  leerTodosLosUsuarios: function(callback) {
+    pool.getConnection((err, conexion) => {
+      if (err) {callback(err);} 
+      else {
+        conexion.query('SELECT * FROM  ucm_aw_riu_usu_usuarios', (err, results) => {
+          conexion.release();
+          if (err) {
+            callback(err);
+          } else {
+            callback(null, results);
+          }
+        });
+      }
+    });
+  },
+
   buscarImagenesPorTipoIns: function(tipo_ins, callback){
     pool.getConnection(function(err, conexion){
       if(err){callback(err);}

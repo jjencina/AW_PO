@@ -214,12 +214,15 @@ router.get('/admin/user', (req, res) => {
 
 //Mediante Ajax devolver usuarios de la base de datos a la vista
 router.get('/admin/users', (req, res) => {
-  //TODO: Leer usuarios de la base de datos
-  const users = [
-      { id: 1, name: 'Usuario1', email: 'usuario1@example.com' },
-      { id: 2, name: 'Usuario2', email: 'usuario2@example.com' },
-  ];
-  res.json(users);
+  //Leer usuarios de la base de datos
+  integracion.leerTodosLosUsuarios((error, results) => {
+    if (error) {
+      console.error('Error al buscar usuarios:', error);
+      return res.status(500).send('Error interno del servidor');
+    }
+    usuarios = results;
+    res.json(usuarios);
+  });
 });
 
 //Cerrar sesion o logout
