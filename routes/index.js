@@ -44,8 +44,8 @@ router.get('/', (req, res) => {
 // Mandar al usuario a la página de reserva del destino seleccionado
 router.get('/reserva/:tipo', (req, res) => {
   const tipo_ins = req.params.tipo;
-  usuario = req.session.currentUser;
-  console.log(usuario);
+  var usuario = req.session.currentUser;
+  
   var imagenes;
   integracion.buscarImagenesPorTipoIns(tipo_ins, function (err, resultados) {
     if (err) {
@@ -193,7 +193,7 @@ router.post('/reservar', [
    
   } else {
     // Si no hay errores de validación, proceder con la inserción en la base de datos
-    //TODO 
+    var id_reserva
 
     // Inserta los datos en la base de datos
     integracion.insertarReserva(id_destino, nombre_cliente, email, fechaReserva, clase_tp, num_entradas, tamano_maleta, precio_total, (error, results) => {
