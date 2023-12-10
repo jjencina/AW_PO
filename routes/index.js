@@ -67,6 +67,7 @@ router.get('/reserva/:tipo', (req, res) => {
     }); // Pasa un array vacío si no hay errores
   },100);
 });
+
 //Ruta para obtener las instalaciones de un tipo de cada facultad
 router.post('/instalaciones', (req, res) => {
   const tipo_ins = req.body.tipo;
@@ -82,6 +83,8 @@ router.post('/instalaciones', (req, res) => {
     }
   });
 });
+//Ruta para obtener las horas disponibles de una instalacion
+router.post('/horas', (req, res) => { });
 // Ruta para manejar la reserva
 router.post('/reservar', [
   // Validación de campos
