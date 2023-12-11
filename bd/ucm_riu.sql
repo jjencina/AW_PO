@@ -135,10 +135,10 @@ CREATE TABLE `ucm_aw_riu_res_reservas` (
 -- Dumping data for table `ucm_aw_riu_res_reservas`
 --
 
-INSERT INTO `ucm_aw_riu_res_reservas` (`nombre_ins`, `facultad`, `nombre_usu`, `correo_usu`, `fecha_res`, `hora_res`, `colectivo`) VALUES
-('Lab 1', 'Informática', 'aa', 'aa@', '2023-12-12', '11:00:00', 0),
-('Lab 1', 'Informática', 'aa', 'aa@', '2023-12-12', '09:00:00', 0),
-('Lab 1', 'Informática', 'aa', 'aa@', '2023-12-12', '15:00:00', 0);
+INSERT INTO `ucm_aw_riu_res_reservas` (`nombre_ins`, `facultad`, `nombre_usu`, `correo_usu`, `fecha_res`, `hora_res`) VALUES
+('Lab 1', 'Informática', 'aa', 'aa@', '2023-12-12', '11:00:00'),
+('Lab 1', 'Informática', 'aa', 'aa@', '2023-12-12', '09:00:00'),
+('Lab 1', 'Informática', 'aa', 'aa@', '2023-12-12', '15:00:00');
 
 -- --------------------------------------------------------
 

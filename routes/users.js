@@ -228,8 +228,6 @@ router.get('/admin/users', (req, res) => {
 //post para borrar usuarios
 router.post('/admin/expel-users/:correo', (req, res) => {
   const correoUsuario = req.params.correo;
-  console.log("HDKAJSHAKAJHS");
-  console.log(correoUsuario);
   integracion.expulsarUsuario(correoUsuario, (error, results) => {
     if (error) {
       console.error('Error al borrar usuario:', error);
@@ -238,6 +236,57 @@ router.post('/admin/expel-users/:correo', (req, res) => {
     res.redirect('/users/admin/user');
   });
 });
+
+//Validar Usuario
+router.post('/admin/validate-users/:correo', (req, res) => {
+  const correoUsuario = req.params.correo;
+  integracion.validarUsuario(correoUsuario, (error, results) => {
+    if (error) {
+      console.error('Error al validar usuario:', error);
+      return res.status(500).send('Error interno del servidor');
+    }
+    //TODO: Enviar correo de validacion
+    res.redirect('/users/admin/user');
+  });
+});
+
+//Invalidar Usuario
+router.post('/admin/invalidate-users/:correo', (req, res) => {
+  const correoUsuario = req.params.correo;
+  integracion.invalidarUsuario(correoUsuario, (error, results) => {
+    if (error) {
+      console.error('Error al invalidar usuario:', error);
+      return res.status(500).send('Error interno del servidor');
+    }
+    res.redirect('/users/admin/user');
+  });
+});
+
+//Hacer admin
+router.post('/admin/make-admin/:correo', (req, res) => {
+  const correoUsuario = req.params.correo;
+  integracion.hacerAdmin(correoUsuario, (error, results) => {
+    if (error) {
+      console.error('Error al hacer admin:', error);
+      return res.status(500).send('Error interno del servidor');
+    }
+    res.redirect('/users/admin/user');
+  });
+});
+
+//Quitar admin
+router.post('/admin/remove-admin/:correo', (req, res) => {
+  const correoUsuario = req.params.correo;
+  integracion.quitarAdmin(correoUsuario, (error, results) => {
+    if (error) {
+      console.error('Error al quitar admin:', error);
+      return res.status(500).send('Error interno del servidor');
+    }
+    res.redirect('/users/admin/user');
+  });
+});
+
+
 
 //Cerrar sesion o logout
 router.get('/logout', (req, res) => {

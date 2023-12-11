@@ -31,6 +31,7 @@
                                 <th>Admin</th>
                                 <th>Validado</th>
                                 <th>Validar</th>
+                                <th>Hacer administrador</th>
                                 <th>Expulsar</th>
                             </tr>
                         </thead>
@@ -55,25 +56,24 @@
                 type: 'GET',
                 success: function(data) {
                     data.forEach(function(user) {
-                        if (user.admin == 1) {
-                            user.admin = "Si";
-                        } else {
-                            user.admin = "No";
-                        }
                         var validationButton = user.validado
-                        ? '<button class="btn btn-danger" onclick="toggleValidation(\'' + user.correo + '\', true)"><i class="bi bi-x"></i> Desvalidar</button>'
-                        : '<button class="btn btn-success" onclick="toggleValidation(\'' + user.correo + '\', false)"><i class="bi bi-check"></i> Validar</button>';
-                        var invalidateButton = '<button class="btn btn-warning" onclick="invalidateUser(\'' + user.correo + '\')"><i class="bi bi-x"></i> Desvalidar</button>';
-
+                        ? '<button class="btn btn-danger" onclick="invalidateUser(\'' + user.correo + '\', true)"><i class="bi bi-x"></i> Invalidar</button>'
+                        : '<button class="btn btn-success" onclick="validateUser(\'' + user.correo + '\')"><i class="bi bi-check"></i> Validar</button>';
                         
+                        //Boton hacer administrador o quitarlo
+                        var adminButton = user.admin
+                        ? '<button class="btn btn-danger" onclick="removeAdmin(\'' + user.correo + '\', true)"><i class="bi bi-x"></i> Quitar Admin</button>'
+                        : '<button class="btn btn-success" onclick="makeAdmin(\'' + user.correo + '\')"><i class="bi bi-check"></i> Hacer Admin</button>';
+
                         var row = '<tr>' +
                             '<td>' + user.nombre + '</td>' +
                             '<td>' + user.apellido1 + '</td>' +
                             '<td>' + user.apellido2 + '</td>' +
                             '<td>' + user.correo + '</td>' +
-                            '<td>' + user.admin + '</td>' +
-                            '<td>' + (user.validado ? 'SI' : 'NO') + '</td>' +
+                            '<td>' + (user.admin ? 'Si' : 'No') + '</td>' +
+                            '<td>' + (user.validado ? 'Si' : 'No') + '</td>' +
                             '<td>' +  validationButton + '</td>' +
+                            '<td>' + adminButton + '</td>' +
                             '<td><button class="btn btn-danger" onclick="expelUser(\'' + user.correo + '\')"><i class="bi bi-x"></i> Expulsar</button></td>' +
                             '</tr>';
                         $('#user-list').append(row);
@@ -102,15 +102,14 @@
         }
 
 
-        // Llamada AJAX para desvalidar usuarios
+        // Llamada AJAX para invalidar usuarios
         function invalidateUser(correoUsuario) {
-            console.log('Desvalidar usuario: ' + correoUsuario);
-            // Llamada AJAX para desvalidar al usuario
+            console.log('Invalidar usuario: ' + correoUsuario);
             $.ajax({
                 url: '/admin/invalidate-users/' + correoUsuario, 
                 type: 'POST',
                 success: function(data) {
-                    console.log('Usuario desvalidado');
+                    console.log('Usuario invalidado');
                     location.reload();
                 },
                 error: function(error) {
@@ -119,6 +118,54 @@
             });
         }
     
+        // Llamada AJAX para validar usuarios
+        function validateUser(correoUsuario) {
+            console.log('Validar usuario: ' + correoUsuario);
+            $.ajax({
+                url: '/admin/validate-users/' + correoUsuario, 
+                type: 'POST',
+                success: function(data) {
+                    console.log('Usuario Validado');
+                    location.reload();
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        // Llamada AJAX para hacer administrador
+        function makeAdmin(correoUsuario) {
+            console.log('Hacer administrador: ' + correoUsuario);
+            $.ajax({
+                url: '/admin/make-admin/' + correoUsuario, 
+                type: 'POST',
+                success: function(data) {
+                    console.log('Usuario administrador');
+                    location.reload();
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        // Llamada AJAX para quitar administrador
+        function removeAdmin(correoUsuario) {
+            console.log('Quitar administrador: ' + correoUsuario);
+            $.ajax({
+                url: '/admin/remove-admin/' + correoUsuario, 
+                type: 'POST',
+                success: function(data) {
+                    console.log('Usuario no administrador');
+                    location.reload();
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+
     </script>
 </body>
 </html>

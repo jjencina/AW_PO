@@ -192,5 +192,82 @@ const integracion = {
       }
     });
   },
+
+//Validar usuario
+  validarUsuario: function(correo, callback) {
+    pool.getConnection((err, conexion) => {
+      if (err) {callback(err);}
+      else{
+        const sql = 'UPDATE ucm_aw_riu_usu_usuarios SET validado = 1 WHERE correo = ?';
+        const values = [correo];
+        conexion.query(sql, values, (error, results) => {
+          conexion.release(); 
+          if (error) {
+            callback(error);
+          } else {
+            callback(null, results);
+          }
+        });
+      }
+    });
+  },
+
+//Invalidar usuario
+  invalidarUsuario: function(correo, callback) {
+    pool.getConnection((err, conexion) => {
+      if (err) {callback(err);}
+      else{
+        const sql = 'UPDATE ucm_aw_riu_usu_usuarios SET validado = 0 WHERE correo = ?';
+        const values = [correo];
+        conexion.query(sql, values, (error, results) => {
+          conexion.release(); 
+          if (error) {
+            callback(error);
+          } else {
+            callback(null, results);
+          }
+        });
+      }
+    });
+  },
+  
+//Hacer admin
+  hacerAdmin: function(correo, callback) {
+    pool.getConnection((err, conexion) => {
+      if (err) {callback(err);}
+      else{
+        const sql = 'UPDATE ucm_aw_riu_usu_usuarios SET admin = 1 WHERE correo = ?';
+        const values = [correo];
+        conexion.query(sql, values, (error, results) => {
+          conexion.release(); 
+          if (error) {
+            callback(error);
+          } else {
+            callback(null, results);
+          }
+        });
+      }
+    });
+  },
+
+  //Quitar admin
+  quitarAdmin: function(correo, callback) {
+    pool.getConnection((err, conexion) => {
+      if (err) {callback(err);}
+      else{
+        const sql = 'UPDATE ucm_aw_riu_usu_usuarios SET admin = 0 WHERE correo = ?';
+        const values = [correo];
+        conexion.query(sql, values, (error, results) => {
+          conexion.release(); 
+          if (error) {
+            callback(error);
+          } else {
+            callback(null, results);
+          }
+        });
+      }
+    });
+  },
+
 };
 module.exports = integracion;
