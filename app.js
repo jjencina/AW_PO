@@ -16,6 +16,9 @@ app.use(express.urlencoded({ extended: false }));
 const indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+//Metodos de Integracion
+const integracion = require('./services/integracion');
+
 //Sesiones
 const session = require("express-session");
 const mysqlSession = require("express-mysql-session");
@@ -49,6 +52,45 @@ app.use((req, res, next) => {
   res.locals.currentUser = req.session.currentUser || null;
   next();
 });
+
+//Middleware para verificar la sesion
+const verificarSesion = (req, res, next) => {
+  if (req.session && req.session.currentUser) {
+    // La sesión está establecida
+    res.locals.isAuthenticated = true;
+    next();
+  } else {
+    // La sesión no está establecida
+    res.locals.isAuthenticated = false; 
+    next();}
+};
+app.use(verificarSesion);
+
+//Middleware para comprobar que el usuario es admin y gaurdarlo en una variable que pasar a los ejs
+const comprobarAdmin = (req, res, next) => {
+  var correo = req.session.currentUser;
+  integracion.buscarUsuarioPorCorreo(correo, function (err, resultados) {
+    if (err) {
+      console.error('Error al buscar el usuario por correo:', err);
+      res.status(500).send('Error interno del servidor');
+    } else {
+      if(resultados.length == 0){
+        next();
+      }
+      else{        
+        const usuario = resultados[0];
+        if(usuario.admin == 1){
+          res.locals.isAdmin = true;
+        }
+        else{
+          res.locals.isAdmin = false;
+        }
+        next();
+      }
+    }
+  });
+}
+app.use(comprobarAdmin);
 
 //Ruta en indexRouter
 app.use('/', indexRouter);

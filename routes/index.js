@@ -7,17 +7,7 @@ const { body, validationResult } = require('express-validator');
 //Metodos de Integracion
 const integracion = require('../services/integracion');
 
-//Middleware para verificar la sesion
-const verificarSesion = (req, res, next) => {
-  if (req.session && req.session.currentUser) {
-    // La sesión está establecida
-    res.locals.isAuthenticated = true;
-    next();
-  } else {
-    // La sesión no está establecida, puedes manejar la redirección o el error aquí
-    res.locals.isAuthenticated = false; 
-    next();}
-};
+
 
 //Middleware para comprobar que el usuario está logueado
 const comprobarLogin = (req, res, next) => {
@@ -30,7 +20,10 @@ const comprobarLogin = (req, res, next) => {
       //Si no está logueado, redirigir a la página de login
       if(resultados.length == 0){
         res.render('login', {errors: [{msg : 'Debe iniciar sesión para poder reservar una instalación'}],
-        isAuthenticated: res.locals.isAuthenticated,FormData: req.body,});
+        isAuthenticated: res.locals.isAuthenticated,
+        FormData: req.body,
+        isAdmin: res.locals.isAdmin,
+      });
       }
       else{
         //Guardamos el nombre del usuario en la variable local
@@ -54,10 +47,6 @@ const cargarImagen = (req, res, next) => {
   });
 }
 
-router.use(verificarSesion);
-
-
-
 //Carga la pagina principal
 router.get('/', (req, res) => {
   integracion.leerTodosLosTiposIns((err, tipo_ins) => {
@@ -65,7 +54,11 @@ router.get('/', (req, res) => {
       console.error('Error al obtener tipos de instalaciones:', err);
       res.status(500).send('Error interno del servidor');
     } else {
-      res.render('index', { tipo_ins, isAuthenticated: res.locals.isAuthenticated });
+      res.render('index', { 
+        tipo_ins,
+        isAuthenticated: res.locals.isAuthenticated,
+        isAdmin: res.locals.isAdmin,
+       });
     }
   });
 });
@@ -84,7 +77,8 @@ router.get('/reserva/:tipo', cargarImagen, (req, res) => {
     errors: [] , 
     reservaExitosa: false, 
     isAuthenticated: res.locals.isAuthenticated,
-    FormData: req.body,  
+    FormData: req.body, 
+    isAdmin: res.locals.isAdmin, 
   }); // Pasa un array vacío si no hay errores
 });
 
@@ -197,6 +191,7 @@ if (!errors.isEmpty()) {
           reservaExitosa: false, 
           isAuthenticated: res.locals.isAuthenticated,
           FormData: req.body,
+          isAdmin: res.locals.isAdmin,
         });
 } else {
     // Si no hay errores de validación, proceder con la inserción en la base de datos
@@ -219,6 +214,7 @@ if (!errors.isEmpty()) {
           reservaExitosa: true, 
           isAuthenticated: res.locals.isAuthenticated,
           FormData: req.body,  
+          isAdmin: res.locals.isAdmin,
         }); // Pasa un array vacío si no hay errores
       }
     });

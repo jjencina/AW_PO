@@ -7,19 +7,6 @@ const { body, validationResult } = require('express-validator');
 //Metodos de Integracion
 const integracion = require('../services/integracion');
 
-//Middleware para verificar la sesion
-const verificarSesion = (req, res, next) => {
-  if (req.session && req.session.currentUser) {
-    // La sesión está establecida
-    res.locals.isAuthenticated = true;
-    next();
-  } else {
-    // La sesión no está establecida, puedes manejar la redirección o el error aquí
-    res.locals.isAuthenticated = false; 
-    next();}
-};
-
-router.use(verificarSesion);
 
 
 
@@ -31,6 +18,7 @@ router.get('/login', (req, res) => {
     errors: [], 
     isAuthenticated: res.locals.isAuthenticated,
     FormData: req.body,
+    isAdmin: res.locals.isAdmin,
   });
 });
 
@@ -48,6 +36,7 @@ router.post('/login',  [
         errors: errors.array(), 
         isAuthenticated: res.locals.isAuthenticated,
         FormData: req.body,
+        isAdmin: res.locals.isAdmin,
       });
     } 
 
@@ -66,6 +55,7 @@ router.post('/login',  [
           errors: [{ msg: 'Usuario no encontrado' }],
           isAuthenticated: res.locals.isAuthenticated,
           FormData: req.body,
+          isAdmin: res.locals.isAdmin,
         });
       }
 
@@ -76,6 +66,16 @@ router.post('/login',  [
           errors: [{ msg: 'Credenciales incorrectas' }],
           isAuthenticated: res.locals.isAuthenticated,
           FormData: req.body,
+          isAdmin: res.locals.isAdmin,
+        });
+      }
+
+      if(usuarioBD.validado === 0){
+        return res.render('login', { 
+          errors: [{ msg: 'Usuario no validado' }],
+          isAuthenticated: res.locals.isAuthenticated,
+          FormData: req.body,
+          isAdmin: res.locals.isAdmin,
         });
       }
 
@@ -104,8 +104,10 @@ router.get('/register', (req, res) => {
     exito: false, 
     isAuthenticated: res.locals.isAuthenticated,
     FormData: req.body, 
+    isAdmin: res.locals.isAdmin,
    });
  });
+
 
  //Registrar Usuario
 router.post('/register', [
@@ -133,7 +135,8 @@ router.post('/register', [
       errors: errors.array(), 
       exito: false, isAuthenticated: 
       res.locals.isAuthenticated,
-      FormData: req.body, 
+      FormData: req.body,
+      isAdmin: res.locals.isAdmin, 
     });
   } else {
       
@@ -152,6 +155,7 @@ router.post('/register', [
               exito: false, isAuthenticated: 
               res.locals.isAuthenticated,
               FormData: req.body, 
+              isAdmin: res.locals.isAdmin,
             });
           }
           const nombreUsuario = req.body.nombre;
@@ -185,7 +189,8 @@ router.get('/profile', (req, res) => {
       isAuthenticated: res.locals.isAuthenticated,
       FormData: req.body,
       correo: req.session.currentUser,
-      usuario
+      usuario,
+      isAdmin: res.locals.isAdmin,
     });
   });
 });
@@ -193,12 +198,28 @@ router.get('/profile', (req, res) => {
 //Actualizar perfil
 //TODO
 
+//Get user-photo
+router.post('/user-photo', (req, res) => {
+  //Leer usuario por correo y devolver la foto
+  const correoUsuario = req.session.currentUser;
+  integracion.buscarUsuarioPorCorreo(correoUsuario, (error, results) => {
+    if (error) {
+      console.error('Error al buscar usuario:', error);
+      return res.status(500).send('Error interno del servidor');
+    }
+    const usuario = results[0];
+    res.json(usuario);
+  });
+});
+  
+
 //Llamar admin
 router.get('/admin', (req, res) => {
   res.render('admin', { 
     errors: [], 
     isAuthenticated: res.locals.isAuthenticated,
     FormData: req.body,
+    isAdmin: res.locals.isAdmin,
   });
 });
 
@@ -206,10 +227,11 @@ router.get('/admin', (req, res) => {
 router.get('/admin/user', (req, res) => {
     usuarios = {};
     res.render('admin/users', { 
-      errors: [], 
+      errors: [] , 
+      exito: false, 
       isAuthenticated: res.locals.isAuthenticated,
-      FormData: req.body,  
-      usuarios    
+      FormData: req.body,    
+      isAdmin: res.locals.isAdmin,
     });
   
 });

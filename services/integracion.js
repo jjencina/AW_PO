@@ -175,8 +175,6 @@ const integracion = {
     });
   },
 
-
-
   buscarImagenesPorTipoIns: function(tipo_ins, callback){
     pool.getConnection(function(err, conexion){
       if(err){callback(err);}
@@ -268,6 +266,8 @@ const integracion = {
       }
     });
   },
+
+
 
 };
 module.exports = integracion;
