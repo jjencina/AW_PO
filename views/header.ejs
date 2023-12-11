@@ -45,7 +45,7 @@
                     <li id="user-menu-2">
                         <% if (isAuthenticated) { %>
                             <a href="#">
-                                <img src="img/users/<%= currentUser %>.png" alt="img/users/noUser.png" id="user-img">
+                                <img src="../img/users/<%= currentUser %>.png" alt="<%= currentUser %>" id="user-img">
                             </a>
                             <ul class="navbar-nav" id="user-menu-list-2">
                                 <li><a href="/profile">Perfil</a></li>
@@ -112,6 +112,26 @@
             userMenuList2.hide();
         });
 </script>
+
+<script>
+    $(document).ready(function () {
+        var userImg = $('#user-img');
+        var currentUser = '<%= currentUser %>';
+        var userImgUrl = 'img/users/' + currentUser + '.png';
+
+        $.ajax({
+            url: userImgUrl,
+            type: 'HEAD',
+            error: function () {
+                userImg.attr('src', 'img/users/noUser.png');
+            },
+            success: function () {
+                userImg.attr('src', userImgUrl);
+            }
+        });
+    });
+</script>
+
 
 <script>
     //Ejecutando funciones

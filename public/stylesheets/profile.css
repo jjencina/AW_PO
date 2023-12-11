@@ -1,0 +1,109 @@
+.cnt-login {
+    margin-top: 150px;
+    text-align: center; /* Centro el texto */
+}
+
+.cnt-login h2 {
+    margin-top: 20px; /* Separación del título */
+}
+
+#profile-image-container {
+    position: relative;
+    text-align: center; /* Centro la imagen y el texto */
+}
+
+.profile-image {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+    margin-right: 10px;
+    transition: filter 0.3s; /* Transición suave al cambiar la propiedad filter */
+}
+
+.photo-msg {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    display: none;
+    cursor: pointer;
+}
+
+#profile-image-container:hover .profile-image {
+    filter: brightness(70%);
+}
+
+#profile-image-container:hover .photo-msg {
+    display: block;
+}
+
+#edit-profile-btn {
+    margin-top: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#edit-profile-form,
+#formulario {
+    margin: 2px;
+    padding: 2px;
+    border-radius: 1px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+    position: relative;
+}
+
+#formulario input,
+#formulario label {
+    width: 100%;
+}
+
+#cnt-credencial {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#cnt-credencial input {
+    padding: 5px;
+}
+
+
+
+.profile-container {
+    position: relative;
+}
+
+.image-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.photo-msg {
+    position: absolute;
+    bottom: 10px; /* Ajusta la posición vertical según tus necesidades */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    display: none;
+    cursor: pointer;
+}
+
+.image-wrapper:hover #profile-image {
+    filter: brightness(70%);
+}
+
+.image-wrapper:hover .photo-msg {
+    display: block;
+}

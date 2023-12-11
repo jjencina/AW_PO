@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel='stylesheet' href='/stylesheets/style.css'/>
     <link rel='stylesheet' href='/stylesheets/login.css'/>
-
+    <link rel='stylesheet' href='/stylesheets/profile.css'/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
@@ -16,27 +16,35 @@
     <div class="cnt-cuadro">
         <div class="cnt-login"><h2>Perfil de Usuario</h2></div>
         
-          
-
         <div id="profile-info">
-            <div id="profile-image-container">
-                <img src="img/users/<%= currentUser %>.png" alt="img/users/noUser.png" id="profile-image">
-                <div id="change-photo-message">
-                    <a href="#" onclick="cambiarFotoPerfil()">Cambiar foto de perfil</a>
+            <div class="profile-container" id="profile-image-container">
+                <div class="profile-container" id="profile-image-container">
+                    <% if(usuario.foto) { %>
+                        <div class="image-wrapper">
+                            <img src="img/users/<%= usuario.foto %>" alt="<%= usuario.correo %>" id="profile-image" class="profile-image">
+                            <p id="change-photo-msg" class="photo-msg" style="display: none; cursor: pointer;">Cambiar foto de perfil</p>
+                        </div>
+                    <% } else { %>
+                        <div class="image-wrapper">
+                            <img src="img/users/noUser.png" alt="<%= usuario.correo %>" id="profile-image" class="profile-image">
+                            <p id="change-photo-msg" class="photo-msg" style="display: none; cursor: pointer;">Cambiar foto de perfil</p>
+                        </div>
+                    <% } %>
                 </div>
             </div>
             <p>Nombre: <%= usuario.nombre %></p>
             <p>Primer Apellido: <%= usuario.apellido1 %></p>
             <p>Segundo Apellido: <%= usuario.apellido2 %></p>
             <p>Correo: <%= usuario.correo %></p>
-            <p>Foto: //TODO</p>
         </div>
-   
-
     </div>
  
-    <p>//TODO boton en forma de lapiz que al pulsarle se despliege editar perfil</p>
-    <div class="cnt-cuadro">
+    
+
+
+    <button id="edit-profile-btn" class="btn btn-primary">Editar Perfil</button>
+
+    <div class="cnt-cuadro" id="edit-profile-form" style="display: none;">
         <div class="cnt-login"><h2>Editar Perfil</h2></div>
         
         <form action="/profile" method="post" id="formulario">
@@ -67,12 +75,42 @@
      
             <button type="submit"  class="btn btn-primary" id="boton">Editar</button>
         </form>
+
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     
         <script>
-            function cambiarFotoPerfil() {
-                alert("Funcionalidad no implementada");
-            }
+            $(document).ready(function() {
+                var editProfileBtn = $('#edit-profile-btn');
+                var editProfileForm = $('#edit-profile-form');
+    
+                editProfileBtn.click(function() {
+                    editProfileForm.toggle();
+                });
+            });
         </script>
+
+        <script>
+            $(document).ready(function() {     
+                $('#profile-image-container').hover(
+                    function() {
+                        $('#change-photo-msg').show();
+                    },
+                    function() {
+                        $('#change-photo-msg').hide();
+                    }
+                );     
+                // Cambiar la foto de perfil al hacer clic en la imagen
+                $('#change-photo-msg').click(function() {
+                    cambiarFotoPerfil();
+                });
+            });
+            function cambiarFotoPerfil() {
+            alert("Funcionalidad no implementada");
+            // Aquí puedes agregar la lógica para cambiar la foto de perfil
+        }
+    </script>
 
     <%- include("footer") %>
 
