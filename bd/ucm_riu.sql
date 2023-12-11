@@ -155,17 +155,18 @@ CREATE TABLE `ucm_aw_riu_usu_usuarios` (
   `contrasena` varchar(255) NOT NULL,
   `admin` tinyint(1) NOT NULL,
   `validado` tinyint(1) DEFAULT NULL,
-  `foto` varchar(255) DEFAULT NULL
+  `foto` varchar(255) DEFAULT NULL,
+  `facultad` varchar(255) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `ucm_aw_riu_usu_usuarios`
 --
 
-INSERT INTO `ucm_aw_riu_usu_usuarios` (`id`, `nombre`, `apellido1`, `apellido2`, `correo`, `contrasena`, `admin`, `validado`, `foto`) VALUES
-(1, 'Gustabo', 'Adolfo', 'Roberto', 'gustabo@ucm.es', 'a', 0, 0, 'gustabo@ucm.es'),
-(2, 'a', 'a', 'a', 'a@ucm.es', 'a', 1, 1, 'a@ucm.es'),
-(3, 'Josefa', 'Pérez', 'García', 'josefa@ucm.es', 'a', 0, 0, 'josefa@ucm.es');
+INSERT INTO `ucm_aw_riu_usu_usuarios` (`id`, `nombre`, `apellido1`, `apellido2`, `correo`, `contrasena`, `admin`, `validado`, `foto`,`facultad`) VALUES
+(1, 'Gustabo', 'Adolfo', 'Roberto', 'gustabo@ucm.es', 'a', 0, 0, 'gustabo@ucm.es', 'Informática'),
+(2, 'a', 'a', 'a', 'a@ucm.es', 'a', 1, 1, 'a@ucm.es', 'Informática'),
+(3, 'Josefa', 'Pérez', 'García', 'josefa@ucm.es', 'a', 0, 0, 'josefa@ucm.es', 'Biología');
 
 --
 -- Índices para tablas volcadas
