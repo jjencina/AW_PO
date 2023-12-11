@@ -43,6 +43,13 @@ const port = 3000;
 // Middleware para recibir formularios
 app.use(express.urlencoded({ extended: true }));
 
+//Guardar el usuario
+// Middleware de sesión
+app.use((req, res, next) => {
+  res.locals.currentUser = req.session.currentUser || null;
+  next();
+});
+
 //Ruta en indexRouter
 app.use('/', indexRouter);
 app.use('/', usersRouter)

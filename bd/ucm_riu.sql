@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-12-2023 a las 13:58:46
+-- Tiempo de generación: 11-12-2023 a las 14:53:02
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -38,7 +38,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`session_id`, `expires`, `data`) VALUES
-('N3wgS5SnTQmgK7iKonHdvx3vOxdokwVW', 1702385682, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":\"a@ucm.es\"}');
+('QWwIJUD8Cdta8LhrOwXkN2SXVQhlKBoE', 1702389153, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":\"a@ucm.es\"}');
 
 -- --------------------------------------------------------
 
@@ -154,17 +154,18 @@ CREATE TABLE `ucm_aw_riu_usu_usuarios` (
   `correo` varchar(100) NOT NULL,
   `contrasena` varchar(255) NOT NULL,
   `admin` tinyint(1) NOT NULL,
-  `validado` tinyint(1) DEFAULT NULL
+  `validado` tinyint(1) DEFAULT NULL,
+  `foto` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `ucm_aw_riu_usu_usuarios`
 --
 
-INSERT INTO `ucm_aw_riu_usu_usuarios` (`id`, `nombre`, `apellido1`, `apellido2`, `correo`, `contrasena`, `admin`, `validado`) VALUES
-(1, 'Gustabo', 'Adolfo', 'Roberto', 'gustabo@ucm.es', 'a', 0, 0),
-(2, 'a', 'a', 'a', 'a@ucm.es', 'a', 1, 1),
-(3, 'Josefa', 'Pérez', 'García', 'josefa@ucm.es', 'a', 0, 0);
+INSERT INTO `ucm_aw_riu_usu_usuarios` (`id`, `nombre`, `apellido1`, `apellido2`, `correo`, `contrasena`, `admin`, `validado`, `foto`) VALUES
+(1, 'Gustabo', 'Adolfo', 'Roberto', 'gustabo@ucm.es', 'a', 0, 0, 'gustabo@ucm.es'),
+(2, 'a', 'a', 'a', 'a@ucm.es', 'a', 1, 1, 'a@ucm.es'),
+(3, 'Josefa', 'Pérez', 'García', 'josefa@ucm.es', 'a', 0, 0, 'josefa@ucm.es');
 
 --
 -- Índices para tablas volcadas

@@ -21,12 +21,7 @@ const verificarSesion = (req, res, next) => {
 
 router.use(verificarSesion);
 
-//Guardar el usuario
-// Middleware de sesión
-router.use((req, res, next) => {
-  res.locals.currentUser = req.session.currentUser || null;
-  next();
-});
+
 
 //Gestion de Usuarios
 //LLamar al formulario de login
@@ -87,6 +82,13 @@ router.post('/login',  [
       //Autenticación exitosa, almacenar usuario en la sesión
       req.session.currentUser =  correoUsuario;
       console.log(req.session.currentUser);
+      
+      //actulizar el estado de la sesion
+      req.session.save((err) => {
+        if (err) {        
+          return res.status(500);
+        }
+      });
       res.redirect('/');
     });
   } catch (error) {

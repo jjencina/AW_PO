@@ -56,12 +56,7 @@ const cargarImagen = (req, res, next) => {
 
 router.use(verificarSesion);
 
-//Guardar el usuario
-// Middleware de sesión
-router.use((req, res, next) => {
-  res.locals.currentUser = req.session.currentUser || null;
-  next();
-});
+
 
 //Carga la pagina principal
 router.get('/', (req, res) => {

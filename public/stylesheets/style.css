@@ -299,3 +299,18 @@ p {
 #user-menu-list-2 li {
   margin-bottom: 1px; /* Espaciado entre elementos de la lista */
 }
+
+
+/*Estilo imagen Header*/
+#user-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  margin-right: 10px;
+}
+
+#user-img:hover {
+  border-color: black; 
+}
