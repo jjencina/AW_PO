@@ -19,6 +19,41 @@ const verificarSesion = (req, res, next) => {
     next();}
 };
 
+//Middleware para comprobar que el usuario está logueado
+const comprobarLogin = (req, res, next) => {
+  var correo = req.session.currentUser;
+  integracion.buscarUsuarioPorCorreo(correo, function (err, resultados) {
+    if (err) {
+      console.error('Error al buscar el usuario por correo:', err);
+      res.status(500).send('Error interno del servidor');
+    } else {
+      //Si no está logueado, redirigir a la página de login
+      if(resultados.length == 0){
+        res.render('login', {errors: [{msg : 'Debe iniciar sesión para poder reservar una instalación'}],
+        isAuthenticated: res.locals.isAuthenticated,FormData: req.body,});
+      }
+      else{
+        //Guardamos el nombre del usuario en la variable local
+        res.locals.nombre_usu = resultados[0].nombre;
+        next();
+      }      
+    }
+  });
+}
+//Middleware para cargar la imagen de la pagina de reserva
+const cargarImagen = (req, res, next) => {
+  const tipo_ins = req.params.tipo;
+  integracion.buscarImagenesPorTipoIns(tipo_ins, function (err, resultados) {
+    if (err) {
+      console.error('Error al buscar el imagen por destino:', err);
+      res.status(500).send('Error interno del servidor');
+    } else {
+      res.locals.imagenes = resultados;
+      next();
+    }
+  });
+}
+
 router.use(verificarSesion);
 
 //Guardar el usuario
@@ -42,31 +77,20 @@ router.get('/', (req, res) => {
 
 
 // Mandar al usuario a la página de reserva del destino seleccionado
-router.get('/reserva/:tipo', (req, res) => {
+router.get('/reserva/:tipo', cargarImagen, (req, res) => {
   const tipo_ins = req.params.tipo;
   var usuario = req.session.currentUser;
-  
-  var imagenes;
-  integracion.buscarImagenesPorTipoIns(tipo_ins, function (err, resultados) {
-    if (err) {
-      console.error('Error al buscar el imagen por destino:', err);
-      res.status(500).send('Error interno del servidor');
-    } else {
-      imagenes = resultados;
-    
-    }
-  });
-  setTimeout(function(){
-    res.render('reserva', { 
-      imagenes, 
-      tipo_ins,
-      usuario , 
-      errors: [] , 
-      reservaExitosa: false, 
-      isAuthenticated: res.locals.isAuthenticated,
-      FormData: req.body,  
-    }); // Pasa un array vacío si no hay errores
-  },100);
+  var imagenes = res.locals.imagenes;
+
+  res.render('reserva', { 
+    imagenes, 
+    tipo_ins,
+    usuario , 
+    errors: [] , 
+    reservaExitosa: false, 
+    isAuthenticated: res.locals.isAuthenticated,
+    FormData: req.body,  
+  }); // Pasa un array vacío si no hay errores
 });
 
 //Ruta para obtener las instalaciones de un tipo de cada facultad
@@ -91,6 +115,7 @@ router.post('/horasDisponibles', (req, res) => {
   var hReservadas = [];
   var collectivo, aforo;;
   var hApertura,hCierre = '';
+  //Buscamos el tipo de instalacion para obtener la informacion que necesitamos
   integracion.buscarTipoIns(tipo_ins, function (err, resultados) {
     if (err) {
       console.error('Error al buscar el imagen por destino:', err);
@@ -119,7 +144,6 @@ router.post('/horasDisponibles', (req, res) => {
       }      
     }
   });
-  
   var returnArray = [];
   setTimeout(function(){  
     //Si es individual, comprobamos que no está lleno los puestos de cada hora
@@ -140,13 +164,13 @@ router.post('/horasDisponibles', (req, res) => {
         }
       }
   }
-
   res.json(returnArray);
   }, 100);
 });
 
+
 // Ruta para manejar la reserva
-router.post('/reservar', [
+router.post('/reservar', comprobarLogin, cargarImagen, [
   // Validación de campos
   body('fecha').custom((value) => {
     // Validar que la fecha de reserva sea menor que la fecha actual
@@ -159,90 +183,72 @@ router.post('/reservar', [
     else if(selectedDate.getDay() == 0 || selectedDate.getDay() == 6){
       throw new Error('No se puede reservar en fin de semana');
     }
-
     return true;
   }),
-
 ], (req, res) => {  
   // Manejar errores de validación
   const errors = validationResult(req);
-
   console.log(errors);
-  const tipo_ins = req.params.tipo;
-  var usuario = req.session.currentUser;
-  var imagenes;
-  integracion.buscarImagenesPorTipoIns(tipo_ins, function (err, resultados) {
-    if (err) {
-      console.error('Error al buscar el imagen por destino:', err);
-      res.status(500).send('Error interno del servidor');
-    } else {
-      imagenes = resultados;
+  const tipo_ins = req.body.tipo_ins;
+  var correo = req.session.currentUser;
+  var imagenes = res.locals.imagenes; 
+if (!errors.isEmpty()) {
+      // Si hay errores de validación, renderiza la vista de reserva con los errores    
+     res.render('reserva', { 
+          imagenes,
+          tipo_ins,
+          correo, 
+          errors: errors.array(), 
+          reservaExitosa: false, 
+          isAuthenticated: res.locals.isAuthenticated,
+          FormData: req.body,
+        });
+} else {
+    // Si no hay errores de validación, proceder con la inserción en la base de datos
+    var nombre_ins = req.body.instalacion;
+    var fecha = req.body.fecha;
+    var hora = req.body.hora;
+    var facultad = req.body.facultad;
+    var nombre_usu = res.locals.nombre_usu;
     
+    integracion.insertarReserva(nombre_ins,facultad, nombre_usu, correo, fecha, hora, function (err, resultados) {
+      if (err) {
+        console.error('Error al insertar la reserva:', err);
+        res.status(500).send('Error interno del servidor');
+      } else {
+        res.render('reserva', { 
+          imagenes, 
+          tipo_ins,
+          correo , 
+          errors: [] , 
+          reservaExitosa: true, 
+          isAuthenticated: res.locals.isAuthenticated,
+          FormData: req.body,  
+        }); // Pasa un array vacío si no hay errores
+      }
+    });
+  }
+  });
+  //Cerrar sesion o logout
+  // Cerrar sesión
+  router.get('/logout', (req, res) => {
+    try {
+      // Destruir la sesión
+      req.session.destroy((err) => {
+        if (err) {
+          console.error('Error al cerrar sesión:', err);
+          return res.status(500).send('Error interno del servidor');
+        }
+        res.redirect('/');
+
+      });
+    } catch (error) {
+      console.error('Error en la ruta de logout:', error);
+      res.status(500).send('Error interno del servidor');
     }
   });
-  if (!errors.isEmpty()) {
-    // Si hay errores de validación, renderiza la vista de reserva con los errores    
-   res.render('reserva', { 
-        imagenes,
-        usuario, 
-        errors: errors.array(), 
-        reservaExitosa: false, 
-        isAuthenticated: res.locals.isAuthenticated,
-        FormData: req.body,
-      });
-   
-  } else {
-    // Si no hay errores de validación, proceder con la inserción en la base de datos
-    var id_reserva
 
-    // Inserta los datos en la base de datos
-    integracion.insertarReserva(id_destino, nombre_cliente, email, fechaReserva, clase_tp, num_entradas, tamano_maleta, precio_total, (error, results) => {
-      if (error) {
-        console.error('Error al insertar reserva:', error);
-        res.status(500).send('Error interno del servidor al insertar reserva');
-      } else {
-        const nombre_destino = req.body.nombre;
-        integracion.buscarDestinoPorNombre(nombre_destino, function (err, resultados) {
-          if (err) {
-            console.error('Error al buscar el destino por nombre:', err);
-            return res.status(500).send('Error interno del servidor');
-          }
-
-          const destino = resultados[0];
-          res.render('reserva', { 
-            imagenes,
-            destino, 
-            usuario,
-            errors: errors.array(), 
-            reservaExitosa: true, 
-            isAuthenticated: res.locals.isAuthenticated,
-            FormData: req.body, 
-           });
-          });
-        }
-    });
-  }
-});
-//Cerrar sesion o logout
-// Cerrar sesión
-router.get('/logout', (req, res) => {
-  try {
-    // Destruir la sesión
-    req.session.destroy((err) => {
-      if (err) {
-        console.error('Error al cerrar sesión:', err);
-        return res.status(500).send('Error interno del servidor');
-      }
-      res.redirect('/');
-
-    });
-  } catch (error) {
-    console.error('Error en la ruta de logout:', error);
-    res.status(500).send('Error interno del servidor');
-  }
-});
-
-//Comentar
+/*Comentar
   router.get('/comentar/:destino_id', (req,res)  => {
     const destino_id = req.params.destino_id;
     integracion.buscarComentarioPorDestino(destino_id, (error, results) => {
@@ -280,7 +286,7 @@ router.get('/logout', (req, res) => {
         res.json({success: true})
       }
     });
-  });
+  });*/
 
 
   

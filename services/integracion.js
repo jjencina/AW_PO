@@ -121,18 +121,18 @@ const integracion = {
   },
   
   // Insertar reserva en la bd
-  insertarReserva: function(id_destino, nombre_cliente, correo_cliente, fecha_reserva,clase_tp, num_entradas, tamano_maleta, precio_destino, callback) {
+  insertarReserva: function(nombre_ins, facultad, nombre_usu, correo_usu, fecha_res, hora_res, callback) {
     pool.getConnection((err, conexion) => {
       if (err) {callback(err);}
       else{
-        const sql = 'INSERT INTO reservas (destino_id, nombre_cliente, correo_cliente, fecha_reserva, clase_tp, num_entradas, tamano_maleta, precio_total) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-        const values = [id_destino, nombre_cliente, correo_cliente, fecha_reserva,clase_tp, num_entradas, tamano_maleta, precio_destino];
+        const sql = 'INSERT INTO ucm_aw_riu_res_reservas (nombre_ins, facultad, nombre_usu, correo_usu, fecha_res, hora_res) VALUES (?, ?, ?, ?, ?, ?)';
+        const values = [nombre_ins, facultad, nombre_usu, correo_usu, fecha_res, hora_res];
         conexion.query(sql, values, (error, results) => {
           conexion.release(); 
           if (error) {
             callback(error);
           } else {
-            callback(null, results);
+            callback(null, results.insertId);
           }
         });
       }

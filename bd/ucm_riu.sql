@@ -129,7 +129,6 @@ CREATE TABLE `ucm_aw_riu_res_reservas` (
   `correo_usu` varchar(255) NOT NULL,
   `fecha_res` date NOT NULL,
   `hora_res` time NOT NULL,
-  `colectivo` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
