@@ -175,8 +175,6 @@ const integracion = {
     });
   },
 
-
-
   buscarImagenesPorTipoIns: function(tipo_ins, callback){
     pool.getConnection(function(err, conexion){
       if(err){callback(err);}
@@ -261,6 +259,39 @@ const integracion = {
           conexion.release(); 
           if (error) {
             callback(error);
+          } else {
+            callback(null, results);
+          }
+        });
+      }
+    });
+  },
+  //Buscar mensajes por correo receptor
+  buscarMensajesRecibidos: function(correo, callback) {
+    pool.getConnection((err, conexion) => {
+      if (err) {callback(err);}
+      else{
+        conexion.query('SELECT * FROM ucm_aw_riu_msg_mensajes WHERE correoReceptor = ?', [correo], (err, results) => {
+          conexion.release(); 
+          if (err) {
+            callback(err);
+          } else {
+            callback(null, results);
+          }
+        });
+      }
+    });
+  },
+
+  //Buscar mensajes por correo emisor
+  buscarMensajesEnviados: function(correo, callback) {
+    pool.getConnection((err, conexion) => {
+      if (err) {callback(err);}
+      else{
+        conexion.query('SELECT * FROM ucm_aw_riu_msg_mensajes WHERE correoEmisor = ?', [correo], (err, results) => {
+          conexion.release(); 
+          if (err) {
+            callback(err);
           } else {
             callback(null, results);
           }

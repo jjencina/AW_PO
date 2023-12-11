@@ -249,6 +249,7 @@ if (!errors.isEmpty()) {
     }
   });
 
+ 
 /*Comentar
   router.get('/comentar/:destino_id', (req,res)  => {
     const destino_id = req.params.destino_id;
