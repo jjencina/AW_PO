@@ -42,7 +42,7 @@ const comprobarLogin = (req, res, next) => {
 }
 //Middleware para cargar la imagen de la pagina de reserva
 const cargarImagen = (req, res, next) => {
-  const tipo_ins = req.params.tipo;
+  const tipo_ins = req.body.tipo_ins;
   integracion.buscarImagenesPorTipoIns(tipo_ins, function (err, resultados) {
     if (err) {
       console.error('Error al buscar el imagen por destino:', err);
@@ -55,8 +55,6 @@ const cargarImagen = (req, res, next) => {
 }
 
 router.use(verificarSesion);
-
-
 
 //Carga la pagina principal
 router.get('/', (req, res) => {
@@ -72,10 +70,18 @@ router.get('/', (req, res) => {
 
 
 // Mandar al usuario a la página de reserva del destino seleccionado
-router.get('/reserva/:tipo', cargarImagen, (req, res) => {
+router.get('/reserva/:tipo', (req, res) => {
   const tipo_ins = req.params.tipo;
   var usuario = req.session.currentUser;
-  var imagenes = res.locals.imagenes;
+  var imagenes;
+  integracion.buscarImagenesPorTipoIns(tipo_ins, function (err, resultados) {
+    if (err) {
+      console.error('Error al buscar el imagen por destino:', err);
+      res.status(500).send('Error interno del servidor');
+    } else {
+      imagenes = resultados;
+    }
+  });
 
   res.render('reserva', { 
     imagenes, 
