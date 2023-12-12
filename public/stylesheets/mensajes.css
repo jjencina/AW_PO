@@ -1,3 +1,15 @@
 #ctn-cuadro-mensajes{
     margin-top: 120px;
 }
+
+li{
+    list-style: none;
+    text-decoration: none;
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+#chats-box-search{
+    display:none;
+}

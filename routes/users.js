@@ -376,9 +376,13 @@ router.get('/logout', (req, res) => {
     res.status(500).send('Error interno del servidor');
   }
 });
-//Middleware para obtener lista de usuarios
-const obtenerListaUsuarios = (req, res, next) => {
-  
+function descendente(a, b){
+  if(a.fecha < b.fecha) { return 1; }
+  else if(a.fecha > b.fecha) { return -1; }
+  else { if(a.hora < b.hora) { return 1; }
+     else if(a.hora > b.hora) { return -1; }
+     else { return 0; }
+   };
 }
 //Cargar la pagina de mensajes
 router.get('/mensajes', buscarMensajesEnviados, buscarMensajesRecibidos, (req, res) => {
@@ -386,14 +390,7 @@ router.get('/mensajes', buscarMensajesEnviados, buscarMensajesRecibidos, (req, r
   var enviados = res.locals.enviados;
   var mensajes = recibidos.concat(enviados).sort(descendente);
   var usuario = req.session.currentUser;
-  function descendente(a, b){
-    if(a.fecha < b.fecha) { return 1; }
-    else if(a.fecha > b.fecha) { return -1; }
-    else { if(a.hora < b.hora) { return 1; }
-       else if(a.hora > b.hora) { return -1; }
-       else { return 0; }
-     };
-  }
+ 
   var listaUsuarios = [];
   for(var i = 0; i < mensajes.length; i++){
     if(usuario == mensajes[i].correoEmisor){
@@ -439,10 +436,8 @@ router.get('/mensajes', buscarMensajesEnviados, buscarMensajesRecibidos, (req, r
 //Cargar mensajes de un chat
 router.post('/cargarMensajes',buscarMensajesEnviados, buscarMensajesRecibidos, (req, res) => {  
   lista = res.locals.recibidos.concat(res.locals.enviados);
-  lista.sort(function(a, b){
-    return new Date(b.fecha) - new Date(a.fecha);
-  });
-  res.json(lista);
+  lista.sort(descendente);
+  res.json(lista.reverse());
 });
 
 //Insertar mensajes en la BD

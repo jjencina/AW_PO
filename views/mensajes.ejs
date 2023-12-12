@@ -16,12 +16,17 @@
        <div class="row" >
             <div class="col-md-4">
                 <!--Empezar una nueva conversación-->
-                <!--bucle de listaUsuario-->
+                <!--Buscar una conversacion-->
+                <div id="ctn-barra-chats">
+                    <input type="text" id="searchInput" placeholder="Buscar chat">
+                    <i class="bi bi-search" id="searchChat-Icon"></i>
+                </div>
+                <!--Lista de usuarios-->
                 <ul id="lista-chat">         
                 <% for (let i = 0; i < listaUsuarios.length; i++) { %>
                     <li class="chat">
                         <a href="" id="<%= listaUsuarios[i] %>">                       
-                            <<img src="img/users/<%= fotoUsuario[i]%>" alt="<%= fotoUsuario[i]%>">                    
+                            <img src="img/users/<%= fotoUsuario[i]%>" alt="<%= fotoUsuario[i]%>">                    
                             <h4><%= listaUsuarios[i] %></h4>                        
                         </a>
                     </li>
@@ -29,8 +34,7 @@
                 </ul>
             </div>
             <div class="col-md-8" id="ctn-chat">
-                <h4 id="usuario-seleccionado"><%=listaUsuarios[0]%></h4> 
-
+                <h4 id="usuario-seleccionado"><%=listaUsuarios[0]%></h4>
                 <ul id="ctn-mensajes">
                     <!--Se carga los mensajes del último chat en el que se ha hablado-->
                     <% for (var i = 0; i < mensajes.length; i++) { %>
@@ -62,15 +66,15 @@
     <%- include("footer") %>
     <script>
         //Función para mostrar el chat con el usuario seleccionado cuando se haga click en un usuario
-        $("#lista-chat a").click(function(e){
+        function cargarMensajes(e){
             e.preventDefault();
             //Obtenemos el correo del usuario seleccionado
-            var usuario = $(this).attr("id");
+            var usuario = $(this).text().trim();
             //Obtenemos los mensajes del usuario seleccionado
             $.ajax({
                 url: '/cargarMensajes',
                 type: 'POST',
-                data: {},
+                data: {usuario: usuario},
                 success: function(mensajes){                   
                     $('#usuario-seleccionado').text(usuario);
                     //Vaciamos el contenedor de mensajes
@@ -78,14 +82,17 @@
                     //Añadimos los mensajes del usuario seleccionado a la página
                     for (var i = 0; i < mensajes.length; i++) {
                         if (mensajes[i].correoEmisor == usuario) {
-                            $("#ctn-mensajes").append('<li class="mensaje-recibido"><div class="mensaje-info"><h4>'+mensajes[i].correoEmisor+'</h4><p>'+mensajes[i].mensaje+'</p></div></li>');
+                            $("#ctn-mensajes").append('<li class="mensaje-recibido"><div class="mensaje-info"><h5>'+mensajes[i].correoEmisor+'</h5><p>'+mensajes[i].mensaje+'</p></div></li>');
                         } else if (mensajes[i].correoReceptor == usuario) {
-                            $("#ctn-mensajes").append('<li class="mensaje-enviado"><div class="mensaje-info"><h4>Yo</h4><p>'+mensajes[i].mensaje+'</p></div></li>');
+                            $("#ctn-mensajes").append('<li class="mensaje-enviado"><div class="mensaje-info"><h5>Yo</h5><p>'+mensajes[i].mensaje+'</p></div></li>');
                         }
                     }
                 }
             });
-        });
+        }
+        //Llamamos a la función cuando se haga click en un usuario
+        $("#lista-chat a").click(cargarMensajes);
+
         //Función para enviar un mensaje
         $('#boton').click(function(e){
             e.preventDefault();
@@ -100,8 +107,8 @@
                 data: {mensaje: mensaje, correoReceptor: correoReceptor},
                 success: function(results){
                     if(results){
-                    //Recargamos la página
-                    location.reload();
+                        //Recargamos la página
+                        location.reload();
                     }
                 }
             });
