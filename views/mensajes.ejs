@@ -14,24 +14,25 @@
     <div id="ctn-cuadro-mensajes">
        <!--Chat con otro usuario-->
        <div class="row" >
-            <div class="col-md-4">
+            <div class="col-md-4" id="ctn-lista">
                 <!--Empezar una nueva conversación-->
                 <!--Buscar una conversacion-->
-                <div id="ctn-barra-chats">
-                    <input type="text" id="searchInput" placeholder="Buscar chat">
-                    <i class="bi bi-search" id="searchChat-Icon"></i>
+                <div id="ctn-lista-chats">
+                    <div id="ctn-barra-chats">
+                        <input type="text" id="searchInput" placeholder="Buscar chat">
+                    </div>
+                    <!--Lista de usuarios-->
+                    <ul id="lista-chat">         
+                    <% for (let i = 0; i < listaUsuarios.length; i++) { %>
+                        <li class="chat">
+                            <a href="" id="<%= listaUsuarios[i] %>">                       
+                                <img src="img/users/<%= fotoUsuario[i]%>" alt="<%= fotoUsuario[i]%>">                    
+                                <%= listaUsuarios[i] %>                        
+                            </a>
+                        </li>
+                    <% } %>
+                    </ul>
                 </div>
-                <!--Lista de usuarios-->
-                <ul id="lista-chat">         
-                <% for (let i = 0; i < listaUsuarios.length; i++) { %>
-                    <li class="chat">
-                        <a href="" id="<%= listaUsuarios[i] %>">                       
-                            <img src="img/users/<%= fotoUsuario[i]%>" alt="<%= fotoUsuario[i]%>">                    
-                            <h4><%= listaUsuarios[i] %></h4>                        
-                        </a>
-                    </li>
-                <% } %>
-                </ul>
             </div>
             <div class="col-md-8" id="ctn-chat">
                 <h4 id="usuario-seleccionado"><%=listaUsuarios[0]%></h4>
@@ -39,18 +40,12 @@
                     <!--Se carga los mensajes del último chat en el que se ha hablado-->
                     <% for (var i = 0; i < mensajes.length; i++) { %>
                         <% if (mensajes[i].correoEmisor == listaUsuarios[0]) { %>
-                            <li class="mensaje-recibido">
-                                <div class="mensaje-info">
-                                    <h5><%= mensajes[i].correoEmisor %></h5>
-                                    <p><%= mensajes[i].mensaje %></p>
-                                </div>
+                            <li class="mensaje-recibido">                                                           
+                                <p><%= mensajes[i].mensaje %></p>                              
                             </li>
                         <% } else if (mensajes[i].correoReceptor == listaUsuarios[0]) { %>
-                            <li class="mensaje-enviado">
-                                <div class="mensaje-info">
-                                    <h5>Yo</h5>
-                                    <p><%= mensajes[i].mensaje %></p>
-                                </div>
+                            <li class="mensaje-enviado">                            
+                                <p><%= mensajes[i].mensaje %></p>                                
                             </li>
                         <% } %>
                     <% } %>
@@ -82,9 +77,9 @@
                     //Añadimos los mensajes del usuario seleccionado a la página
                     for (var i = 0; i < mensajes.length; i++) {
                         if (mensajes[i].correoEmisor == usuario) {
-                            $("#ctn-mensajes").append('<li class="mensaje-recibido"><div class="mensaje-info"><h5>'+mensajes[i].correoEmisor+'</h5><p>'+mensajes[i].mensaje+'</p></div></li>');
+                            $("#ctn-mensajes").append('<li class="mensaje-recibido"><p>'+mensajes[i].mensaje+'</p></li>');
                         } else if (mensajes[i].correoReceptor == usuario) {
-                            $("#ctn-mensajes").append('<li class="mensaje-enviado"><div class="mensaje-info"><h5>Yo</h5><p>'+mensajes[i].mensaje+'</p></div></li>');
+                            $("#ctn-mensajes").append('<li class="mensaje-enviado"><p>'+mensajes[i].mensaje+'</p></li>');
                         }
                     }
                 }
@@ -113,7 +108,37 @@
                 }
             });
         });
-         
+
+        $(document).ready(function() {
+            // Obtén el contenedor
+            var contenedorChats = $('#ctn-mensajes');
+
+            // Configura la posición del desplazamiento al valor máximo
+            contenedorChats.scrollTop(contenedorChats.prop('scrollHeight'));
+        });
+                
+        //Filtlar los chats abiertos
+        inputSearch = document.getElementById("searchInput");
+        box_search = document.getElementById("lista-chat");
+        document.getElementById("searchInput").addEventListener("keyup", buscador_interno);
+
+        function buscador_interno(){
+            filter = inputSearch.value.toUpperCase();
+            li = box_search.getElementsByTagName("li");
+
+            //Recorriendo elementos a filtrar mediante los "li"
+            for (i = 0; i < li.length; i++){
+                a = li[i].getElementsByTagName("a")[0];
+                textValue = a.textContent || a.innerText;
+
+                if(textValue.toUpperCase().indexOf(filter) > -1){
+                    li[i].style.display = "";
+                    box_search.style.display = "block";
+                }else{
+                    li[i].style.display = "none";
+                }
+            }
+        }  
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
