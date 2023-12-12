@@ -155,26 +155,6 @@ p {
   color: #555;
 }
 
-/*Estilo botón fijo
-#botonFijo {
-  position: fixed;
-  bottom: 20px;
-  right: 20px; 
-  padding: 10px;
-  background-color: #3b7bea;
-  border: none;
-}
-
-#botonFijo span{
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 10px solid white;
-  display: block;
-  
-}
-
 /*Estilo barra de contactos*/
 .contactosBar{
   background-color: #3b7bea;

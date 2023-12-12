@@ -377,10 +377,14 @@ router.get('/logout', (req, res) => {
   }
 });
 
- //Cargar la pagina de mensajes
- router.get('/mensajes', buscarMensajesEnviados, buscarMensajesRecibidos, (req, res) => {
+//Cargar la pagina de mensajes
+router.get('/mensajes', buscarMensajesEnviados, buscarMensajesRecibidos, (req, res) => {
   var recibidos = res.locals.recibidos;
   var enviados = res.locals.enviados;
+  var mensajes = recibidos.concat(enviados);
+    mensajes.sort(function(a, b){
+      return new Date(b.fecha) - new Date(a.fecha);
+    });
   var listaUsuarios = [];
   for(var i = 0; i < recibidos.length; i++){
     if(!listaUsuarios.includes(recibidos[i].correoEmisor)){
@@ -392,7 +396,7 @@ router.get('/logout', (req, res) => {
       listaUsuarios.push(enviados[i].correoReceptor);
     }
   }
-  var fotoUsuario = [];
+    var fotoUsuario = [];
   integracion.leerTodosLosUsuarios((error, results) => {
     if (error) {
       console.error('Error al buscar usuarios:', error);
@@ -406,13 +410,7 @@ router.get('/logout', (req, res) => {
       organizarYRenderizar();   
   });
 
-  function organizarYRenderizar(){
-    var mensajes = recibidos.concat(enviados);
-
-    mensajes.sort(function(a, b){
-      return new Date(b.fecha) - new Date(a.fecha);
-    });
-
+  function organizarYRenderizar(){  
     res.render('mensajes', { 
       errors: [], 
       isAuthenticated: res.locals.isAuthenticated,
@@ -433,4 +431,32 @@ router.post('/cargarMensajes',buscarMensajesEnviados, buscarMensajesRecibidos, (
   res.json(lista);
 });
 
+//Insertar mensajes en la BD
+router.post('/enviarMensaje', (req, res) => {
+  const correoEmisor = req.session.currentUser;
+  const correoReceptor = req.body.correoReceptor;
+  const mensaje = req.body.mensaje;
+  var fechaActual = new Date();
+
+  // Obtener los componentes de fecha y hora
+  var anio = fechaActual.getFullYear();
+  var mes = fechaActual.getMonth() + 1; // Los meses van de 0 a 11, por lo que sumamos 1
+  var dia = fechaActual.getDate();
+
+  var horas = fechaActual.getHours();
+  var minutos = fechaActual.getMinutes();
+  var segundos = fechaActual.getSeconds();
+
+  // Formatear la fecha y hora
+  var fechaFormateada = anio + '-' + mes + '-' + dia;
+  var horaFormateada = horas + ':' + minutos + ':' + segundos;
+  
+  integracion.enviarMensaje(correoEmisor, correoReceptor, fechaFormateada, horaFormateada, mensaje, (error, results) => {
+    if (error) {
+      console.error('Error al enviar mensaje:', error);
+      return res.status(500).send('Error interno del servidor');
+    }
+    res.json(results);
+  });  
+});
 module.exports = router;

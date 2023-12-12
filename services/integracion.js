@@ -300,6 +300,25 @@ const integracion = {
     });
   },
 
+  //Insertar mensaje en la bd
+  enviarMensaje: function(correoEmisor, correoReceptor,fecha, hora, mensaje, callback) {
+    pool.getConnection((err, conexion) => {
+      if (err) {callback(err);}
+      else{
+        const sql = 'INSERT INTO ucm_aw_riu_msg_mensajes (correoEmisor, correoReceptor, fecha, hora, mensaje) VALUES (?, ?, ?, ?, ?)';
+        const values = [correoEmisor, correoReceptor, fecha, hora,  mensaje];
+        conexion.query(sql, values, (error, results) => {
+          conexion.release(); 
+          if (error) {
+            callback(error);
+          } else {
+            callback(null, results.insertId);
+          }
+        });
+      }
+    });
+  },
+
   //Buscar id usuario por correo
   buscarUsuarioPorCorreo: function(correo, callback) {
     pool.getConnection((err, conexion) => {

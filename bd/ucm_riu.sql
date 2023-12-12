@@ -127,6 +127,7 @@ CREATE TABLE `ucm_aw_riu_msg_mensajes` (
   `correoEmisor` varchar(255) NOT NULL,
   `correoReceptor` varchar(255) NOT NULL,
   `fecha` date NOT NULL,
+  `hora` time NOT NULL,
   `mensaje` varchar(1000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
@@ -134,10 +135,10 @@ CREATE TABLE `ucm_aw_riu_msg_mensajes` (
 -- Volcado de datos para la tabla `ucm_aw_riu_msg_mensajes`
 --
 
-INSERT INTO `ucm_aw_riu_msg_mensajes` (`id`, `correoEmisor`, `correoReceptor`, `fecha`, `mensaje`) VALUES
-(1, 'a@ucm.es', 'gustabo@ucm.es', '2023-12-12', 'Hola, soy a.'),
-(2, 'gustabo@ucm.es', 'a@ucm.es', '2023-12-12', 'Hola, yo soy Gustabo.'),
-(3, 'a@ucm.es', 'josefa@ucm.es', '2023-12-13', 'Hola, soy a.');
+INSERT INTO `ucm_aw_riu_msg_mensajes` (`id`, `correoEmisor`, `correoReceptor`, `fecha`,`hora`,`mensaje`) VALUES
+(1, 'a@ucm.es', 'gustabo@ucm.es', '2023-12-12','09:27:00', 'Hola, soy a.'),
+(2, 'gustabo@ucm.es', 'a@ucm.es', '2023-12-12','19:00:00', 'Hola, yo soy Gustabo.'),
+(3, 'a@ucm.es', 'josefa@ucm.es', '2023-12-13', '20:00:00','Hola, soy a.');
 
 -- --------------------------------------------------------
 
@@ -190,9 +191,8 @@ CREATE TABLE `ucm_aw_riu_usu_usuarios` (
 INSERT INTO `ucm_aw_riu_usu_usuarios` (`id`, `nombre`, `apellido1`, `apellido2`, `correo`, `contrasena`, `admin`, `validado`, `foto`, `facultad`) VALUES
 (1, 'Gustabo', 'Adolfo', 'Roberto', 'gustabo@ucm.es', 'a', 0, 0, 'user1.png', 'Informática'),
 (2, 'a', 'a', 'a', 'a@ucm.es', 'a', 1, 1, 'user2.png', 'Informática'),
-(3, 'Josefa', 'Pérez', 'García', 'josefa@ucm.es', 'a', 0, 1, 'user3.png', 'Informática'),
-(4, 'e', 'e', 'e', 'e@ucm.es', 'a', 0, 1, NULL, NULL),
-(5, 'i', 'i', 'i', 'i@ucm.es', 'a', 0, 0, NULL, NULL);
+(3, 'Josefa', 'Pérez', 'García', 'josefa@ucm.es', 'a', 0, 1, 'user3.png', 'Informática');
+
 
 --
 -- Índices para tablas volcadas
