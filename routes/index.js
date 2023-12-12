@@ -109,11 +109,15 @@ router.post('/instalaciones', (req, res) => {
 router.post('/horasDisponibles', (req, res) => { 
   const nombre_ins= req.body.instalacion;
   const fecha = req.body.fecha;
+  var compFecha = new Date(fecha);
   const tipo_ins = req.body.tipo_ins;
   const facultad = req.body.facultad;
   var hReservadas = [];
-  var collectivo, aforo;;
+  var collectivo, aforo;
   var hApertura,hCierre = '';
+
+  //Comprobamos que no es fin de semana ni una fecha pasada
+  
   //Buscamos el tipo de instalacion para obtener la informacion que necesitamos
   integracion.buscarTipoIns(tipo_ins, function (err, resultados) {
     if (err) {
@@ -122,7 +126,7 @@ router.post('/horasDisponibles', (req, res) => {
     } else {
       hApertura = parseInt(resultados[0].hora_de_apertura.split(":")[0]);
       hCierre = parseInt(resultados[0].hora_de_cierre.split(":")[0]);
-      collectivo = 0;
+      collectivo = resultados[0].colectivo;
       aforo = resultados[0].aforo;
     }
   });
@@ -137,34 +141,40 @@ router.post('/horasDisponibles', (req, res) => {
         var elemento = parseInt(resultados[i].hora_res.split(":")[0])
         if(collectivo == 0){
           //Por cada reserva en esa hora sumamos 1
-         comprobar[elemento]++;
+          comprobar[elemento]++;
         }
         hReservadas.push(elemento);
       }      
     }
+    resultado();
   });
-  var returnArray = [];
-  setTimeout(function(){  
-    //Si es individual, comprobamos que no está lleno los puestos de cada hora
-    if(collectivo == 0){
-      for(var i = hApertura; i < hCierre; i+=2){
-        if(comprobar[i] < aforo){
-          var elemento = i.toString() + ":00";
-          returnArray.push(elemento);
+  
+  function resultado(){  
+    var returnArray = [];
+    if(!(compFecha.getDay() == 0 || compFecha.getDay() == 6 || compFecha.getTime() < 0 || compFecha < new Date())){
+      //Si es individual, comprobamos que no está lleno los puestos de cada hora
+      if(collectivo == 0){
+        for(var i = hApertura; i < hCierre; i+=2){
+          if(comprobar[i] < aforo){
+            var elemento = i.toString() + ":00";
+            returnArray.push(elemento);
+          }
         }
       }
+      //Si es colectivo, comprobamos que no está reservada la hora
+      else{
+        for(var i = hApertura; i < hCierre; i+=2){
+          if(!hReservadas.includes(i)){
+            var elemento = i.toString() + ":00";
+            returnArray.push(elemento);
+          }
+        }
     }
-    //Si es colectivo, comprobamos que no está reservada la hora
-    else{
-      for(var i = hApertura; i < hCierre; i+=2){
-        if(!hReservadas.includes(i)){
-          var elemento = i.toString() + ":00";
-          returnArray.push(elemento);
-        }
-      }
   }
   res.json(returnArray);
-  }, 100);
+}
+
+  
 });
 
 

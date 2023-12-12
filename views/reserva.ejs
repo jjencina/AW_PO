@@ -135,7 +135,7 @@
         $("#fecha").change(function(){
             //Obtenemos los datos necesarios para la consulta
             var fecha = $("#fecha").val();
-            var facultad = $("#facultadCampo").val();
+            var facultad = $("#facultad").val();
             var instalacion = $("#instalaciones").val();
             var tipo_ins = $("#tipoIns").text();
             
@@ -145,7 +145,7 @@
                 data: {fecha: fecha, instalacion: instalacion, tipo_ins:tipo_ins, facultad:facultad},
                 success: function(response){
                     let horas = response;
-                    if(horas.length == 0){
+                    if(horas == null || horas.length == 0){
                         $("#hora").html('<option value="" disabled selected>No hay horas disponibles</option>');
                         return;
                     }
