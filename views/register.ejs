@@ -29,6 +29,14 @@
                 <label for="correo">Correo:</label>
                 <input type="text" id="correo" name="correo" required value="<%= FormData.correo || '' %>">
             </div>    
+            <div id="cnt-credencial">
+                <label for="facultad">Facultad:</label>
+                <select id="facultad" name="facultad" required>
+                    <option value="Informática" <%= FormData.facultad === 'Informática' ? 'selected' : '' %>>Informática</option>
+                    <option value="Biología" <%= FormData.facultad === 'Biología' ? 'selected' : '' %>>Biología</option>
+                    <option value="Información" <%= FormData.facultad === 'Información' ? 'selected' : '' %>>Información</option>
+                </select>
+            </div>
             <div id="cnt-credencial">   
                 <label for="password">Contraseña:</label>
                 <input type="password" id="password" name="password" required>

@@ -85,12 +85,12 @@ const integracion = {
     });
   },
   // Insertar reserva en la bd
-  registrarUsuario: function(nombre, correo,apellido1, apellido2, contrasena, callback) {
+  registrarUsuario: function(nombre, correo,apellido1, apellido2, facultad, contrasena, callback) {
     pool.getConnection((err, conexion) => {
       if (err) {callback(err);}
       else{
-        const sql = 'INSERT INTO ucm_aw_riu_usu_usuarios (nombre, apellido1, apellido2, correo, contrasena, admin, validado) VALUES (?, ?, ?, ?, ?, ?, ?)';
-        const values = [nombre,apellido1,apellido2, correo, contrasena, 0, 0];
+        const sql = 'INSERT INTO ucm_aw_riu_usu_usuarios (nombre, apellido1, apellido2, correo, contrasena, admin, validado, facultad) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+        const values = [nombre,apellido1,apellido2, correo, contrasena, 0, 0, facultad];
         conexion.query(sql, values, (error, results) => {
           conexion.release(); 
           if (error) {

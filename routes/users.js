@@ -134,12 +134,12 @@ router.get('/register', (req, res) => {
    });
  });
 
-
  //Registrar Usuario
 router.post('/register', [
   body('nombre').notEmpty().withMessage('El nombre es obligatorio'),
   body('apellido1').notEmpty().withMessage('El primer apellido es obligatorio'),
   body('correo').isEmail().withMessage('El correo electrónico no es válido'),
+  body('facultad').notEmpty().withMessage('La facultad es obligatoria'),
   body('password').notEmpty().withMessage('La contraseña es obligatoria'),
   body('confirmPassword').custom((value, { req }) => {
     const contrasenias = req.body.password;
@@ -188,7 +188,8 @@ router.post('/register', [
           const password = req.body.password[0];
           const apellido1 = req.body.apellido1;
           const apellido2 = req.body.apellido2;
-          integracion.registrarUsuario(nombreUsuario, correoUsuario, apellido1, apellido2, password, function (err, resultados) {
+          const facultad = req.body.facultad;
+          integracion.registrarUsuario(nombreUsuario, correoUsuario, apellido1, apellido2, facultad, password, function (err, resultados) {
             if (err) {
               console.error('Error al registrar usuario:', err);
               return res.status(500).send('Error interno del servidor');
@@ -220,8 +221,6 @@ router.get('/profile', (req, res) => {
     });
   });
 });
-//Actualizar perfil
-//TODO
 
 //Get user-photo
 router.post('/user-photo', (req, res) => {
@@ -237,7 +236,6 @@ router.post('/user-photo', (req, res) => {
   });
 });
   
-
 //Llamar admin
 router.get('/admin', (req, res) => {
   res.render('admin', { 
@@ -335,7 +333,6 @@ router.post('/admin/remove-admin/:correo', (req, res) => {
   });
 });
 
-
 // Configurar el almacenamiento de multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -343,11 +340,11 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     //funcion en integracion para buscar el id del usuario
-    const correoUsuario = req.session.currentUser;
-    
+    const correoUsuario = req.session.currentUser;   
     integracion.buscarUsuarioPorCorreo(correoUsuario, (error, results) => {
       userId = results[0].id;
       const fileName = `user${userId}${path.extname(file.originalname)}`;
+      req.session.profileImage = fileName; // Guardar el nombre de la foto en la sesión
       cb(null, fileName);
     });
   }
@@ -356,14 +353,11 @@ const storage = multer.diskStorage({
 // Crear el middleware de multer
 const upload = multer({ storage });
 
-
 // Ruta para subir la foto de perfil
 router.post('/upload-profile-image', upload.single('profile-image'), (req, res, next) => {
   // La foto se ha subido correctamente
-  console.log(req.body.userId );
-  res.status(200).send('Foto de perfil subida exitosamente');
+  res.status(200).send(req.session.profileImage); // Devolver el nombre de la foto nueva
 });
-
 
 //Cerrar sesion o logout
 router.get('/logout', (req, res) => {
@@ -411,8 +405,8 @@ router.get('/mensajes', buscarMensajesEnviados, buscarMensajesRecibidos, (req, r
     for(var i = 0; i < results.length; i++){
       if(listaUsuarios.includes(results[i].correo)){
         fotoUsuario.push(results[i].foto);
-        }
-      } 
+      }
+    } 
       organizarYRenderizar();   
   });
 
