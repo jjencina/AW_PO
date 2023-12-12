@@ -22,6 +22,32 @@ const { body, validationResult } = require('express-validator');
 //Metodos de Integracion
 const integracion = require('../services/integracion');
 
+
+//Middleware para buscar mensajes recibidos
+const buscarMensajesRecibidos = (req, res, next) => {
+  const correo = req.session.currentUser;
+  integracion.buscarMensajesRecibidos(correo, (error, results) => {
+    if (error) {
+      console.error('Error al buscar mensajes:', error);
+      return res.status(500).send('Error interno del servidor');
+    }
+    res.locals.recibidos = results;
+    next();
+  });
+};
+//Middleware para buscar mensajes enviados
+const buscarMensajesEnviados = (req, res, next) => {
+  const correo = req.session.currentUser;
+  integracion.buscarMensajesEnviados(correo, (error, results) => {
+    if (error) {
+      console.error('Error al buscar mensajes:', error);
+      return res.status(500).send('Error interno del servidor');
+    }
+    res.locals.enviados = results;
+    next();
+  });
+};
+
 //Gestion de Usuarios
 //LLamar al formulario de login
 router.get('/login', (req, res) => {
@@ -206,7 +232,6 @@ router.get('/profile', (req, res) => {
     });
   });
 });
-
 //Actualizar perfil
 //TODO
 
@@ -370,6 +395,62 @@ router.get('/logout', (req, res) => {
     console.error('Error en la ruta de logout:', error);
     res.status(500).send('Error interno del servidor');
   }
+});
+
+ //Cargar la pagina de mensajes
+ router.get('/mensajes', buscarMensajesEnviados, buscarMensajesRecibidos, (req, res) => {
+  var recibidos = res.locals.recibidos;
+  var enviados = res.locals.enviados;
+  var listaUsuarios = [];
+  for(var i = 0; i < recibidos.length; i++){
+    if(!listaUsuarios.includes(recibidos[i].correoEmisor)){
+      listaUsuarios.push(recibidos[i].correoEmisor);
+    }
+  }
+  for(var i = 0; i < enviados.length; i++){
+    if(!listaUsuarios.includes(enviados[i].correoReceptor)){
+      listaUsuarios.push(enviados[i].correoReceptor);
+    }
+  }
+  var fotoUsuario = [];
+  integracion.leerTodosLosUsuarios((error, results) => {
+    if (error) {
+      console.error('Error al buscar usuarios:', error);
+      return res.status(500).send('Error interno del servidor');
+    }   
+    for(var i = 0; i < results.length; i++){
+      if(listaUsuarios.includes(results[i].correo)){
+        fotoUsuario.push(results[i].foto);
+        }
+      } 
+      organizarYRenderizar();   
+  });
+
+  function organizarYRenderizar(){
+    var mensajes = recibidos.concat(enviados);
+
+    mensajes.sort(function(a, b){
+      return new Date(b.fecha) - new Date(a.fecha);
+    });
+
+    res.render('mensajes', { 
+      errors: [], 
+      isAuthenticated: res.locals.isAuthenticated,
+      FormData: req.body,
+      mensajes: mensajes,
+      listaUsuarios: listaUsuarios,
+      fotoUsuario: fotoUsuario
+    })
+  }
+});
+
+//Cargar mensajes de un chat
+router.post('/cargarMensajes',buscarMensajesEnviados, buscarMensajesRecibidos, (req, res) => {  
+  lista = res.locals.recibidos.concat(res.locals.enviados);
+  lista.sort(function(a, b){
+    return new Date(b.fecha) - new Date(a.fecha);
+  });
+  res.json(lista);
 });
 
 module.exports = router;

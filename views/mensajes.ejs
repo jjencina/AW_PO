@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Mensajes</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <link rel='stylesheet' href='/stylesheets/mensajes.css'/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+    <%- include("header") %>  
+    <div id="ctn-cuadro-mensajes">
+       <!--Chat con otro usuario-->
+       <div class="row" id="<%= currentUser %>">
+            <div class="col-md-4">
+                <!--Empezar una nueva conversación-->
+                <!--bucle de listaUsuario-->
+                <ul id="lista-chat">
+                    
+                <% for (let i = 0; i < listaUsuarios.length; i++) { %>
+                    <li class="chat">
+                        <a href="" id="<%= listaUsuarios[i] %>">                       
+                            <<img src="img/users/<%= fotoUsuario[i]%>" alt="<%= fotoUsuario[i]%>">                    
+                            <h4><%= listaUsuarios[i] %></h4>                        
+                        </a>
+                    </li>
+                <% } %>
+                </ul>
+            </div>
+            <div class="col-md-8" id="ctn-chat">
+                    <div id="ctn-chat-usuario">
+                        <ul id="ctn-mensajes">
+                            <!--Se carga los mensajes del último chat en el que se ha hablado-->
+                            <% for (var i = 0; i < mensajes.length; i++) { %>
+                                <% if (mensajes[i].correoEmisor == listaUsuarios[0]) { %>
+                                    <li class="mensaje recibido">
+                                        <div class="mensaje-info">
+                                            <h4><%= mensajes[i].correoEmisor %></h4>
+                                            <p><%= mensajes[i].mensaje %></p>
+                                        </div>
+                                    </li>
+                                <% } else if (mensajes[i].correoReceptor == listaUsuarios[0]) { %>
+                                    <li class="mensaje enviado">
+                                        <div class="mensaje-info">
+                                            <h4>Yo</h4>
+                                            <p><%= mensajes[i].mensaje %></p>
+                                        </div>
+                                    </li>
+                                <% } %>
+                            <% } %>
+                            
+                        </ul>
+                        <div id="ctn-enviar-mensaje">
+                            <input type="text" id="mensaje" name="mensaje" placeholder="Escribe un mensaje...">
+                            <button type="submit"  class="btn btn-primary" id="boton">Enviar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+       </div>
+    </div>
+    <%- include("footer") %>
+    <script>
+        //Función para mostrar el chat con el usuario seleccionado
+     
+            //Cuando se haga click en un usuario
+            $("#lista-chat a").click(function(e){
+                e.preventDefault();
+                //Obtenemos el correo del usuario seleccionado
+                var usuario = $(this).attr("id");
+                var correo = $('.row').attr('id');
+                //Obtenemos los mensajes del usuario seleccionado
+               $.ajax({
+                    url: '/cargarMensajes',
+                    type: 'POST',
+                    data: {correo: correo},
+                    success: function(mensajes){
+                        //Vaciamos el contenedor de mensajes
+                        $("#ctn-mensajes").empty();
+                        //Añadimos los mensajes al contenedor
+                        for (var i = 0; i < mensajes.length; i++) {
+                            if (mensajes[i].correoEmisor == usuario) {
+                                $("#ctn-mensajes").append('<li class="mensaje recibido"><div class="mensaje-info"><h4>'+mensajes[i].correoEmisor+'</h4><p>'+mensajes[i].mensaje+'</p></div></li>');
+                            } else if (mensajes[i].correoReceptor == usuario) {
+                                $("#ctn-mensajes").append('<li class="mensaje enviado"><div class="mensaje-info"><h4>Yo</h4><p>'+mensajes[i].mensaje+'</p></div></li>');
+                            }
+                        }
+                    }
+                });
+            });
+         
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
+    
+   
