@@ -127,7 +127,6 @@
 </script>
 
 <script>
-    console.log("hola")
     //Foto de perfil
     var link_imagen = $('#link-imagen');
     $.ajax({
@@ -136,8 +135,7 @@
         success: function (data) {
             console.log(data)
             if (data.foto == null) {
-                //$('#aux').html('<img src="./img/users/default.png" alt="<%= currentUser %>" >');
-                link_imagen.html('<img src="img/users/default.png" alt="<%= currentUser %>" id="user-img"> ');
+                link_imagen.html('<img src="./img/users/default.png" alt="<%= currentUser %>" id="user-img"> ');
             } else {
                 link_imagen.html('<img src="./img/users/'+data.foto + '" alt="<%= currentUser %>" id="user-img">');
             }

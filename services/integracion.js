@@ -300,7 +300,22 @@ const integracion = {
     });
   },
 
-
+  //Buscar id usuario por correo
+  buscarUsuarioPorCorreo: function(correo, callback) {
+    pool.getConnection((err, conexion) => {
+      if (err) {callback(err);}
+      else{
+        conexion.query('SELECT * FROM ucm_aw_riu_usu_usuarios WHERE correo = ?', [correo], (err, results) => {
+          conexion.release(); 
+          if (err) {
+            callback(err);
+          } else {
+            callback(null, results);
+          }
+        });
+      }
+    });
+  }
 
 };
 module.exports = integracion;

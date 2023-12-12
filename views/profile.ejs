@@ -89,7 +89,8 @@
                     // Realizar una solicitud AJAX para subir la foto de perfil
                     var formData = new FormData();
                     formData.append('profile-image', fileInput);
-                    formData.append('id', '<%= usuario.id %>');
+                    formData.append('userId', '<%= usuario.id %>');
+                    console.log(formData);
                     $.ajax({
                         url: '/upload-profile-image',  // Reemplaza con la URL correcta en tu aplicación
                         type: 'POST',

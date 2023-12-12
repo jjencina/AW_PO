@@ -1,27 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
-//Middleware para fotos
-const multer = require('multer');
-
-//Configuración de multer para guardar las imágenes en public/img/users
-const storage = multer.diskStorage({
-  destination: 'public/img/users',
-  filename: (req, file, cb) => {
-    const userId = req.user.id;
-    const fileName = `user_${userId}.png`;
-    cb(null, fileName);
-  },
-});
-
-const upload = multer({ storage: storage });
-
 //Validacion
 const { body, validationResult } = require('express-validator');
 
 //Metodos de Integracion
 const integracion = require('../services/integracion');
+const path = require('path');
 
+//Middleware para fotos
+const multer = require('multer');
 
 //Middleware para buscar mensajes recibidos
 const buscarMensajesRecibidos = (req, res, next) => {
@@ -347,35 +335,33 @@ router.post('/admin/remove-admin/:correo', (req, res) => {
   });
 });
 
-// Subir foto de perfil
-router.post('/upload-profile-image', (req, res, next) => {
-  // Obtener el ID del usuario
-  const userId = req.user.id; // Asegúrate de que esta propiedad refleje cómo se almacena el ID del usuario en tu aplicación
 
-  // Utilizar el ID del usuario para personalizar la configuración de Multer
-  upload.single('profile-image')(req, res, function (err) {
-    if (err instanceof multer.MulterError) {
-      // Manejar errores de Multer
-      return res.status(500).json({ message: 'Error al cargar la imagen' });
-    } else if (err) {
-      // Manejar otros errores
-      return res.status(500).json({ message: 'Error interno del servidor' });
-    }
+// Configurar el almacenamiento de multer
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './public/img/users');
+  },
+  filename: (req, file, cb) => {
+    //funcion en integracion para buscar el id del usuario
+    const correoUsuario = req.session.currentUser;
+    
+    integracion.buscarUsuarioPorCorreo(correoUsuario, (error, results) => {
+      userId = results[0].id;
+      const fileName = `user${userId}${path.extname(file.originalname)}`;
+      cb(null, fileName);
+    });
+  }
+});
 
-    // Ahora puedes acceder al ID del usuario y a la imagen cargada
-    try {
-      const file = req.file; // Información de la imagen cargada
+// Crear el middleware de multer
+const upload = multer({ storage });
 
-      // Aquí puedes procesar y almacenar la imagen según tus necesidades
-      // Puedes acceder al ID del usuario en userId y a la imagen en file
-      // ...
 
-      res.status(200).json({ message: 'Foto de perfil actualizada con éxito' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Error al actualizar la foto de perfil' });
-    }
-  });
+// Ruta para subir la foto de perfil
+router.post('/upload-profile-image', upload.single('profile-image'), (req, res, next) => {
+  // La foto se ha subido correctamente
+  console.log(req.body.userId );
+  res.status(200).send('Foto de perfil subida exitosamente');
 });
 
 
