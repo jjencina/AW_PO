@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-12-2023 a las 14:53:02
+-- Tiempo de generación: 12-12-2023 a las 13:13:38
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -38,7 +38,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`session_id`, `expires`, `data`) VALUES
-('QWwIJUD8Cdta8LhrOwXkN2SXVQhlKBoE', 1702389153, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":\"a@ucm.es\"}');
+('QWwIJUD8Cdta8LhrOwXkN2SXVQhlKBoE', 1702389153, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":\"a@ucm.es\"}'),
+('reusCNh4I_F7dfw_AOLotrcuMQGCm2mK', 1702469599, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":\"e@ucm.es\"}');
 
 -- --------------------------------------------------------
 
@@ -118,6 +119,29 @@ INSERT INTO `ucm_aw_riu_ins_tipo` (`id`, `tipo`, `imagen`, `descripcion`, `hora_
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `ucm_aw_riu_msg_mensajes`
+--
+
+CREATE TABLE `ucm_aw_riu_msg_mensajes` (
+  `id` int(11) NOT NULL,
+  `correoEmisor` varchar(255) NOT NULL,
+  `correoReceptor` varchar(255) NOT NULL,
+  `fecha` date NOT NULL,
+  `mensaje` varchar(1000) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `ucm_aw_riu_msg_mensajes`
+--
+
+INSERT INTO `ucm_aw_riu_msg_mensajes` (`id`, `correoEmisor`, `correoReceptor`, `fecha`, `mensaje`) VALUES
+(1, 'a@ucm.es', 'gustabo@ucm.es', '2023-12-12', 'Hola, soy a.'),
+(2, 'gustabo@ucm.es', 'a@ucm.es', '2023-12-12', 'Hola, yo soy Gustabo.'),
+(3, 'a@ucm.es', 'josefa@ucm.es', '2023-12-13', 'Hola, soy a.');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `ucm_aw_riu_res_reservas`
 --
 
@@ -156,38 +180,19 @@ CREATE TABLE `ucm_aw_riu_usu_usuarios` (
   `admin` tinyint(1) NOT NULL,
   `validado` tinyint(1) DEFAULT NULL,
   `foto` varchar(255) DEFAULT NULL,
-  `facultad` varchar(255) 
+  `facultad` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `ucm_aw_riu_usu_usuarios`
 --
 
-INSERT INTO `ucm_aw_riu_usu_usuarios` (`id`, `nombre`, `apellido1`, `apellido2`, `correo`, `contrasena`, `admin`, `validado`, `foto`,`facultad`) VALUES
-(1, 'Gustabo', 'Adolfo', 'Roberto', 'gustabo@ucm.es', 'a', 0, 0, 'gustabo@ucm.es', 'Informática'),
-(2, 'a', 'a', 'a', 'a@ucm.es', 'a', 1, 1, 'a@ucm.es', 'Informática'),
-(3, 'Josefa', 'Pérez', 'García', 'josefa@ucm.es', 'a', 0, 0, 'josefa@ucm.es', 'Informática');
-
---
--- Table structure for table `ucm_aw_riu_msg_mensajes`
---
-
-CREATE TABLE `ucm_aw_riu_msg_mensajes` (
-  `id` int(11) NOT NULL,
-  `correoEmisor` varchar(255) NOT NULL,
-  `correoReceptor` varchar(255) NOT NULL,
-  `fecha` date NOT NULL,
-  `mensaje` varchar(1000) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
---
--- Dumping data for table `ucm_aw_riu_msg_mensajes`
---
-
-INSERT INTO `ucm_aw_riu_msg_mensajes` (`id`, `correoEmisor`, `correoReceptor`, `fecha`, `mensaje`) VALUES
-(1, 'a@ucm.es', 'gustabo@ucm.es', '2023-12-12', 'Hola, soy a.'),
-(2, 'gustabo@ucm.es', 'a@ucm.es', '2023-12-12', 'Hola, yo soy Gustabo.'),
-(3, 'a@ucm.es', 'josefa@ucm.es', '2023-12-13', 'Hola, soy a.');
+INSERT INTO `ucm_aw_riu_usu_usuarios` (`id`, `nombre`, `apellido1`, `apellido2`, `correo`, `contrasena`, `admin`, `validado`, `foto`, `facultad`) VALUES
+(1, 'Gustabo', 'Adolfo', 'Roberto', 'gustabo@ucm.es', 'a', 0, 0, 'user1.png', 'Informática'),
+(2, 'a', 'a', 'a', 'a@ucm.es', 'a', 1, 1, 'user2.png', 'Informática'),
+(3, 'Josefa', 'Pérez', 'García', 'josefa@ucm.es', 'a', 0, 1, 'user3.png', 'Informática'),
+(4, 'e', 'e', 'e', 'e@ucm.es', 'a', 0, 1, NULL, NULL),
+(5, 'i', 'i', 'i', 'i@ucm.es', 'a', 0, 0, NULL, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -215,6 +220,12 @@ ALTER TABLE `ucm_aw_riu_ins_instalaciones`
 -- Indices de la tabla `ucm_aw_riu_ins_tipo`
 --
 ALTER TABLE `ucm_aw_riu_ins_tipo`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `ucm_aw_riu_msg_mensajes`
+--
+ALTER TABLE `ucm_aw_riu_msg_mensajes`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -252,6 +263,12 @@ ALTER TABLE `ucm_aw_riu_ins_tipo`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT de la tabla `ucm_aw_riu_msg_mensajes`
+--
+ALTER TABLE `ucm_aw_riu_msg_mensajes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT de la tabla `ucm_aw_riu_res_reservas`
 --
 ALTER TABLE `ucm_aw_riu_res_reservas`
@@ -261,26 +278,7 @@ ALTER TABLE `ucm_aw_riu_res_reservas`
 -- AUTO_INCREMENT de la tabla `ucm_aw_riu_usu_usuarios`
 --
 ALTER TABLE `ucm_aw_riu_usu_usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-COMMIT;
--- Indexes for dumped tables
---
-
---
--- Indexes for table `ucm_aw_riu_msg_mensajes`
---
-ALTER TABLE `ucm_aw_riu_msg_mensajes`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `ucm_aw_riu_msg_mensajes`
---
-ALTER TABLE `ucm_aw_riu_msg_mensajes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
