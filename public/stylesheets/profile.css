@@ -1,15 +1,15 @@
 .cnt-login {
     margin-top: 150px;
-    text-align: center; /* Centro el texto */
+    text-align: center; 
 }
 
 .cnt-login h2 {
-    margin-top: 20px; /* Separación del título */
+    margin-top: 20px; 
 }
 
 #profile-image-container {
     position: relative;
-    text-align: center; /* Centro la imagen y el texto */
+    text-align: center; 
 }
 
 .profile-image {
@@ -19,7 +19,7 @@
     object-fit: cover;
     border: 2px solid #fff;
     margin-right: 10px;
-    transition: filter 0.3s; /* Transición suave al cambiar la propiedad filter */
+    transition: filter 0.3s; 
 }
 
 .photo-msg {
@@ -89,7 +89,7 @@
 
 .photo-msg {
     position: absolute;
-    bottom: 10px; /* Ajusta la posición vertical según tus necesidades */
+    bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
     background-color: rgba(0, 0, 0, 0.5);

@@ -300,5 +300,7 @@ const integracion = {
     });
   },
 
+
+
 };
 module.exports = integracion;
