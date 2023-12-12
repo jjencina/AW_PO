@@ -19,7 +19,7 @@
         <div class="row">
         <!--Carga de forma dinámica los destinos de la base de datos-->
         <% for (let i = 0; i < tipo_ins.length; i++) { %>
-            <div class="col-md-4 mb-4">
+            <div class="col-md-6 mb-4">
                 <div class="card mx-auto" id="mainCard">
                     <a href="/reserva/<%= tipo_ins[i].tipo%>" class="text-decoration-none">
                         <img src="img/<%= tipo_ins[i].imagen %>" class="card-img" alt="<%= tipo_ins[i].tipo %>">                

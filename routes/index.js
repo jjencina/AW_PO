@@ -76,18 +76,20 @@ router.get('/reserva/:tipo', (req, res) => {
     } else {
       imagenes = resultados;
     }
+    render();
   });
-
-  res.render('reserva', { 
-    imagenes, 
-    tipo_ins,
-    usuario , 
-    errors: [] , 
-    reservaExitosa: false, 
-    isAuthenticated: res.locals.isAuthenticated,
-    FormData: req.body, 
-    isAdmin: res.locals.isAdmin, 
-  }); // Pasa un array vacío si no hay errores
+  function render(){
+    res.render('reserva', { 
+      imagenes, 
+      tipo_ins,
+      usuario , 
+      errors: [] , 
+      reservaExitosa: false, 
+      isAuthenticated: res.locals.isAuthenticated,
+      FormData: req.body, 
+      isAdmin: res.locals.isAdmin, 
+    });
+  } // Pasa un array vacío si no hay errores
 });
 
 //Ruta para obtener las instalaciones de un tipo de cada facultad
