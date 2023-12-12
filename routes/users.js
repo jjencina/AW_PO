@@ -376,37 +376,51 @@ router.get('/logout', (req, res) => {
     res.status(500).send('Error interno del servidor');
   }
 });
-
+//Middleware para obtener lista de usuarios
+const obtenerListaUsuarios = (req, res, next) => {
+  
+}
 //Cargar la pagina de mensajes
 router.get('/mensajes', buscarMensajesEnviados, buscarMensajesRecibidos, (req, res) => {
   var recibidos = res.locals.recibidos;
   var enviados = res.locals.enviados;
-  var mensajes = recibidos.concat(enviados);
-    mensajes.sort(function(a, b){
-      return new Date(b.fecha) - new Date(a.fecha);
-    });
+  var mensajes = recibidos.concat(enviados).sort(descendente);
+  var usuario = req.session.currentUser;
+  function descendente(a, b){
+    if(a.fecha < b.fecha) { return 1; }
+    else if(a.fecha > b.fecha) { return -1; }
+    else { if(a.hora < b.hora) { return 1; }
+       else if(a.hora > b.hora) { return -1; }
+       else { return 0; }
+     };
+  }
   var listaUsuarios = [];
-  for(var i = 0; i < recibidos.length; i++){
-    if(!listaUsuarios.includes(recibidos[i].correoEmisor)){
-      listaUsuarios.push(recibidos[i].correoEmisor);
+  for(var i = 0; i < mensajes.length; i++){
+    if(usuario == mensajes[i].correoEmisor){
+      if(!listaUsuarios.includes(mensajes[i].correoReceptor)){
+        listaUsuarios.push(mensajes[i].correoReceptor);
+      }
+    }else{
+      if(!listaUsuarios.includes(mensajes[i].correoEmisor)){
+        listaUsuarios.push(mensajes[i].correoEmisor);
+      }
     }
   }
-  for(var i = 0; i < enviados.length; i++){
-    if(!listaUsuarios.includes(enviados[i].correoReceptor)){
-      listaUsuarios.push(enviados[i].correoReceptor);
-    }
-  }
-    var fotoUsuario = [];
+  mensajes.reverse();
+  
+  var fotoUsuario = [];
   integracion.leerTodosLosUsuarios((error, results) => {
     if (error) {
       console.error('Error al buscar usuarios:', error);
       return res.status(500).send('Error interno del servidor');
-    }   
-    for(var i = 0; i < results.length; i++){
-      if(listaUsuarios.includes(results[i].correo)){
-        fotoUsuario.push(results[i].foto);
-      }
-    } 
+    }
+    for(var j = 0; j < listaUsuarios.length; j++){
+      for(var i = 0; i < results.length; i++){
+        if(listaUsuarios[j] == results[i].correo){
+          fotoUsuario.push(results[i].foto);
+        }
+      } 
+    }
       organizarYRenderizar();   
   });
 
