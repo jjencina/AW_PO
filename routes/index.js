@@ -68,7 +68,7 @@ router.get('/', (req, res) => {
 router.get('/reserva/:tipo', (req, res) => {
   const tipo_ins = req.params.tipo;
   var usuario = req.session.currentUser;
-  var imagenes;
+  var imagenes = {};
   integracion.buscarImagenesPorTipoIns(tipo_ins, function (err, resultados) {
     if (err) {
       console.error('Error al buscar el imagen por destino:', err);
@@ -248,6 +248,22 @@ if (!errors.isEmpty()) {
   });
 
  
+//get pagina de de admin/instalaciones
+router.get('/admin/instalaciones', (req, res) => {
+  integracion.leerTodosLosTiposIns((err, tipo_ins) => {
+    if (err) {
+      console.error('Error al obtener tipos de instalaciones:', err);
+      res.status(500).send('Error interno del servidor');
+    } else {
+      res.render('admin/instalaciones', { 
+        tipo_ins,
+        isAuthenticated: res.locals.isAuthenticated,
+        isAdmin: res.locals.isAdmin,
+       });
+    }
+  });
+});
+
 /*Comentar
   router.get('/comentar/:destino_id', (req,res)  => {
     const destino_id = req.params.destino_id;
