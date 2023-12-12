@@ -4,6 +4,8 @@ const express = require("express");
 const { body, validationResult } = require("express-validator");
 const app = express();
 
+
+
 //Middleware para gestionar cookies y logs
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -39,6 +41,7 @@ const middlewareSession = session({
 });
 
 app.use(middlewareSession);
+
 
 /*-----Cosas Añadidas------*/
 const port = 3000;

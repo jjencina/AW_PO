@@ -1,14 +1,26 @@
 const express = require('express');
 const router = express.Router();
 
+//Middleware para fotos
+const multer = require('multer');
+
+//Configuración de multer para guardar las imágenes en public/img/users
+const storage = multer.diskStorage({
+  destination: 'public/img/users',
+  filename: (req, file, cb) => {
+    const userId = req.user.id;
+    const fileName = `user_${userId}.png`;
+    cb(null, fileName);
+  },
+});
+
+const upload = multer({ storage: storage });
+
 //Validacion
 const { body, validationResult } = require('express-validator');
 
 //Metodos de Integracion
 const integracion = require('../services/integracion');
-
-
-
 
 //Gestion de Usuarios
 //LLamar al formulario de login
@@ -310,6 +322,36 @@ router.post('/admin/remove-admin/:correo', (req, res) => {
   });
 });
 
+// Subir foto de perfil
+router.post('/upload-profile-image', (req, res, next) => {
+  // Obtener el ID del usuario
+  const userId = req.user.id; // Asegúrate de que esta propiedad refleje cómo se almacena el ID del usuario en tu aplicación
+
+  // Utilizar el ID del usuario para personalizar la configuración de Multer
+  upload.single('profile-image')(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      // Manejar errores de Multer
+      return res.status(500).json({ message: 'Error al cargar la imagen' });
+    } else if (err) {
+      // Manejar otros errores
+      return res.status(500).json({ message: 'Error interno del servidor' });
+    }
+
+    // Ahora puedes acceder al ID del usuario y a la imagen cargada
+    try {
+      const file = req.file; // Información de la imagen cargada
+
+      // Aquí puedes procesar y almacenar la imagen según tus necesidades
+      // Puedes acceder al ID del usuario en userId y a la imagen en file
+      // ...
+
+      res.status(200).json({ message: 'Foto de perfil actualizada con éxito' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error al actualizar la foto de perfil' });
+    }
+  });
+});
 
 
 //Cerrar sesion o logout

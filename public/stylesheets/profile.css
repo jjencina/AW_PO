@@ -107,3 +107,20 @@
 .image-wrapper:hover .photo-msg {
     display: block;
 }
+
+#upload-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: auto;
+    margin-top: 20px;
+}
+
+#file-input {
+    margin-bottom: 10px; 
+}
+
+#submit-file-btn {
+    width: 150px; 
+}
