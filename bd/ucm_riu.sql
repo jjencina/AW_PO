@@ -166,7 +166,28 @@ CREATE TABLE `ucm_aw_riu_usu_usuarios` (
 INSERT INTO `ucm_aw_riu_usu_usuarios` (`id`, `nombre`, `apellido1`, `apellido2`, `correo`, `contrasena`, `admin`, `validado`, `foto`,`facultad`) VALUES
 (1, 'Gustabo', 'Adolfo', 'Roberto', 'gustabo@ucm.es', 'a', 0, 0, 'gustabo@ucm.es', 'Informática'),
 (2, 'a', 'a', 'a', 'a@ucm.es', 'a', 1, 1, 'a@ucm.es', 'Informática'),
-(3, 'Josefa', 'Pérez', 'García', 'josefa@ucm.es', 'a', 0, 0, 'josefa@ucm.es', 'Biología');
+(3, 'Josefa', 'Pérez', 'García', 'josefa@ucm.es', 'a', 0, 0, 'josefa@ucm.es', 'Informática');
+
+--
+-- Table structure for table `ucm_aw_riu_msg_mensajes`
+--
+
+CREATE TABLE `ucm_aw_riu_msg_mensajes` (
+  `id` int(11) NOT NULL,
+  `correoEmisor` varchar(255) NOT NULL,
+  `correoReceptor` varchar(255) NOT NULL,
+  `fecha` date NOT NULL,
+  `mensaje` varchar(1000) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Dumping data for table `ucm_aw_riu_msg_mensajes`
+--
+
+INSERT INTO `ucm_aw_riu_msg_mensajes` (`id`, `correoEmisor`, `correoReceptor`, `fecha`, `mensaje`) VALUES
+(1, 'a@ucm.es', 'gustabo@ucm.es', '2023-12-12', 'Hola, soy a.'),
+(2, 'gustabo@ucm.es', 'a@ucm.es', '2023-12-12', 'Hola, yo soy Gustabo.'),
+(3, 'a@ucm.es', 'josefa@ucm.es', '2023-12-13', 'Hola, soy a.');
 
 --
 -- Índices para tablas volcadas
@@ -240,6 +261,25 @@ ALTER TABLE `ucm_aw_riu_res_reservas`
 -- AUTO_INCREMENT de la tabla `ucm_aw_riu_usu_usuarios`
 --
 ALTER TABLE `ucm_aw_riu_usu_usuarios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+COMMIT;
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `ucm_aw_riu_msg_mensajes`
+--
+ALTER TABLE `ucm_aw_riu_msg_mensajes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `ucm_aw_riu_msg_mensajes`
+--
+ALTER TABLE `ucm_aw_riu_msg_mensajes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
