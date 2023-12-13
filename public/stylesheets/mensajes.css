@@ -59,6 +59,17 @@ li a{
     border-radius: 10px;
     border: 2px solid #3b7bea;
 }
+.fecha{
+    text-align: center;
+    font-size: small;
+    display: block;
+    margin-top: 10px;
+}
+.hora{
+    text-align: right;
+    font-size: small;
+    display: block;
+}
 .mensaje-recibido{      
     margin-top: 10px;
     padding-right: 40%;
@@ -69,10 +80,11 @@ li a{
     border-radius: 10px;
     border: 1px solid #3b7bea;
     padding:10px;
+    word-wrap: break-word;
 }
 
 .mensaje-enviado{
-    padding-left: 40%;  
+    padding-left:40%;
     padding-right:4%;
     margin-top: 10px;
 }

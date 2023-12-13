@@ -39,17 +39,19 @@
                 <ul id="ctn-mensajes">
                     <!--Se carga los mensajes del último chat en el que se ha hablado-->
                     <% for (var i = 0; i < mensajes.length; i++) { %>
+                        <% if (i == 0  || mensajes[i].fecha != mensajes[i-1].fecha) { %>
+                            <li class="fecha"><%= mensajes[i].fecha %></li>
+                        <% } %>                           
                         <% if (mensajes[i].correoEmisor == listaUsuarios[0]) { %>
                             <li class="mensaje-recibido">                                                           
-                                <p><%= mensajes[i].mensaje %></p>                              
+                                <p><%= mensajes[i].mensaje %> <span class="hora"><%= mensajes[i].hora%></span></p>                              
                             </li>
                         <% } else if (mensajes[i].correoReceptor == listaUsuarios[0]) { %>
-                            <li class="mensaje-enviado">                            
-                                <p><%= mensajes[i].mensaje %></p>                                
+                            <li class="mensaje-enviado">    
+                                 <p> <%= mensajes[i].mensaje %> <span class="hora"><%= mensajes[i].hora%></span></p>                                
                             </li>
                         <% } %>
                     <% } %>
-                    
                 </ul>                    
                 <div id="ctn-enviar-mensaje">
                     <input type="text" id="mensaje" name="mensaje" placeholder="Escribe un mensaje...">

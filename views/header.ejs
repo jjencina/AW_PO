@@ -10,7 +10,7 @@
         <nav class="container navbar navbar_default">
             <div class="nav-desplegable">
                 <!--Icono de menu hamburguesa-->
-                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
+                <button type="button" class="navbar-toggler" >
                     <span></span>
                     <span></span>
                     <span></span>
@@ -148,6 +148,13 @@
 </script>
 
 <script>
+      $('.navbar-toggler').click(function(){
+       if($('.collapse').hasClass('show')){
+           $('.collapse').removeClass('show');
+         }else{
+           $('.collapse').addClass('show');
+         }
+    })
     //Ejecutando funciones
    document.getElementById("icon-search").addEventListener("click", mostrar_buscador);
    document.getElementById("cover-ctn-search").addEventListener("click", ocultar_buscador);

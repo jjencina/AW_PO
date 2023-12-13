@@ -36,6 +36,25 @@ const buscarMensajesEnviados = (req, res, next) => {
   });
 };
 
+//Middleware pare trimmear la fecha de los mensajes
+const trimFecha = (req, res, next) => {
+  const mensajes = res.locals.enviados.concat(res.locals.recibidos);
+  mensajes.sort(descendente);
+  for(var i = 0; i < mensajes.length; i++){
+    hora = mensajes[i].hora.split(':');
+    mensajes[i].hora = hora[0] + ':' + hora[1];
+    fecha = mensajes[i].fecha;
+    fecha = new Date(fecha);
+    dia = fecha.getDate();
+    mes = fecha.getMonth() + 1;
+    anio = fecha.getFullYear();
+    fecha = dia + '/' + mes + '/' + anio;
+    mensajes[i].fecha = fecha;
+  }
+  res.locals.mensajes = mensajes;
+  next();
+};
+
 //Gestion de Usuarios
 //LLamar al formulario de login
 router.get('/login', (req, res) => {
@@ -376,6 +395,7 @@ router.get('/logout', (req, res) => {
     res.status(500).send('Error interno del servidor');
   }
 });
+//Funcion para ordenar los mensajes
 function descendente(a, b){
   if(a.fecha < b.fecha) { return 1; }
   else if(a.fecha > b.fecha) { return -1; }
@@ -385,10 +405,8 @@ function descendente(a, b){
    };
 }
 //Cargar la pagina de mensajes
-router.get('/mensajes', buscarMensajesEnviados, buscarMensajesRecibidos, (req, res) => {
-  var recibidos = res.locals.recibidos;
-  var enviados = res.locals.enviados;
-  var mensajes = recibidos.concat(enviados).sort(descendente);
+router.get('/mensajes', buscarMensajesEnviados, buscarMensajesRecibidos, trimFecha, (req, res) => {
+  var mensajes = res.locals.mensajes;
   var usuario = req.session.currentUser;
  
   var listaUsuarios = [];
@@ -434,10 +452,8 @@ router.get('/mensajes', buscarMensajesEnviados, buscarMensajesRecibidos, (req, r
 });
 
 //Cargar mensajes de un chat
-router.post('/cargarMensajes',buscarMensajesEnviados, buscarMensajesRecibidos, (req, res) => {  
-  lista = res.locals.recibidos.concat(res.locals.enviados);
-  lista.sort(descendente);
-  res.json(lista.reverse());
+router.post('/cargarMensajes',buscarMensajesEnviados, buscarMensajesRecibidos, trimFecha, (req, res) => {  
+  res.json(res.locals.mensajes);
 });
 
 //Insertar mensajes en la BD
