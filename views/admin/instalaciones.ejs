@@ -12,35 +12,98 @@
 <body>
     <%- include("../header") %>
 
+    <!-- Lista de Tipos de Instalaciones --> 
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="cnt-cuadro">
-                    <div class="cnt-admin"><h2>Gestionar Instalaciones</h2></div>
+                    <div class="cnt-admin"><h2>Gestionar Tipos de Instalaciones</h2></div>
                     
-                    <!-- Lista de usuarios -->
+                    <!-- Lista de tipos de instalacion -->
                     <table class="table">
                         <thead>
                             <tr>
                                 <th>Nombre</th>
-                                <th>Primer Apellido</th>
-                                <th>Segundo Nombre</th>
-                                <th>Correo</th>
-                                <th>Admin</th>
-                                <th>Validado</th>
-                                <th>Validar</th>
-                                <th>Hacer administrador</th>
-                                <th>Expulsar</th>
+                                <th>Descipción</th>
+                                <th>Hora de Apertura</th>
+                                <th>Hora de Cierre</th>
+                                <th>Aforo</th>
+                                <th>Colectivo</th>
                             </tr>
                         </thead>
-                        <tbody id="user-list">
+                        <tbody id="tipo-instalacion-list">
                             <p></p>
                         </tbody>
                     </table>
+                    <!-- Lista de Instalaciones -->
+
+                    <div class="cnt-admin"><h2>Gestionar Instalaciones</h2></div>
+
+                    <table class=""table>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Tipo</th>
+                                <th>Facultad</th>
+                            </tr>
+                        </thead>
+                        <tbody id="instalaciones-list">
+                            <p></p>
+                        </tbody>
+
+                    </table>
+                    <!-- Botón de crea instalacio-->
+                    <tr>
+                        <!-- Botón de crea instalacion-->
+    <tr>
+        <td colspan="3">
+            <button class="btn btn-primary" onclick="botonCrearInstalacion()">Crear Instalación</button>
+        </td>
+    </tr>
+
+    <!-- Ventana modal -->
+    <div id="crear-instalacion-modal" class="modal" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Crear Instalación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form >
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tipo" class="form-label">Tipo</label>
+                            <select class="form-control" id="tipo" name="tipo" required>
+                                <option value="" disabled selected>Selecciona un tipo de Instalacion</option>          
+                                <option value=" "></option>
+                                
+                            </select>
+                        </div>
+                        <div class="mb-3" id="facultadCampo">
+                            <label for="facultades">Facultad:</label>
+                            <select class="form-control" id="facultad" name="facultad" required>
+                                <option value="" disabled selected>Selecciona una facultad</option>
+                                <option value="Informática">Informática</option>
+                                <option value="Biología">Biología</option>
+                                <option value="Información">Información</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary" onclick="crearInstalacion()">Crear</button>
+                    </form>
+
+
+               
                 </div>
             </div>
         </div>
     </div>
+
+    
+    
 
     <%- include("../footer") %>
 
@@ -50,42 +113,86 @@
 
     <script>
         $(document).ready(function() {
-            // Obtener las instalaciones mediante AJAX
             $.ajax({
-                url: '/api/instalaciones',
-                method: 'GET',
+                url: '/admin/obtener_tipos_instalacion',
+                type: 'GET',
                 success: function(data) {
-                    // Generar la tabla con los datos recibidos
-                    var table = '<table>';
-                    table += '<tr><th>ID</th><th>Nombre</th><th>Acciones</th></tr>';
-                    data.forEach(function(instalacion) {
-                        table += '<tr>';
-                        table += '<td>' + instalacion.id + '</td>';
-                        table += '<td>' + instalacion.nombre + '</td>';
-                        table += '<td>';
-                        table += '<button onclick="editarInstalacion(' + instalacion.id + ')">Editar</button>';
-                        table += '<button onclick="eliminarInstalacion(' + instalacion.id + ')">Eliminar</button>';
-                        table += '</td>';
-                        table += '</tr>';
+                    $('#tipo').empty();
+                    $('#tipo').append(`<option value="" disabled selected>Selecciona un tipo de Instalacion</option>`);
+                    data.forEach(function(tipos_inst) {
+
+                        $('#tipo').append(`<option value="${tipos_inst.tipo}">${tipos_inst.tipo}</option>`);
+
+                        var row = '<tr>' +
+                            '<td>' + tipos_inst.tipo + '</td>' +
+                            '<td>' + tipos_inst.descripcion + '</td>' +
+                            '<td>' + tipos_inst.hora_de_apertura + '</td>' +
+                            '<td>' + tipos_inst.hora_de_cierre + '</td>' +
+                            '<td>' + tipos_inst.aforo + '</td>' +
+                            '<td>' + (tipos_inst.colectivo ? 'Si' : 'No') + '</td>' +
+                            '</tr>';
+                        $('#tipo-instalacion-list').append(row);
                     });
-                    table += '</table>';
-                    $('#instalacionesTable').html(table);
                 },
-                error: function() {
-                    alert('Error al obtener las instalaciones');
+                error: function(error) {
+                    console.log(error);
                 }
             });
+        });
 
-            // Función para editar una instalación
-            function editarInstalacion(id) {
-                // Implementa la lógica para editar una instalación
-            }
+        $(document).ready(function() {
+            $.ajax({
+                url: '/admin/obtener_instalaciones',
+                type: 'GET',
+                success: function(data) {
+                    data.forEach(function(instalaciones) {
+                        var row = '<tr>' +
+                            '<td>' + instalaciones.nombre + '</td>' +
+                            '<td>' + instalaciones.tipo + '</td>' +
+                            '<td>' + instalaciones.facultad + '</td>' +
+                            '</tr>';
+                        $('#instalaciones-list').append(row);
+                    });
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        });
 
-            // Función para eliminar una instalación
-            function eliminarInstalacion(id) {
-                // Implementa la lógica para eliminar una instalación
+    //Botón de crear instalación
+    function botonCrearInstalacion() {
+        $('#crear-instalacion-modal').modal('show');
+    }
+
+
+    //Botón de crear instalación
+    function crearInstalacion() {  
+        console.log('Crear instalación');
+        console.log($('#nombre').val());
+        console.log($('#tipo').val());
+        console.log($('#facultad').val());
+        $.ajax({
+            url: '/admin/crear_instalacion',
+            type: 'POST',
+            data: {
+                nombre: $('#nombre').val(),
+                tipo: $('#tipo').val(),
+                facultad: $('#facultad').val()
+            },
+            
+            success: function(response) {
+                alert("Instalación creada")
+                console.log('Instalación creada');
+                location.reload();
+            },
+            error: function(error) {
+                alert("Error al crear la instalación")
+                console.log(error);
             }
         });
+    }
+
     </script>
 
 </body>
