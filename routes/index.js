@@ -63,6 +63,29 @@ router.get('/', (req, res) => {
   });
 });
 
+//Obtener todos los tipos de instalaciones
+router.get('/admin/obtener_tipos_instalacion', (req, res) => {
+  integracion.leerTodosLosTiposIns((err, tipo_ins) => {
+    if (err) {
+      console.error('Error al obtener tipos de instalaciones:', err);
+      res.status(500).send('Error interno del servidor');
+    } else {
+      res.json(tipo_ins);
+    }
+  });
+});
+
+//Obtiene todos las instalaciones
+router.get('/admin/obtener_instalaciones', (req, res) => {
+  integracion.leerTodasLasInstalaciones((err, instalaciones) => {
+    if (err) {
+      console.error('Error al obtener instalaciones:', err);
+      res.status(500).send('Error interno del servidor');
+    } else {
+      res.json(instalaciones);
+    }
+  });
+});
 
 // Mandar al usuario a la página de reserva del destino seleccionado
 router.get('/reserva/:tipo', (req, res) => {
