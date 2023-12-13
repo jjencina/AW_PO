@@ -71,17 +71,28 @@
             $.ajax({
                 url: '/cargarMensajes',
                 type: 'POST',
-                data: {usuario: usuario},
+                data: {},
                 success: function(mensajes){                   
                     $('#usuario-seleccionado').text(usuario);
                     //Vaciamos el contenedor de mensajes
                     $("#ctn-mensajes").empty();
                     //Añadimos los mensajes del usuario seleccionado a la página
+                    var mensajesUsur = [];
+                    //Nos quedamos con los mensajes del usuario seleccionado
                     for (var i = 0; i < mensajes.length; i++) {
-                        if (mensajes[i].correoEmisor == usuario) {
-                            $("#ctn-mensajes").append('<li class="mensaje-recibido"><p>'+mensajes[i].mensaje+'</p></li>');
-                        } else if (mensajes[i].correoReceptor == usuario) {
-                            $("#ctn-mensajes").append('<li class="mensaje-enviado"><p>'+mensajes[i].mensaje+'</p></li>');
+                        if (mensajes[i].correoEmisor == usuario || mensajes[i].correoReceptor == usuario) {
+                            mensajesUsur.push(mensajes[i]);
+                        }
+                    }
+                    //Lo colocamos en la página
+                    for (var i=0; i < mensajesUsur.length; i++){
+                        if (i == 0  || mensajesUsur[i].fecha != mensajesUsur[i-1].fecha) {
+                            $("#ctn-mensajes").append('<li class="fecha">'+mensajesUsur[i].fecha+'</li>');
+                        }
+                        if (mensajesUsur[i].correoEmisor == usuario) {
+                            $("#ctn-mensajes").append('<li class="mensaje-recibido"><p>'+mensajesUsur[i].mensaje+'<span class="hora">'+mensajesUsur[i].hora+'</span></p></li>');
+                        } else if (mensajesUsur[i].correoReceptor == usuario) {
+                            $("#ctn-mensajes").append('<li class="mensaje-enviado"><p>'+mensajesUsur[i].mensaje+'<span class="hora">'+mensajesUsur[i].hora+'</span></p></li>');
                         }
                     }
                 }
@@ -95,6 +106,7 @@
             e.preventDefault();
             //Obtenemos el mensaje
             var mensaje = $('#mensaje').val();
+            if(mensaje == "") return false;
             //Obtenemos el correo del usuario seleccionado
             var correoReceptor = $("#usuario-seleccionado").text();
             //Enviamos el mensaje
