@@ -262,16 +262,21 @@ if (!errors.isEmpty()) {
  
 //get pagina de de admin/instalaciones
 router.get('/admin/instalaciones', (req, res) => {
-  integracion.leerTodosLosTiposIns((err, tipo_ins) => {
+  res.render('admin/instalaciones', { 
+    isAuthenticated: res.locals.isAuthenticated,
+    isAdmin: res.locals.isAdmin,
+    });
+});
+
+//get  instalaciones instalaciones
+router.get('/admin/leer-instalaciones', (req, res) => {
+  integracion.buscarTipoIns((err, tipo_ins) => {
     if (err) {
       console.error('Error al obtener tipos de instalaciones:', err);
       res.status(500).send('Error interno del servidor');
     } else {
-      res.render('admin/instalaciones', { 
-        tipo_ins,
-        isAuthenticated: res.locals.isAuthenticated,
-        isAdmin: res.locals.isAdmin,
-       });
+      instalaciones = results;
+      res.json(instalaciones);
     }
   });
 });

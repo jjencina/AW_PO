@@ -16,24 +16,22 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="cnt-cuadro">
-                    <div class="cnt-admin"><h2>Gestionar Instalaciones</h2></div>
+                    <div class="cnt-admin"><h2>Tipos de Instalación</h2></div>
                     
                     <!-- Lista de usuarios -->
                     <table class="table">
                         <thead>
                             <tr>
+                                 <!-- <th>Imagen</th> -->
                                 <th>Nombre</th>
-                                <th>Primer Apellido</th>
-                                <th>Segundo Nombre</th>
-                                <th>Correo</th>
-                                <th>Admin</th>
-                                <th>Validado</th>
-                                <th>Validar</th>
-                                <th>Hacer administrador</th>
-                                <th>Expulsar</th>
+                                <th>Descripcion</th>
+                                <th>Hora de apertura</th>
+                                <th>Hora de cierre</th>
+                                <th>Aforo</th>
+                                <th>Colectivo</th>
                             </tr>
                         </thead>
-                        <tbody id="user-list">
+                        <tbody id="tipo-instalacion-list">
                             <p></p>
                         </tbody>
                     </table>
@@ -52,24 +50,21 @@
         $(document).ready(function() {
             // Obtener las instalaciones mediante AJAX
             $.ajax({
-                url: '/api/instalaciones',
+                url: '/admin/leer-instalaciones',
                 method: 'GET',
                 success: function(data) {
-                    // Generar la tabla con los datos recibidos
-                    var table = '<table>';
-                    table += '<tr><th>ID</th><th>Nombre</th><th>Acciones</th></tr>';
-                    data.forEach(function(instalacion) {
-                        table += '<tr>';
-                        table += '<td>' + instalacion.id + '</td>';
-                        table += '<td>' + instalacion.nombre + '</td>';
-                        table += '<td>';
-                        table += '<button onclick="editarInstalacion(' + instalacion.id + ')">Editar</button>';
-                        table += '<button onclick="eliminarInstalacion(' + instalacion.id + ')">Eliminar</button>';
-                        table += '</td>';
-                        table += '</tr>';
+                    console.log(data);
+                    data.forEach(function(instalacion) {                        
+                        var row = '<tr>' +
+                            '<td>' + instalacion.tipo + '</td>' +
+                            '<td>' + instalacion.descripcion + '</td>' +
+                            '<td>' + instalacion.hora_de_apertura + '</td>' +
+                            '<td>' + instalacion.hora_de_cierre + '</td>' +
+                            '<td>' + instalacion.aforo + '</td>' +   
+                            '<td>' + (instalacion.colectivo ? 'Si' : 'No') + '</td>' +
+                            '</tr>';
+                        $('tipo-instalacion-list').append(row);
                     });
-                    table += '</table>';
-                    $('#instalacionesTable').html(table);
                 },
                 error: function() {
                     alert('Error al obtener las instalaciones');
