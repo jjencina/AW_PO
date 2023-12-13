@@ -17,12 +17,29 @@
             <div class="col-md-4" id="ctn-lista">
                 <!--Buscar una conversacion-->
                 <div id="ctn-lista-chats">
-                    <div id="ctn-barra-chats">
-                        <input type="text" id="searchInput" placeholder="Buscar chat">
-                    </div>
-                    <!--Empezar una nueva conversación-->
-                    <div id="ctn-nuevo-chat">
-                        
+                    <div id="barra-superior">
+                        <div id="ctn-barra-chats">
+                            <input type="text" id="searchInput" placeholder="Buscar chat">
+                            <button class="btn btn-primary" id="botonNuevoChat"><i class="bi bi-plus-lg"></i></button>
+                        </div>
+                        <!--Empezar una nueva conversación-->
+                        <div class="modal" id="ctn-nuevo-chat">
+                            <ul id="tipoUsuario">
+                                <li class="tipo-usuario"><a href="" id="facultad">Otros usuarios de tu facultad</a></li>
+                                <li class="tipo-usuario"><a href="" id="admin">Administradores</a></li>
+                            </ul>
+                            <ul id="lista-nuevos-contactos">
+                                <% for (let i = 0; i < listaNuevosUsuarios.length; i++) { %>
+                                    <li class="nuevo-contacto">
+                                        <a href="" id="<%= listaNuevosUsuarios[i].correo %>">                       
+                                            <img src="img/users/<%= listaNuevosUsuarios[i].foto%>" alt="<%= listaNuevosUsuarios[i].foto%>">                    
+                                            <%= listaNuevosUsuarios[i].correo %>                        
+                                        </a>
+                                    </li>
+                                <% } %>
+                            </ul>
+                        </div>
+                        <div id="ctn-nc-cover"></div>
                     </div>
                     <!--Lista de usuarios-->
                     <ul id="lista-chat">         
@@ -65,6 +82,62 @@
     </div>
     <%- include("footer") %>
     <script>
+        //Función para abrir el modal
+        var botonNuevoChat = $('#botonNuevoChat');
+        var ctnNuevoChat = $('#ctn-nuevo-chat');
+        var ctnCover = $('#ctn-nc-cover');
+        botonNuevoChat.click(function(e){
+            e.preventDefault();
+            ctnNuevoChat.show();
+            ctnCover.show();
+        });
+        ctnCover.click(function(){
+            ctnNuevoChat.hide();
+            ctnCover.hide();
+        });
+        //Funcionalidad del modal de crear nuevo chat
+        $('#tipoUsuario a').click(function(e){
+            e.preventDefault();
+            var tipo = $(this).attr('id');
+            if(tipo == "facultad"){
+                buscarMismaFacultad();
+            }
+            else if(tipo == "admin"){
+                buscarAdmin();}
+            }
+        );
+        //Función para buscar usuarios de la misma facultad
+        function buscarMismaFacultad(){
+            $.ajax({
+                url: '/buscarMismaFacultad',
+                type: 'POST',
+                data: {},
+                success: function(results){
+                    //Vaciamos la lista de nuevos usuarios
+                    $("#lista-nuevos-contactos").empty();
+                    //Añadimos los nuevos usuarios a la lista
+                    for (var i=0; i < results.length; i++){
+                        $("#lista-nuevos-contactos").append('<li class="nuevo-contacto"><a href="" id="'+results[i].correo+'"><img src="img/users/'+results[i].foto+'" alt="'+results[i].foto+'">'+results[i].correo+'</a></li>');
+                    }
+                }
+            });
+        }
+        //Función para buscar administradores
+        function buscarAdmin(){
+            $.ajax({
+                url: '/buscarAdmin',
+                type: 'POST',
+                data: {},
+                success: function(results){
+                    //Vaciamos la lista de nuevos usuarios
+                    $("#lista-nuevos-contactos").empty();
+                    //Añadimos los nuevos usuarios a la lista
+                    for (var i=0; i < results.length; i++){
+                        $("#lista-nuevos-contactos").append('<li class="nuevo-contacto"><a href="" id="'+results[i].correo+'"><img src="img/users/'+results[i].foto+'" alt="'+results[i].foto+'">'+results[i].correo+'<i class="bi bi-star-fill"></i></a></li>');
+                    }
+                }
+            });
+        }
         //Función para mostrar el chat con el usuario seleccionado cuando se haga click en un usuario
         function cargarMensajes(e){
             e.preventDefault();

@@ -156,6 +156,38 @@ const integracion = {
     });
   },
 
+  //Leer usuarios por su facultad
+  buscarUsuariosPorFacultad: function(facultad, callback) {
+    pool.getConnection((err, conexion) => {
+      if (err) {callback(err);} 
+      else {
+        conexion.query('SELECT * FROM  ucm_aw_riu_usu_usuarios WHERE facultad = ? AND admin = 0', [facultad], (err, results) => {
+          conexion.release();
+          if (err) {
+            callback(err);
+          } else {
+            callback(null, results);
+          }
+        });
+      }
+    });
+  },
+  //Buscar los usuarios admin
+  buscarAdmins: function(callback) {
+    pool.getConnection((err, conexion) => {
+      if (err) {callback(err);} 
+      else {
+        conexion.query('SELECT * FROM  ucm_aw_riu_usu_usuarios WHERE admin = 1', (err, results) => {
+          conexion.release();
+          if (err) {
+            callback(err);
+          } else {
+            callback(null, results);
+          }
+        });
+      }
+    });
+  },
 //Expulsar usuario
   expulsarUsuario: function(correo, callback) {
     pool.getConnection((err, conexion) => {

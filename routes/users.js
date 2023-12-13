@@ -10,6 +10,7 @@ const path = require('path');
 
 //Middleware para fotos
 const multer = require('multer');
+const { trim } = require('jquery');
 
 //Middleware para buscar mensajes recibidos
 const buscarMensajesRecibidos = (req, res, next) => {
@@ -404,9 +405,9 @@ function descendente(a, b){
      else { return 0; }
    };
 }
-//Cargar la pagina de mensajes
-router.get('/mensajes', buscarMensajesEnviados, buscarMensajesRecibidos, trimFecha, (req, res) => {
+const listarUsuariosMensajes = (req, res, next) => {
   var mensajes = res.locals.mensajes;
+  mensajes.reverse();
   var usuario = req.session.currentUser;
  
   var listaUsuarios = [];
@@ -421,8 +422,15 @@ router.get('/mensajes', buscarMensajesEnviados, buscarMensajesRecibidos, trimFec
       }
     }
   }
-  mensajes.reverse();
-  
+  res.locals.listaUsuarios = listaUsuarios;
+  res.locals.mensajes = mensajes;
+  next();
+}
+//Cargar la pagina de mensajes
+router.get('/mensajes', buscarMensajesEnviados, buscarMensajesRecibidos, trimFecha,listarUsuariosMensajes, (req, res) => {
+  var usuario = req.session.currentUser;
+  var mensajes = res.locals.mensajes;
+  var listaUsuarios = res.locals.listaUsuarios;
   var fotoUsuario = [];
   integracion.leerTodosLosUsuarios((error, results) => {
     if (error) {
@@ -436,8 +444,34 @@ router.get('/mensajes', buscarMensajesEnviados, buscarMensajesRecibidos, trimFec
         }
       } 
     }
-      organizarYRenderizar();   
+    leerUsuFacultad(); 
   });
+  var usuarioFacultad;
+  function leerUsuFacultad(){
+    integracion.buscarUsuarioPorCorreo(usuario, (error, results) => {
+      if (error) {
+        console.error('Error al buscar usuario:', error);
+        return res.status(500).send('Error interno del servidor');
+      }
+      usuarioFacultad = results[0].facultad;
+      listarUsuariosFacultad();
+    }); 
+  }
+  var listaNuevosUsuarios = [];
+  function listarUsuariosFacultad(){
+    integracion.buscarUsuariosPorFacultad(usuarioFacultad, (error, results) => {
+      if (error) {
+        console.error('Error al buscar usuario:', error);
+        return res.status(500).send('Error interno del servidor');
+      }
+      for(var i = 0; i < results.length; i++){
+        if(!listaUsuarios.includes(results[i].correo)){
+          listaNuevosUsuarios.push(results[i]);
+        }
+      }
+      organizarYRenderizar();
+    });
+  }
 
   function organizarYRenderizar(){  
     res.render('mensajes', { 
@@ -446,7 +480,8 @@ router.get('/mensajes', buscarMensajesEnviados, buscarMensajesRecibidos, trimFec
       FormData: req.body,
       mensajes: mensajes,
       listaUsuarios: listaUsuarios,
-      fotoUsuario: fotoUsuario
+      fotoUsuario: fotoUsuario,
+      listaNuevosUsuarios: listaNuevosUsuarios
     })
   }
 });
@@ -483,5 +518,55 @@ router.post('/enviarMensaje', (req, res) => {
     }
     res.json(results);
   });  
+});
+
+router.post('/buscarMismaFacultad',buscarMensajesEnviados, buscarMensajesRecibidos, trimFecha, listarUsuariosMensajes, (req, res) => {
+  const usuario = req.session.currentUser;
+  console.log('post /buscarMismaFacultad')
+  var usuariosAntiguos = res.locals.listaUsuarios;
+  var usuariosNuevos = [];
+  var facultad;
+  integracion.buscarUsuarioPorCorreo(usuario, (error, results) => {
+    if (error) {
+      console.error('Error al buscar usuario:', error);
+      return res.status(500).send('Error interno del servidor');
+    }
+   facultad = results[0].facultad;
+    buscarUsuariosFacultad();
+  });
+  function buscarUsuariosFacultad(){
+    integracion.buscarUsuariosPorFacultad(facultad, (error, results) => {
+      if (error) {
+        console.error('Error al buscar usuario:', error);
+        return res.status(500).send('Error interno del servidor');
+      }
+      for(var i = 0; i < results.length; i++){
+        if(!usuariosAntiguos.includes(results[i].correo)){
+          usuariosNuevos.push(results[i]);
+        }
+      }
+      console.log(usuariosNuevos)
+      res.json(usuariosNuevos);
+    });
+  }
+});
+
+router.post('/buscarAdmin',buscarMensajesEnviados, buscarMensajesRecibidos,trimFecha, listarUsuariosMensajes, (req, res) => {
+  console.log('post /buscarAdmin')
+  var usuariosAntiguos = res.locals.listaUsuarios;
+  var adminNuevos = [];
+  integracion.buscarAdmins((error, results) => {
+    if (error) {
+      console.error('Error al buscar usuario:', error);
+      return res.status(500).send('Error interno del servidor');
+    }
+    for(var i = 0; i < results.length; i++){
+      if(!usuariosAntiguos.includes(results[i].correo)){
+        adminNuevos.push(results[i]);
+      }
+    }
+    console.log(adminNuevos)
+    res.json(adminNuevos);
+  });
 });
 module.exports = router;

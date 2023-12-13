@@ -23,8 +23,35 @@ li a{
     border: 2px solid #3b7bea; /* Ancho de 2 píxeles, sólido, color gris oscuro (#333) */
     padding: 10px; /* Añade un relleno interior al contenedor para separar el contenido del borde */
 }
-#searchInput{
+#ctn-nuevo-chat{
+    width:30%;
+    height: 40%;
+    display:none;
+    position:fixed;
+    z-index:8;
+    left:50%;
+    top:50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 10px;
+}
+#tipoUsuario{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+#ctn-nc-cover{
     width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top:80px;
+    background: rgba(0,0,0,0.5);
+    z-index: 7;
+    display: none;
+}
+#searchInput{
+    width: 80%;
     height: 50px;
     border-radius: 10px;
     border: 1px solid #3b7bea;
