@@ -453,7 +453,7 @@ router.get('/mensajes', buscarMensajesEnviados, buscarMensajesRecibidos, trimFec
 
 //Cargar mensajes de un chat
 router.post('/cargarMensajes',buscarMensajesEnviados, buscarMensajesRecibidos, trimFecha, (req, res) => {  
-  res.json(res.locals.mensajes);
+  res.json(res.locals.mensajes.reverse());
 });
 
 //Insertar mensajes en la BD
