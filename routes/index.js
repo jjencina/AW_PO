@@ -87,6 +87,21 @@ router.get('/admin/obtener_instalaciones', (req, res) => {
   });
 });
 
+//crear una instalacion
+router.post('/admin/crear_instalacion', (req, res) => {
+  const nombre_ins = req.body.nombre;
+  const tipo_ins = req.body.tipo;
+  const facultad = req.body.facultad;
+  integracion.insertarInstalacion(nombre_ins, tipo_ins, facultad, (err, results) => {
+    if (err) {
+      console.error('Error al insertar instalacion:', err);
+      res.status(500).send('Error interno del servidor');
+    } else {
+      res.json({success: true})
+    }
+  });
+});
+
 // Mandar al usuario a la página de reserva del destino seleccionado
 router.get('/reserva/:tipo', (req, res) => {
   const tipo_ins = req.params.tipo;

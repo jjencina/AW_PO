@@ -36,6 +36,9 @@
                         </tbody>
                     </table>
                     <!-- Lista de Instalaciones -->
+
+                    <div class="cnt-admin"><h2>Gestionar Instalaciones</h2></div>
+
                     <table class=""table>
                         <thead>
                             <tr>
@@ -51,17 +54,56 @@
                     </table>
                     <!-- Botón de crea instalacio-->
                     <tr>
-                        <td colspan="3">
-                            <button class="btn btn-primary" onclick="crear_instalacion()">Crear Instalación</button>
-                        </td>
-                    </tr>
+                        <!-- Botón de crea instalacion-->
+    <tr>
+        <td colspan="3">
+            <button class="btn btn-primary" onclick="botonCrearInstalacion()">Crear Instalación</button>
+        </td>
+    </tr>
+
+    <!-- Ventana modal -->
+    <div id="crear-instalacion-modal" class="modal" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Crear Instalación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form >
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tipo" class="form-label">Tipo</label>
+                            <select class="form-control" id="tipo" name="tipo" required>
+                                <option value="" disabled selected>Selecciona un tipo de Instalacion</option>          
+                                <option value=" "></option>
+                                
+                            </select>
+                        </div>
+                        <div class="mb-3" id="facultadCampo">
+                            <label for="facultades">Facultad:</label>
+                            <select class="form-control" id="facultad" name="facultad" required>
+                                <option value="" disabled selected>Selecciona una facultad</option>
+                                <option value="Informática">Informática</option>
+                                <option value="Biología">Biología</option>
+                                <option value="Información">Información</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary" onclick="crearInstalacion()">Crear</button>
+                    </form>
+
+
+               
                 </div>
             </div>
         </div>
     </div>
 
     
-
+    
 
     <%- include("../footer") %>
 
@@ -75,7 +117,12 @@
                 url: '/admin/obtener_tipos_instalacion',
                 type: 'GET',
                 success: function(data) {
+                    $('#tipo').empty();
+                    $('#tipo').append(`<option value="" disabled selected>Selecciona un tipo de Instalacion</option>`);
                     data.forEach(function(tipos_inst) {
+
+                        $('#tipo').append(`<option value="${tipos_inst.tipo}">${tipos_inst.tipo}</option>`);
+
                         var row = '<tr>' +
                             '<td>' + tipos_inst.tipo + '</td>' +
                             '<td>' + tipos_inst.descripcion + '</td>' +
@@ -113,27 +160,38 @@
             });
         });
 
-        //Si el usuario hace click en el boton crear instalacion se muestra una ventana modal con un formulacio con los campos para crear una instalacion
-        
+    //Botón de crear instalación
+    function botonCrearInstalacion() {
+        $('#crear-instalacion-modal').modal('show');
+    }
 
-        //Botón de crear instalación
-        function crearInstalacion() {
-          var formulario =   
-        /*
-            console.log('Crear instalación');
-            $.ajax({
-                url: '/admin/crear_instalacion',
-                type: 'POST',
-                success: function(data) {
-                    console.log('Instalación creada');
-                    location.reload();
-                },
-                error: function(error) {
-                    console.log(error);
-                }
-            });
-        */
-        }
+
+    //Botón de crear instalación
+    function crearInstalacion() {  
+        console.log('Crear instalación');
+        console.log($('#nombre').val());
+        console.log($('#tipo').val());
+        console.log($('#facultad').val());
+        $.ajax({
+            url: '/admin/crear_instalacion',
+            type: 'POST',
+            data: {
+                nombre: $('#nombre').val(),
+                tipo: $('#tipo').val(),
+                facultad: $('#facultad').val()
+            },
+            
+            success: function(response) {
+                alert("Instalación creada")
+                console.log('Instalación creada');
+                location.reload();
+            },
+            error: function(error) {
+                alert("Error al crear la instalación")
+                console.log(error);
+            }
+        });
+    }
 
     </script>
 

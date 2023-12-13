@@ -35,6 +35,25 @@ const integracion = {
     });
   },
 
+  //Crear instalacion
+  insertarInstalacion: function(nombre, tipo, facultad, callback) {
+    pool.getConnection((err, conexion) => {
+      if (err) {callback(err);}
+      else{
+        const sql = 'INSERT INTO ucm_aw_riu_ins_instalaciones (nombre, tipo, facultad) VALUES (?, ?, ?)';
+        const values = [nombre, tipo, facultad];
+        conexion.query(sql, values, (error, results) => {
+          conexion.release();
+          if (error) {
+            callback(error);
+          } else {
+            callback(null, results.insertId);
+          }
+        });
+      }
+    });
+  },
+
 
   //Devuelve el tipo de instalacion
   buscarTipoIns: function(tipo_ins, callback){
