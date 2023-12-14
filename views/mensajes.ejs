@@ -134,7 +134,8 @@
                     $("#lista-nuevos-contactos").empty();
                     //Añadimos los nuevos usuarios a la lista
                     for (var i=0; i < results.length; i++){
-                        $("#lista-nuevos-contactos").append('<li class="nuevo-contacto"><a href="" id="'+results[i].correo+'"><img src="img/users/'+results[i].foto+'" alt="'+results[i].foto+'">'+results[i].correo+'<i class="bi bi-star-fill"></i></a></li>');
+                        $("#lista-nuevos-contactos").append('<li class="nuevo-contacto"><a href="" id="'+results[i].correo+'"><img src="img/users/'+results[i].foto+'" alt="'+results[i].foto+'">'+results[i].correo+'</a></li>');
+                        //<i class="bi bi-star-fill"></i> WIP
                     }
                 }
             });
