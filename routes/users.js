@@ -407,7 +407,7 @@ function descendente(a, b){
 }
 const listarUsuariosMensajes = (req, res, next) => {
   var mensajes = res.locals.mensajes;
-  mensajes.reverse();
+ 
   var usuario = req.session.currentUser;
  
   var listaUsuarios = [];
@@ -423,13 +423,14 @@ const listarUsuariosMensajes = (req, res, next) => {
     }
   }
   res.locals.listaUsuarios = listaUsuarios;
-  res.locals.mensajes = mensajes;
+  res.locals.mensajes = mensajes.reverse();
   next();
 }
 //Cargar la pagina de mensajes
 router.get('/mensajes', buscarMensajesEnviados, buscarMensajesRecibidos, trimFecha,listarUsuariosMensajes, (req, res) => {
   var usuario = req.session.currentUser;
   var mensajes = res.locals.mensajes;
+  var mensajesFiltrados = [];
   var listaUsuarios = res.locals.listaUsuarios;
   var fotoUsuario = [];
   integracion.leerTodosLosUsuarios((error, results) => {
@@ -469,6 +470,13 @@ router.get('/mensajes', buscarMensajesEnviados, buscarMensajesRecibidos, trimFec
           listaNuevosUsuarios.push(results[i]);
         }
       }
+     
+      for(var i = 0; i < mensajes.length; i++){
+        if(mensajes[i].correoEmisor == listaUsuarios[0] || mensajes[i].correoReceptor == listaUsuarios[0]){
+          mensajesFiltrados.push(mensajes[i]);
+        }
+      }
+      
       organizarYRenderizar();
     });
   }
@@ -478,7 +486,7 @@ router.get('/mensajes', buscarMensajesEnviados, buscarMensajesRecibidos, trimFec
       errors: [], 
       isAuthenticated: res.locals.isAuthenticated,
       FormData: req.body,
-      mensajes: mensajes,
+      mensajes: mensajesFiltrados,
       listaUsuarios: listaUsuarios,
       fotoUsuario: fotoUsuario,
       listaNuevosUsuarios: listaNuevosUsuarios
@@ -545,7 +553,6 @@ router.post('/buscarMismaFacultad',buscarMensajesEnviados, buscarMensajesRecibid
           usuariosNuevos.push(results[i]);
         }
       }
-      console.log(usuariosNuevos)
       res.json(usuariosNuevos);
     });
   }
@@ -565,7 +572,6 @@ router.post('/buscarAdmin',buscarMensajesEnviados, buscarMensajesRecibidos,trimF
         adminNuevos.push(results[i]);
       }
     }
-    console.log(adminNuevos)
     res.json(adminNuevos);
   });
 });

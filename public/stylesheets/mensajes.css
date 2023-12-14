@@ -35,6 +35,14 @@ li a{
     background-color: white;
     border-radius: 10px;
 }
+#lista-nuevos-contactos li img{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+    margin-right: 10px;
+}
 #tipoUsuario{
     display: flex;
     flex-direction: row;

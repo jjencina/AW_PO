@@ -314,47 +314,6 @@ router.get('/admin/instalaciones', (req, res) => {
   });
 });
 
-/*Comentar
-  router.get('/comentar/:destino_id', (req,res)  => {
-    const destino_id = req.params.destino_id;
-    integracion.buscarComentarioPorDestino(destino_id, (error, results) => {
-      if (error) {
-        console.error('Error al buscar comentarios:', error);
-        res.status(500).send('Error interno del servidor');
-      } else {
-        //Bucle para formatear la fecha
-        for(var i = 0; i < results.length; i++){
-          results[i].fecha_comentario = new Date( results[i].fecha_comentario).toLocaleString('es-ES', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit'
-          });
-        }
-        res.json(results);
-      }
-    }
-    );
-  });
- 
-  //Comentar
-  router.post('/comentar/:destino_id', (req,res)  => {
-    const destino_id = req.params.destino_id;
-    const nombre_usuario = req.session.currentUser;
-    const comentario = req.body.comentario;
-    const fecha = new Date();
-    integracion.insertarComentario(destino_id, nombre_usuario, comentario, fecha, (error, results) => {
-      if (error) {
-        console.error('Error al insertar comentario:', error);
-        res.status(500).send('Error interno del servidor');
-      } else {
-        res.json({success: true})
-      }
-    });
-  });*/
-
-
   
 module.exports = router;
    

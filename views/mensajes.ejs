@@ -138,6 +138,16 @@
                 }
             });
         }
+        //Función para cargar un chat nuevo con el usuario seleccionado
+        $('#lista-nuevos-contactos a').click(function(e){
+            e.preventDefault();
+            //Obtenemos el correo del usuario seleccionado
+            var usuario = $(this).text().trim();
+            $('#usuario-seleccionado').text(usuario);
+            $('#ctn-mensajes').empty();
+            ctnNuevoChat.hide();
+            ctnCover.hide();
+        });
         //Función para mostrar el chat con el usuario seleccionado cuando se haga click en un usuario
         function cargarMensajes(e){
             e.preventDefault();
@@ -171,6 +181,7 @@
                             $("#ctn-mensajes").append('<li class="mensaje-enviado"><p>'+mensajesUsur[i].mensaje+'<span class="hora">'+mensajesUsur[i].hora+'</span></p></li>');
                         }
                     }
+                    scrollChat();
                 }
             });
         }
@@ -198,14 +209,14 @@
                 }
             });
         });
-
-        $(document).ready(function() {
+        function scrollChat() {
             // Obtén el contenedor
             var contenedorChats = $('#ctn-mensajes');
 
             // Configura la posición del desplazamiento al valor máximo
             contenedorChats.scrollTop(contenedorChats.prop('scrollHeight'));
-        });
+        }
+        $(document).ready(scrollChat);
                 
         //Filtlar los chats abiertos
         inputSearch = document.getElementById("searchInput");
