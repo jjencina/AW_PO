@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Reserva de <%=tipo_ins%></title>
+    <title>Reserva de <%=tipo_ins.tipo%></title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel='stylesheet' href='/stylesheets/style.css' />
@@ -36,12 +36,14 @@
             <!--La segunda columna es la descripción del destino-->
             <div class="col-md-4">
                 <div class="container" id="descripcionInstalacion">
-                    <h5 id="tipoIns"><%=tipo_ins%></h5>
-                       
+                    <h5 id="tipoIns"><%=tipo_ins.tipo%></h5>
+                    <p><%=tipo_ins.descripcion%></p>
+                    <p>Está abierto de <%=tipo_ins.hora_de_apertura%> a <%=tipo_ins.hora_de_cierre%>, con un aforo máximo de <%=tipo_ins.aforo%> personas.</p>
+                    <p>Para reservar, empiece selecionando la facultad.</p>  
                     <!-- Formulario de reserva -->
                     <form id="reservaForm" action='/reservar' method="post" >     
                         <!-- Campos ocultos -->  
-                        <input type = "hidden" name = "tipo_ins" value="<%=tipo_ins%>">
+                        <input type = "hidden" name = "tipo_ins" value="<%=tipo_ins.tipo%>">
 
                         <!--Primero selecciona la facultad en la que quiere reservar-->
                         <div class="form-group" id="facultadCampo">

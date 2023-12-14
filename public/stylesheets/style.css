@@ -37,6 +37,12 @@ header {
   justify-content: center;
   align-items: center;
 }
+.logo img{
+  height: 60px;
+  width: 60px;
+  margin-right: 10px;
+
+}
 r{
   color: #fd8f46;
 }

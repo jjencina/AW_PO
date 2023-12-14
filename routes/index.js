@@ -102,12 +102,30 @@ router.post('/admin/crear_instalacion', (req, res) => {
   });
 });
 
-// Mandar al usuario a la página de reserva del destino seleccionado
-router.get('/reserva/:tipo', (req, res) => {
+//Middleware para buscar el tipo de instalacion
+const buscarTipoIns = (req, res, next) => {
   const tipo_ins = req.params.tipo;
+  integracion.buscarTipoIns(tipo_ins, function (err, resultados) {
+    if (err) {
+      console.error('Error al buscar el tipo de instalacion:', err);
+      res.status(500).send('Error interno del servidor');
+    } else {
+      var hora = resultados[0].hora_de_apertura.split(':');
+      resultados[0].hora_de_apertura = hora[0] + ':' + hora[1];
+      hora = resultados[0].hora_de_cierre.split(':');
+      resultados[0].hora_de_cierre = hora[0] + ':' + hora[1];
+      res.locals.tipo_ins = resultados[0];
+      next();
+    }
+  });
+}
+
+// Mandar al usuario a la página de reserva del destino seleccionado
+router.get('/reserva/:tipo', buscarTipoIns, (req, res) => {
+  const tipo_ins = res.locals.tipo_ins;
   var usuario = req.session.currentUser;
   var imagenes = {};
-  integracion.buscarImagenesPorTipoIns(tipo_ins, function (err, resultados) {
+  integracion.buscarImagenesPorTipoIns(tipo_ins.tipo, function (err, resultados) {
     if (err) {
       console.error('Error al buscar el imagen por destino:', err);
       res.status(500).send('Error interno del servidor');
@@ -235,48 +253,58 @@ router.post('/reservar', comprobarLogin, cargarImagen, [
 ], (req, res) => {  
   // Manejar errores de validación
   const errors = validationResult(req);
-  console.log(errors);
-  const tipo_ins = req.body.tipo_ins;
+  var tipo_ins = req.body.tipo_ins;
   var correo = req.session.currentUser;
   var imagenes = res.locals.imagenes; 
-if (!errors.isEmpty()) {
-      // Si hay errores de validación, renderiza la vista de reserva con los errores    
-     res.render('reserva', { 
-          imagenes,
-          tipo_ins,
-          correo, 
-          errors: errors.array(), 
-          reservaExitosa: false, 
-          isAuthenticated: res.locals.isAuthenticated,
-          FormData: req.body,
-          isAdmin: res.locals.isAdmin,
-        });
-} else {
-    // Si no hay errores de validación, proceder con la inserción en la base de datos
-    var nombre_ins = req.body.instalacion;
-    var fecha = req.body.fecha;
-    var hora = req.body.hora;
-    var facultad = req.body.facultad;
-    var nombre_usu = res.locals.nombre_usu;
-    
-    integracion.insertarReserva(nombre_ins,facultad, nombre_usu, correo, fecha, hora, function (err, resultados) {
-      if (err) {
-        console.error('Error al insertar la reserva:', err);
-        res.status(500).send('Error interno del servidor');
-      } else {
+  integracion.buscarTipoIns(tipo_ins, function (err, resultados) {
+    if (err) {
+      console.error('Error al buscar el imagen por destino:', err);
+      res.status(500).send('Error interno del servidor');
+    } else {
+      tipo_ins = resultados[0];
+    }
+    continuar();
+  });
+  function continuar(){
+    if (!errors.isEmpty()) {
+          // Si hay errores de validación, renderiza la vista de reserva con los errores    
         res.render('reserva', { 
-          imagenes, 
-          tipo_ins,
-          correo , 
-          errors: [] , 
-          reservaExitosa: true, 
-          isAuthenticated: res.locals.isAuthenticated,
-          FormData: req.body,  
-          isAdmin: res.locals.isAdmin,
-        }); // Pasa un array vacío si no hay errores
+              imagenes,
+              tipo_ins,
+              correo, 
+              errors: errors.array(), 
+              reservaExitosa: false, 
+              isAuthenticated: res.locals.isAuthenticated,
+              FormData: req.body,
+              isAdmin: res.locals.isAdmin,
+            });
+    } else {
+        // Si no hay errores de validación, proceder con la inserción en la base de datos
+        var nombre_ins = req.body.instalacion;
+        var fecha = req.body.fecha;
+        var hora = req.body.hora;
+        var facultad = req.body.facultad;
+        var nombre_usu = res.locals.nombre_usu;
+        
+        integracion.insertarReserva(nombre_ins,facultad, nombre_usu, correo, fecha, hora, function (err, resultados) {
+          if (err) {
+            console.error('Error al insertar la reserva:', err);
+            res.status(500).send('Error interno del servidor');
+          } else {
+            res.render('reserva', { 
+              imagenes, 
+              tipo_ins,
+              correo , 
+              errors: [] , 
+              reservaExitosa: true, 
+              isAuthenticated: res.locals.isAuthenticated,
+              FormData: req.body,  
+              isAdmin: res.locals.isAdmin,
+            }); // Pasa un array vacío si no hay errores
+          }
+        });
       }
-    });
-  }
+    }
   });
   //Cerrar sesion o logout
   // Cerrar sesión
