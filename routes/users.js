@@ -530,7 +530,6 @@ router.post('/enviarMensaje', (req, res) => {
 
 router.post('/buscarMismaFacultad',buscarMensajesEnviados, buscarMensajesRecibidos, trimFecha, listarUsuariosMensajes, (req, res) => {
   const usuario = req.session.currentUser;
-  console.log('post /buscarMismaFacultad')
   var usuariosAntiguos = res.locals.listaUsuarios;
   var usuariosNuevos = [];
   var facultad;
@@ -559,7 +558,7 @@ router.post('/buscarMismaFacultad',buscarMensajesEnviados, buscarMensajesRecibid
 });
 
 router.post('/buscarAdmin',buscarMensajesEnviados, buscarMensajesRecibidos,trimFecha, listarUsuariosMensajes, (req, res) => {
-  console.log('post /buscarAdmin')
+ 
   var usuariosAntiguos = res.locals.listaUsuarios;
   var adminNuevos = [];
   integracion.buscarAdmins((error, results) => {
@@ -568,7 +567,7 @@ router.post('/buscarAdmin',buscarMensajesEnviados, buscarMensajesRecibidos,trimF
       return res.status(500).send('Error interno del servidor');
     }
     for(var i = 0; i < results.length; i++){
-      if(!usuariosAntiguos.includes(results[i].correo)){
+      if(!usuariosAntiguos.includes(results[i].correo) && results[i].correo != req.session.currentUser){
         adminNuevos.push(results[i]);
       }
     }

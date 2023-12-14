@@ -91,6 +91,7 @@
             ctnNuevoChat.show();
             ctnCover.show();
         });
+        //Función para cerrar el modal al hacer click fuera del modal
         ctnCover.click(function(){
             ctnNuevoChat.hide();
             ctnCover.hide();
@@ -139,7 +140,7 @@
             });
         }
         //Función para cargar un chat nuevo con el usuario seleccionado
-        $('#lista-nuevos-contactos a').click(function(e){
+        $('#lista-nuevos-contactos').on('click', 'a', (function(e){
             e.preventDefault();
             //Obtenemos el correo del usuario seleccionado
             var usuario = $(this).text().trim();
@@ -147,7 +148,7 @@
             $('#ctn-mensajes').empty();
             ctnNuevoChat.hide();
             ctnCover.hide();
-        });
+        }));
         //Función para mostrar el chat con el usuario seleccionado cuando se haga click en un usuario
         function cargarMensajes(e){
             e.preventDefault();
@@ -216,6 +217,7 @@
             // Configura la posición del desplazamiento al valor máximo
             contenedorChats.scrollTop(contenedorChats.prop('scrollHeight'));
         }
+
         $(document).ready(scrollChat);
                 
         //Filtlar los chats abiertos
