@@ -31,3 +31,10 @@
 #cnt-credencial input{
     padding: 5px;
 }
+
+@media screen and (max-width: 960px) {
+    #formulario{
+        width: 40%;
+        left:27%;
+    }
+}

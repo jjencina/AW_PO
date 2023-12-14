@@ -1,3 +1,4 @@
+/*Estilo general de la página*/
 #ctn-cuadro-mensajes{
     width: 100%;
     height: 100%;
@@ -23,6 +24,7 @@ li a{
     border: 2px solid #3b7bea; /* Ancho de 2 píxeles, sólido, color gris oscuro (#333) */
     padding: 10px; /* Añade un relleno interior al contenedor para separar el contenido del borde */
 }
+/*Estilo de la ventana modal*/
 #ctn-nuevo-chat{
     width:30%;
     height: 40%;
@@ -35,6 +37,22 @@ li a{
     background-color: white;
     border-radius: 10px;
 }
+/*Estilo de la barra de tipo de usuarios*/
+#tipoUsuario{
+    display: flex;
+    flex-direction: row;
+}
+.tipo-usuario{
+    margin:10px;
+}
+.tipo-usuario:hover{
+    background-color: rgb(240, 240, 240);
+}
+/*Estilo de la lista de usuarios de la ventana modal*/
+#lista-nuevos-contactos{
+    max-height: 100%;
+    overflow-y: auto;
+}
 #lista-nuevos-contactos li img{
     width: 70px;
     height: 70px;
@@ -43,11 +61,15 @@ li a{
     border: 2px solid #fff;
     margin-right: 10px;
 }
-#tipoUsuario{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+#lista-nuevos-contactos li{
+    margin-left: -40px;
+    padding: 10px;
+    cursor: pointer;
 }
+#lista-nuevos-contactos li:hover{
+    background-color: rgb(240, 240, 240);
+}
+
 #ctn-nc-cover{
     width: 100%;
     height: 100%;

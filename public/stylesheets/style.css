@@ -266,6 +266,7 @@ p {
 /*Estilo de menu desplegable en el header*/
 #user-menu-list {
  background-color: #3b7bea;
+ right: 120px;
 }
 
 #user-menu-list-2 {
