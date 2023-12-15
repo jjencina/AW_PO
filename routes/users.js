@@ -305,7 +305,7 @@ router.post('/expel-users/:correo', (req, res) => {
 });
 
 //Validar Usuario
-router.post('/admin/validate-users/:correo', (req, res) => {
+router.post('/validate-users/:correo', (req, res) => {
   const correoUsuario = req.params.correo;
   integracion.validarUsuario(correoUsuario, (error, results) => {
     if (error) {
@@ -330,7 +330,7 @@ router.post('/invalidate-users/:correo', (req, res) => {
 });
 
 //Hacer admin
-router.post('/admin/make-admin/:correo', (req, res) => {
+router.post('/make-admin/:correo', (req, res) => {
   const correoUsuario = req.params.correo;
   integracion.hacerAdmin(correoUsuario, (error, results) => {
     if (error) {
@@ -342,7 +342,7 @@ router.post('/admin/make-admin/:correo', (req, res) => {
 });
 
 //Quitar admin
-router.post('/admin/remove-admin/:correo', (req, res) => {
+router.post('/remove-admin/:correo', (req, res) => {
   const correoUsuario = req.params.correo;
   integracion.quitarAdmin(correoUsuario, (error, results) => {
     if (error) {

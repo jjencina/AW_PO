@@ -20,7 +20,7 @@
                     <div class="cnt-admin"><h2>Gestionar Tipos de Instalaciones</h2></div>
                     
                     <!-- Lista de tipos de instalacion -->
-                    <table class="table">
+                    <table class="lista-tipo-instalaciones" id="lista-tipo-instalaciones">
                         <thead>
                             <tr>
                                  <!-- <th>Imagen</th> -->
@@ -45,7 +45,7 @@
                         </td>
                     </tr>
                         <td colspan="3">           
-                            <button class="btn btn-danger" onclick="eliminarTipoInstalacion()">Eliminar Tipo de Instalación</button>
+                            <button class="btn btn-danger" onclick="confirmarEliminaTipoInstalaciones()">Eliminar Tipo de Instalación</button>
                         </td>
                     </tr>
                     </tr>
@@ -119,7 +119,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                                    <button type="button" class="btn btn-danger" onclick="eliminarTipoInstalaciones()">Sí</button>
+                                    <button type="button" class="btn btn-danger" onclick="eliminarTipoInstalacion()">Sí</button>
                                 </div>
                             </div>
                         </div>
@@ -296,7 +296,7 @@
                     data.forEach(function(tipos_inst) {
                         $('#tipo').append(`<option value="${tipos_inst.tipo}">${tipos_inst.tipo}</option>`);
                         var row = '<tr>' +
-                            '<td><input type="checkbox" class="form-check-input" name="instalacionEliminarCheckbox" value="'  + tipos_inst.id + '" ></td>' +
+                            '<td><input type="checkbox" class="form-check-input" name="tipoInstalacionEliminarCheckbox" value="'  + tipos_inst.id + '" ></td>' +
                             '<td>' + tipos_inst.tipo + '</td>' +
                             '<td>' + tipos_inst.descripcion + '</td>' +
                             '<td>' + tipos_inst.hora_de_apertura + '</td>' +
@@ -313,30 +313,23 @@
             });
 
             // Evento click para las filas de la lista principal de tipos de instalaciones
-            $('#tipo-instalacion-list tbody').on('click', 'tr', function() {
+            $('#lista-tipo-instalaciones tbody').on('click', 'tr', function() {
                 // Obtén la casilla de verificación dentro de la fila clicada
                 var checkbox = $(this).find('input[type="checkbox"]');
-                
+
                 // Cambia el estado de la casilla de verificación
                 checkbox.prop('checked', !checkbox.prop('checked'));
 
-                // Agrega la clase 'checkbox-active' a las filas con checkbox activo
-                $('#tipo-instalacion-list tbody tr').each(function() {
-                    var checkbox = $(this).find('input[type="checkbox"]');
-                    if (checkbox.prop('checked')) {
-                        $(this).addClass('checkbox-active');
-                    } else {
-                        $(this).removeClass('checkbox-active');
-                    }
-                });
+                // Agrega/elimina la clase 'checkbox-active' según el estado de la casilla de verificación
+                $(this).toggleClass('checkbox-active', checkbox.prop('checked'));
             });
 
             // Evento click para las casillas de verificación de la lista principal de tipos de instalaciones
-            $('#tipo-instalacion-list tbody').on('click', 'input[type="checkbox"]', function(e) {
+            $('#lista-tipo-instalaciones tbody').on('click', 'input[type="checkbox"]', function(e) {
                 e.stopPropagation();
                 // Obtén la fila correspondiente a la casilla de verificación
                 var row = $(this).closest('tr');
-                // Cambia la clase 'selected-row' y 'checkbox-active' según el estado de la casilla de verificación
+                // Cambia la clase 'checkbox-active' según el estado de la casilla de verificación
                 row.toggleClass('checkbox-active', this.checked);
             });
         });
