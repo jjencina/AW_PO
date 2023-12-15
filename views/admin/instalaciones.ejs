@@ -34,29 +34,52 @@
                         </thead>
                         <tbody id="tipo-instalacion-list">
                             <p></p>
-                        </tbody>
+                        </tbody>                       
                     </table>
-                    <!-- Lista de Instalaciones -->
 
+                    <!-- Botones para Tipos de Instalaciones -->
+                    <tr>
+                        <td colspan="3">
+                            <button class="btn btn-primary" onclick="abrirModalCrearTipoInstalacion()">Crear Tipo de Instalación</button>
+                        </td>
+                    </tr>
+                        <td colspan="3">           
+                            <button class="btn btn-danger" onclick="eliminarTipoInstalacion()">Eliminar Tipo de Instalación</button>
+                        </td>
+                    </tr>
+                    </tr>
+                        <td colspan="3">            
+                        <button class="btn btn-primary" onclick="abrirModalEditarTipoInstalacion()">Editar Tipo de Instalación</button>
+                        </td>
+                    
+
+                    <!-- Ventana modal crear tipo de instalación -->
+                    <div id="crear-tipo-instalacion-modal" class="modal" style="display: none;">
+                        <!-- Contenido de la ventana modal para crear tipo de instalación -->
+                    </div>
+
+                    <!-- Ventana modal editar tipo de instalación -->
+                    <div id="editar-tipo-instalacion-modal" class="modal" style="display: none;">
+                        <!-- Contenido de la ventana modal para editar tipo de instalación -->
+                    </div>
+
+                    <!-- Lista de Instalaciones -->
                     <div class="cnt-admin"><h2>Gestionar Instalaciones</h2></div>
 
                     <table class="lista-instalaciones" id="lista-instalaciones">
                         <thead>
                             <tr>
+                                <th>Seleccionar</th>
                                 <th>Nombre</th>
                                 <th>Tipo</th>
-                                <th>Facultad</th>
-                                <th id="checkbox" style="display: none;">Seleccionar</th>      
+                                <th>Facultad</th>                                 
                             </tr>
                         </thead>
                         <tbody id="instalaciones-list">
                             <p></p>
                         </tbody>
-
                     </table>
-                    <!-- Botón de crea instalacio-->
-                    <tr>
-                        <!-- Botón de crea instalacion-->
+           
     <tr>
         <td colspan="3">
             <button class="btn btn-primary" onclick="botonCrearInstalacion()">Crear Instalación</button>
@@ -69,11 +92,11 @@
     </tr>
     <tr>
         <td colspan="3">
-            <button class="btn btn-primary" onclick="botonEditarInstalacion()">Editar Instalación</button>
+            <button class="btn btn-primary" onclick="abrirModalEditarInstalacion()">Editar Instalación</button>
         </td>
     </tr>
 
-    <!-- Ventana modal -->
+    <!-- Ventana modal crear isntalación -->
     <div id="crear-instalacion-modal" class="modal" style="display: none;">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -114,8 +137,88 @@
         </div>
     </div>
 
-    
-    
+    <!-- Ventana modal para eliminar instalación -->
+    <div id="eliminar-instalacion-modal" class="modal" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Eliminar Instalación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="eliminar-instalacion-form">
+                        <div class="mb-3">
+                            <label>Selecciona las instalaciones a eliminar:</label>
+                            <div id="instalaciones-checkbox-list">
+                                <!-- Agrega checkboxes dinámicamente aquí usando JavaScript -->
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-danger"
+                            onclick="eliminarInstalaciones()">Eliminar Seleccionadas</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+       
+    <!-- Ventana modal para editar instalación -->
+    <div class="modal fade" id="editarInstalacionModal" tabindex="-1" aria-labelledby="editarInstalacionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarInstalacionModalLabel">Editar Instalación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Formulario de edición -->
+                    <form id="formularioEditarInstalacion">
+                        <div class="mb-3">
+                            <label for="nombreEditar" class="form-label">Nuevo Nombre</label>
+                            <input type="text" class="form-control" id="nombreEditar" name="nombreEditar" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tipoEditar" class="form-label">Nuevo Tipo</label>
+                            <select class="form-control" id="tipoEditar" name="tipoEditar" required>
+                                <!-- Opciones de tipos de instalación, puedes cargarlas dinámicamente si es necesario -->
+                                <option value="tipo1">Tipo 1</option>
+                                <option value="tipo2">Tipo 2</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="facultadEditar" class="form-label">Nueva Facultad</label>
+                            <select class="form-control" id="facultadEditar" name="facultadEditar" required>
+                                <!-- Opciones de facultades, puedes cargarlas dinámicamente si es necesario -->
+                                <option value="Informática">Informática</option>
+                                <option value="Biología">Biología</option>
+                                <option value="Información">Información</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="editarInstalacion()">Guardar Cambios</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmar eliminar Instalaciones -->
+    <div class="modal fade" id="confirmarEliminarModal" tabindex="-1" aria-labelledby="confirmarEliminarModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmarEliminarModalLabel">Confirmación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Está seguro de querer borrar estas instalaciones?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-danger" onclick="eliminarInstalaciones()">Sí</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <%- include("../footer") %>
 
@@ -124,6 +227,7 @@
 
 
     <script>
+        //Lista de tipos de instalaciones
         $(document).ready(function() {
             $.ajax({
                 url: '/admin/obtener_tipos_instalacion',
@@ -151,67 +255,183 @@
             });
         });
 
+        //Lista de instalaciones
         $(document).ready(function() {
             $.ajax({
-                url: '/admin/obtener_instalaciones',
-                type: 'GET',
-                success: function(data) {
-                    data.forEach(function(instalaciones) {
-                        var row = '<tr>' +
-                            '<td>' + instalaciones.nombre + '</td>' +
-                            '<td>' + instalaciones.tipo + '</td>' +
-                            '<td>' + instalaciones.facultad + '</td>' +      
-                            '<td>' + '<input type="checkbox" id="check" name="check" value="check" style="display: none;">' + '</td>' +
-                            '</tr>';
-                        $('#instalaciones-list').append(row);
-                    });
-                },
-                error: function(error) {
-                    console.log(error);
+            url: '/admin/obtener_instalaciones',
+            type: 'GET',
+            success: function(data) {
+                data.forEach(function(instalacion) {
+                    var row = '<tr>' +
+                        '<td><input type="checkbox" class="form-check-input" name="instalacionEliminarCheckbox" value="'  + instalacion.id + '" ></td>' +
+                        '<td>' + instalacion.nombre + '</td>' +
+                        '<td>' + instalacion.tipo + '</td>' +
+                        '<td>' + instalacion.facultad + '</td>' +
+                        '</tr>';
+                    $('#instalaciones-list').append(row);
+                });
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+
+            // Evento click para las filas de la lista principal de instalaciones
+            $('#lista-instalaciones tbody').on('click', 'tr', function() {
+            // Obtén la casilla de verificación dentro de la fila clicada
+            var checkbox = $(this).find('input[type="checkbox"]');
+            
+            // Cambia el estado de la casilla de verificación
+            checkbox.prop('checked', !checkbox.prop('checked'));
+
+            // Agrega la clase 'checkbox-active' a las filas con checkbox activo
+            $('#lista-instalaciones tbody tr').each(function() {
+                var checkbox = $(this).find('input[type="checkbox"]');
+                if (checkbox.prop('checked')) {
+                    $(this).addClass('checkbox-active');
+                } else {
+                    $(this).removeClass('checkbox-active');
                 }
             });
         });
 
-    //Botón de crear instalación
-    function botonCrearInstalacion() {
-        $('#crear-instalacion-modal').modal('show');
-    }
-    
-
-    //Botón de crear instalación
-    function crearInstalacion() {  
-        console.log('Crear instalación');
-        console.log($('#nombre').val());
-        console.log($('#tipo').val());
-        console.log($('#facultad').val());
-        $.ajax({
-            url: '/admin/crear_instalacion',
-            type: 'POST',
-            data: {
-                nombre: $('#nombre').val(),
-                tipo: $('#tipo').val(),
-                facultad: $('#facultad').val()
-            },
-            
-            success: function(response) {
-                alert("Instalación creada")
-                console.log('Instalación creada');
-                location.reload();
-            },
-            error: function(error) {
-                alert("Error al crear la instalación")
-                console.log(error);
-            }
+        $('#lista-instalaciones tbody').on('click', 'input[type="checkbox"]', function(e) {
+            e.stopPropagation();
+            // Obtén la fila correspondiente a la casilla de verificación
+            var row = $(this).closest('tr');
+            // Cambia la clase 'selected-row' y 'checkbox-active' según el estado de la casilla de verificación
+            row.toggleClass('checkbox-active', this.checked);
         });
-    }
-
-    function botonEliminarInstalacion(){
-        //mostrar una coluumno oculta con los checkbox en cada instalacion de la lista instalaciones
-        $('#checkbox').toggle();
-        //acceder a la cuarta columna de la lista instalaciones
-        $('#instalaciones-list').prop('selectedIndex', 3).toggle();
+        });
+    
+//CREAR INSTALACIONES      
+        //Botón de crear instalación
+        function botonCrearInstalacion() {
+            $('#crear-instalacion-modal').modal('show');
+        }
         
-    }
+        //Botón de crear instalación
+        function crearInstalacion() {  
+            console.log('Crear instalación');
+            console.log($('#nombre').val());
+            console.log($('#tipo').val());
+            console.log($('#facultad').val());
+            $.ajax({
+                url: '/admin/crear_instalacion',
+                type: 'POST',
+                data: {
+                    nombre: $('#nombre').val(),
+                    tipo: $('#tipo').val(),
+                    facultad: $('#facultad').val()
+                },
+                
+                success: function(response) {
+                    alert("Instalación creada")
+                    console.log('Instalación creada');
+                    location.reload();
+                },
+                error: function(error) {
+                    alert("Error al crear la instalación")
+                    console.log(error);
+                }
+            });
+        }
+  
+//ELIMINAR INSTALACIONES       
+        //Botón de eliminar instalación
+        function botonEliminarInstalacion() {
+            confirmarEliminarInstalaciones();
+        }
+
+        //Boton para confirmar si eliminar instalaciones
+        function confirmarEliminarInstalaciones() {
+        var instalacionesSeleccionadas = $('input[name="instalacionEliminarCheckbox"]:checked');
+        if (instalacionesSeleccionadas.length > 0) {
+            // Muestra el modal de confirmación
+            $('#confirmarEliminarModal').modal('show');
+        } else {
+            alert("Seleccione al menos una instalación para eliminar.");
+            }
+        }
+
+        // Función para eliminar instalaciones
+        function eliminarInstalaciones() {
+            var instalacionesSeleccionadas = [];
+            $('input[name="instalacionCheckbox"]:checked').each(function() {
+                instalacionesSeleccionadas.push($(this).val());
+            });
+
+            // Realiza la llamada AJAX para eliminar las instalaciones seleccionadas
+            $.ajax({
+                url: '/admin/eliminar_instalaciones',
+                type: 'POST',
+                data: { instalaciones: instalacionesSeleccionadas },
+                success: function(response) {
+                    alert("Instalaciones eliminadas");
+                    console.log('Instalaciones eliminadas');
+                    location.reload();
+                },
+                error: function(error) {
+                    alert("Error al eliminar las instalaciones");
+                    console.log(error);
+                }});
+
+        }
+    
+//EDITAR INSTALACIONES
+        // Función para abrir la ventana modal de editar instalación
+        function abrirModalEditarInstalacion() {
+            $('#editarInstalacionModal').modal('show');
+        }
+
+        // Función para editar instalación (realiza la llamada POST)
+        function editarInstalacion() {
+            // Obtén los valores del formulario de edición
+            var nuevoNombre = $('#nombreEditar').val();
+            var nuevoTipo = $('#tipoEditar').val();
+            var nuevaFacultad = $('#facultadEditar').val();
+
+            // Realiza la llamada AJAX para editar la instalación seleccionada
+            $.ajax({
+                url: '/admin/editar_instalacion',
+                type: 'POST',
+                data: {
+                    nombre: nuevoNombre,
+                    tipo: nuevoTipo,
+                    facultad: nuevaFacultad
+                    // También puedes incluir otros parámetros según sea necesario
+                },
+                success: function(response) {
+                    alert("Instalación editada correctamente");
+                    console.log('Instalación editada');
+                    // Puedes realizar acciones adicionales después de la edición, como recargar la página
+                    location.reload();
+                },
+                error: function(error) {
+                    alert("Error al editar la instalación");
+                    console.log(error);
+                }
+            });
+
+            // Cierra la ventana modal después de la acción
+            $('#editarInstalacionModal').modal('hide');
+        }
+
+//TIPO INSTALACIONES
+        // Función para abrir la ventana modal de crear tipo de instalación
+        function abrirModalCrearTipoInstalacion() {
+            $('#crear-tipo-instalacion-modal').modal('show');
+        }
+
+        // Función para abrir la ventana modal de editar tipo de instalación
+        function abrirModalEditarTipoInstalacion() {
+           $('#editar-tipo-instalacion-modal').modal('show');
+        }
+
+        // Función para eliminar tipo de instalación
+        function eliminarTipoInstalacion() {
+            // Lógica para eliminar tipo de instalación
+        }
 
     </script>
 

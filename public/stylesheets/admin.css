@@ -4,3 +4,9 @@
     position: relative;
     margin-top:120px;
 }
+
+
+/* Resaltar la fila con checkbox activo */
+.checkbox-active {
+    background-color: #cce5ff;
+}
