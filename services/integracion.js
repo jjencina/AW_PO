@@ -18,6 +18,43 @@ const integracion = {
     });
   },
 
+  //Devuelve todas las instalaciones
+  leerTodasLasInstalaciones: function(callback) {
+    pool.getConnection((err, conexion) => {
+      if (err) {callback(err);} 
+      else {
+        conexion.query('SELECT * FROM  ucm_aw_riu_ins_instalaciones', (err, results) => {
+          conexion.release();
+          if (err) {
+            callback(err);
+          } else {
+            callback(null, results);
+          }
+        });
+      }
+    });
+  },
+
+  //Crear instalacion
+  insertarInstalacion: function(nombre, tipo, facultad, callback) {
+    pool.getConnection((err, conexion) => {
+      if (err) {callback(err);}
+      else{
+        const sql = 'INSERT INTO ucm_aw_riu_ins_instalaciones (nombre, tipo, facultad) VALUES (?, ?, ?)';
+        const values = [nombre, tipo, facultad];
+        conexion.query(sql, values, (error, results) => {
+          conexion.release();
+          if (error) {
+            callback(error);
+          } else {
+            callback(null, results.insertId);
+          }
+        });
+      }
+    });
+  },
+
+
   //Devuelve el tipo de instalacion
   buscarTipoIns: function(tipo_ins, callback){
     pool.getConnection(function(err, conexion){
@@ -156,6 +193,38 @@ const integracion = {
     });
   },
 
+  //Leer usuarios por su facultad
+  buscarUsuariosPorFacultad: function(facultad, callback) {
+    pool.getConnection((err, conexion) => {
+      if (err) {callback(err);} 
+      else {
+        conexion.query('SELECT * FROM  ucm_aw_riu_usu_usuarios WHERE facultad = ? AND admin = 0', [facultad], (err, results) => {
+          conexion.release();
+          if (err) {
+            callback(err);
+          } else {
+            callback(null, results);
+          }
+        });
+      }
+    });
+  },
+  //Buscar los usuarios admin
+  buscarAdmins: function(callback) {
+    pool.getConnection((err, conexion) => {
+      if (err) {callback(err);} 
+      else {
+        conexion.query('SELECT * FROM  ucm_aw_riu_usu_usuarios WHERE admin = 1', (err, results) => {
+          conexion.release();
+          if (err) {
+            callback(err);
+          } else {
+            callback(null, results);
+          }
+        });
+      }
+    });
+  },
 //Expulsar usuario
   expulsarUsuario: function(correo, callback) {
     pool.getConnection((err, conexion) => {

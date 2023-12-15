@@ -12,8 +12,8 @@
 <body>
     <%- include("header") %>     
     <div id="destinos">
-        <h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+        <h1>Nuestras instalaciones</h1>
+        <p>En esta página podrás hacer reservas de instalaciones de diferentes facultades dentro del campus. </p>
     </div>     
     <div class="container">
         <div class="row">
@@ -24,7 +24,8 @@
                     <a href="/reserva/<%= tipo_ins[i].tipo%>" class="text-decoration-none">
                         <img src="img/<%= tipo_ins[i].imagen %>" class="card-img" alt="<%= tipo_ins[i].tipo %>">                
                         <div class="card-body">
-                            <h5 class="card-title"><%= tipo_ins[i].tipo %></h5>                    
+                            <h5 class="card-title"><%= tipo_ins[i].tipo %></h5> 
+                            <p class="card-text"><%= tipo_ins[i].descripcion %></p>                   
                         </div>   
                     </a>                
                 </div>  

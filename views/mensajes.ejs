@@ -15,13 +15,39 @@
        <!--Chat con otro usuario-->
        <div class="row" >
             <div class="col-md-4" id="ctn-lista">
-                <!--Empezar una nueva conversación-->
                 <!--Buscar una conversacion-->
                 <div id="ctn-lista-chats">
-                    <div id="ctn-barra-chats">
-                        <input type="text" id="searchInput" placeholder="Buscar chat">
+                    <div id="barra-superior">
+                        <div id="ctn-barra-chats">
+                            <input type="text" id="searchInput" placeholder="Buscar chat">
+                            <button class="btn btn-primary" id="botonNuevoChat"><i class="bi bi-plus-lg"></i></button>
+                        </div>
+                        <!--Empezar una nueva conversación-->
+                        <!--Ventana modal para agregar un nuevo chat-->
+                        <div class="modal" id="ctn-nuevo-chat">
+                            <div class="modal-header">
+                                <h4 >Empieza un chat nuevo</h4>
+                            </div>
+                            <!--Filtrar por tipo de usuarios-->
+                            <ul id="tipoUsuario">
+                                <li class="tipo-usuario"><a href="" id="facultad">Otros usuarios de tu facultad</a></li>
+                                <li class="tipo-usuario"><a href="" id="admin">Administradores</a></li>
+                            </ul>
+                            <!--Lista de nuevos chats posibles-->
+                            <ul id="lista-nuevos-contactos">
+                                <% for (let i = 0; i < listaNuevosUsuarios.length; i++) { %>
+                                    <li class="nuevo-contacto">
+                                        <a href="" id="<%= listaNuevosUsuarios[i].correo %>">                       
+                                            <img src="img/users/<%= listaNuevosUsuarios[i].foto%>" alt="<%= listaNuevosUsuarios[i].foto%>">                    
+                                            <%= listaNuevosUsuarios[i].correo %>                        
+                                        </a>
+                                    </li>
+                                <% } %>
+                            </ul>
+                        </div>
+                        <div id="ctn-nc-cover"></div>
                     </div>
-                    <!--Lista de usuarios-->
+                    <!--Lista de chats abiertos-->
                     <ul id="lista-chat">         
                     <% for (let i = 0; i < listaUsuarios.length; i++) { %>
                         <li class="chat">
@@ -35,11 +61,13 @@
                 </div>
             </div>
             <div class="col-md-8" id="ctn-chat">
+                <!--Correo del usuario con el que estamos hablando-->
                 <h4 id="usuario-seleccionado"><%=listaUsuarios[0]%></h4>
                 <ul id="ctn-mensajes">
                     <!--Se carga los mensajes del último chat en el que se ha hablado-->
                     <% for (var i = 0; i < mensajes.length; i++) { %>
                         <% if (i == 0  || mensajes[i].fecha != mensajes[i-1].fecha) { %>
+                            <!--Fecha de los mensajes-->
                             <li class="fecha"><%= mensajes[i].fecha %></li>
                         <% } %>                           
                         <% if (mensajes[i].correoEmisor == listaUsuarios[0]) { %>
@@ -52,7 +80,8 @@
                             </li>
                         <% } %>
                     <% } %>
-                </ul>                    
+                </ul>
+                <!--Input y boton para enviar el mensaje-->                    
                 <div id="ctn-enviar-mensaje">
                     <input type="text" id="mensaje" name="mensaje" placeholder="Escribe un mensaje...">
                     <button type="submit"  class="btn btn-primary" id="boton">Enviar</button>
@@ -62,6 +91,76 @@
     </div>
     <%- include("footer") %>
     <script>
+        //Función para abrir el modal
+        var botonNuevoChat = $('#botonNuevoChat');
+        var ctnNuevoChat = $('#ctn-nuevo-chat');
+        var ctnCover = $('#ctn-nc-cover');
+        botonNuevoChat.click(function(e){
+            e.preventDefault();
+            ctnNuevoChat.show();
+            ctnCover.show();
+        });
+        //Función para cerrar el modal al hacer click fuera del modal
+        ctnCover.click(function(){
+            ctnNuevoChat.hide();
+            ctnCover.hide();
+        });
+        //Funcionalidad del modal de crear nuevo chat
+        $('#tipoUsuario a').click(function(e){
+            e.preventDefault();
+            var tipo = $(this).attr('id');
+            if(tipo == "facultad"){
+                buscarMismaFacultad();
+            }
+            else if(tipo == "admin"){
+                buscarAdmin();}
+            }
+        );
+        //Función para buscar usuarios de la misma facultad
+        function buscarMismaFacultad(){
+            $.ajax({
+                url: '/buscarMismaFacultad',
+                type: 'POST',
+                data: {},
+                success: function(results){
+                    //Vaciamos la lista de nuevos usuarios
+                    $("#lista-nuevos-contactos").empty();
+                    //Añadimos los nuevos usuarios a la lista
+                    for (var i=0; i < results.length; i++){
+                        $("#lista-nuevos-contactos").append('<li class="nuevo-contacto"><a href="" id="'+results[i].correo+'"><img src="img/users/'+results[i].foto+'" alt="'+results[i].foto+'">'+results[i].correo+'</a></li>');
+                    }
+                }
+            });
+        }
+        //Función para buscar administradores
+        function buscarAdmin(){
+            $.ajax({
+                url: '/buscarAdmin',
+                type: 'POST',
+                data: {},
+                success: function(results){
+                    //Vaciamos la lista de nuevos usuarios
+                    $("#lista-nuevos-contactos").empty();
+                    //Añadimos los nuevos usuarios a la lista
+                    for (var i=0; i < results.length; i++){
+                        $("#lista-nuevos-contactos").append('<li class="nuevo-contacto"><a href="" id="'+results[i].correo+'"><img src="img/users/'+results[i].foto+'" alt="'+results[i].foto+'">'+results[i].correo+'</a></li>');
+                        //<i class="bi bi-star-fill"></i> WIP
+                    }
+                }
+            });
+        }
+        //Función para cargar un chat nuevo con el usuario seleccionado
+        $('#lista-nuevos-contactos').on('click', 'a', (function(e){
+            e.preventDefault();
+            //Obtenemos el correo del usuario seleccionado
+            var usuario = $(this).text().trim();
+            //Cambiamos el usuario con el que estamos hablando
+            $('#usuario-seleccionado').text(usuario);
+            //Vaciamos el chat
+            $('#ctn-mensajes').empty();
+            ctnNuevoChat.hide();
+            ctnCover.hide();
+        }));
         //Función para mostrar el chat con el usuario seleccionado cuando se haga click en un usuario
         function cargarMensajes(e){
             e.preventDefault();
@@ -95,6 +194,7 @@
                             $("#ctn-mensajes").append('<li class="mensaje-enviado"><p>'+mensajesUsur[i].mensaje+'<span class="hora">'+mensajesUsur[i].hora+'</span></p></li>');
                         }
                     }
+                    scrollChat();
                 }
             });
         }
@@ -122,14 +222,15 @@
                 }
             });
         });
-
-        $(document).ready(function() {
+        function scrollChat() {
             // Obtén el contenedor
             var contenedorChats = $('#ctn-mensajes');
 
             // Configura la posición del desplazamiento al valor máximo
             contenedorChats.scrollTop(contenedorChats.prop('scrollHeight'));
-        });
+        }
+
+        $(document).ready(scrollChat);
                 
         //Filtlar los chats abiertos
         inputSearch = document.getElementById("searchInput");

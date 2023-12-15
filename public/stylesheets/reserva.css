@@ -2,14 +2,14 @@
 #imagenCarousel{
   width: 100%;
 }
- /*Estilo de la sección de descripción de destino*/
-#descripcionDestino{
+ /*Estilo de la sección de descripción de instalacion*/
+#descripcionInstalacion{
   margin-right: 20px;
 }
-#descripcionDestino p{
+#descripcionInstalacion p{
   text-align: justify;
 }
-#descripcionDestino a{
+#descripcionInstalacion a{
   font-size: 19px;
 }
   

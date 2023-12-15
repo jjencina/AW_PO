@@ -1,3 +1,4 @@
+/*Estilo general de la página*/
 #ctn-cuadro-mensajes{
     width: 100%;
     height: 100%;
@@ -12,34 +13,89 @@ li{
 li a{
     text-decoration: none;
 }
-
-/*Estilo de la lista de chats*/
+/*Estilo de la ventana modal*/
+#ctn-nuevo-chat{
+    width: 30%;
+    height: 40%;
+    display:none;
+    position:fixed;
+    z-index:8;
+    left:50%;
+    top:50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 10px;
+}
+/*Estilo de la barra de tipo de usuarios*/
+#tipoUsuario{
+    display: flex;
+    flex-direction: row;
+}
+.tipo-usuario{
+    margin:1vh;
+}
+.tipo-usuario:hover{
+    background-color: rgb(240, 240, 240);
+}
+/*Estilo de la lista de usuarios de la ventana modal*/
+#lista-nuevos-contactos{
+    max-height: 100%;
+    overflow-y: auto;
+}
+#lista-nuevos-contactos li img{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+    margin-right: 10px;
+}
+#lista-nuevos-contactos li{
+    margin-left: -40px;
+    padding: 1vh;
+    cursor: pointer;
+}
+#lista-nuevos-contactos li:hover{
+    background-color: rgb(240, 240, 240);
+}
+/*La capa gris cuando se abre la ventana modal*/
+#ctn-nc-cover{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top:80px;
+    background: rgba(0,0,0,0.5);
+    z-index: 7;
+    display: none;
+}
+/*Barra de búsqueda de chats*/
+#searchInput{
+    width: 75%;
+    height: 50px;
+    border-radius: 10px;
+    border: 1px solid #3b7bea;
+    padding: 1vh;
+    font-size: 16px;
+    margin-bottom: 1vh;
+}
+/*Estilo de chats disponibles*/
 #ctn-lista-chats{
     width: 30vw;
     height: 80vh;
     margin-left: 3vw;
     display: block;
     border-radius: 10px;
-    border: 2px solid #3b7bea; /* Ancho de 2 píxeles, sólido, color gris oscuro (#333) */
-    padding: 10px; /* Añade un relleno interior al contenedor para separar el contenido del borde */
+    border: 2px solid #3b7bea; 
+    padding: 1vh; 
 }
-#searchInput{
-    width: 100%;
-    height: 50px;
-    border-radius: 10px;
-    border: 1px solid #3b7bea;
-    padding: 8px;
-    font-size: 16px;
-    margin-bottom: 10px;
-}
-
 #lista-chat{
     max-height: 100%;
     overflow-y: auto;
 }
 #lista-chat li{
     margin-left: -40px;
-    padding: 10px;
+    padding: 1vh;
     border-bottom: 1px solid #3b7bea;
     cursor: pointer;
 }
@@ -54,57 +110,57 @@ li a{
     border: 2px solid #fff;
     margin-right: 10px;
 }
-/*Estilo de los mensajes*/
+/*Estilo del chat de mensajes*/
+#ctn-chat{
+    width: 60vw;
+    height: 83.5vh;
+    display: block;
+}
 #usuario-seleccionado{
-    display:block;
-    padding: 10px;
+    padding: 1vh;
     border-radius: 10px;
     border: 2px solid #3b7bea;
     border-bottom-right-radius:0px;
     border-bottom-left-radius: 0px ;
-}
-#ctn-chat{
-    min-height: 80vh;
-    max-height: 80vh;
+    z-index:6;
 }
 #ctn-mensajes{
-    margin-top: -10px;
+    margin-top: -1.4vh;
     height: 100%;
     max-height: 80%;
     overflow-y: auto;
     border: 2px solid #3b7bea;
+    border-top: 0px;
+    z-index:4;
 }
-
 .fecha{
     text-align: center;
     font-size: small;
     display: block;
-    margin-top: 10px;
+    margin-top: 1vh;
 }
 .hora{
     text-align: right;
     font-size: small;
     display: block;
 }
+/*Estilo de los mensajes del chat*/
 .mensaje-recibido{      
-    margin-top: 10px;
+    margin-top: 1vh;
     padding-right: 40%;
-}
-   
+}   
 .mensaje-recibido p{
     text-align: left;
     border-radius: 10px;
     border: 1px solid #3b7bea;
-    padding:10px;
+    padding:1vh;
     word-wrap: break-word;
 }
-
 .mensaje-enviado{
     padding-left:40%;
     padding-right:4%;
-    margin-top: 10px;
+    margin-top: 1vh;
 }
-
 .mensaje-enviado p{
     text-align: right;
     background: #3b7bea;
@@ -112,27 +168,27 @@ li a{
     border-radius: 10px;
     padding:10px;
 }
-
+/*Estilo de la barra y el boton de enviar mensaje*/
 #ctn-enviar-mensaje{    
-    margin-top: -20px;
-    padding: 10px;
+    margin-top: -2.5vh;
+    padding: 1vh;
     border-radius: 10px;
     border: 2px solid #3b7bea;
     border-top: 0px;
     border-top-right-radius:0px;
     border-top-left-radius: 0px ;
 }
-
 #ctn-enviar-mensaje #mensaje{
-    margin-top:13px;
-    width: 90%;
+    margin-top:1vh;
+    width: 80%;
     height: 50%;
     border-radius: 10px;
     border: 1px solid #3b7bea;
     padding: 8px;
     font-size: 16px;
-    margin-bottom: 10px;
+    margin-bottom: 1vh;
 }
+
 /*Personaliza el scrollbar*/
 ::-webkit-scrollbar{
     width: 8px;
@@ -144,3 +200,15 @@ li a{
     background: #3b7bea;
 }
 
+/*Responsive*/
+@media screen and (max-width: 768px){
+   #ctn-lista-chats{
+    width: 90%;
+    margin-left: 7.5%;
+   }
+   #ctn-chat{
+         width: 90%;
+         margin-left: 7.5%;
+         margin-top: 5%;
+   }
+}

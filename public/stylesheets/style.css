@@ -37,6 +37,12 @@ header {
   justify-content: center;
   align-items: center;
 }
+.logo img{
+  height: 60px;
+  width: 60px;
+  margin-right: 10px;
+
+}
 r{
   color: #fd8f46;
 }
@@ -266,6 +272,7 @@ p {
 /*Estilo de menu desplegable en el header*/
 #user-menu-list {
  background-color: #3b7bea;
+ right: 120px;
 }
 
 #user-menu-list-2 {
@@ -290,7 +297,6 @@ p {
   border: 2px solid #fff;
   margin-right: 10px;
 }
-
 #user-img:hover {
   border-color: black; 
 }
