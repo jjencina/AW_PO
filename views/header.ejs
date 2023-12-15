@@ -5,7 +5,7 @@
     
     <div class="header-content">
     <div class="logo">
-        <h1><img src="./img/logoUCM.png">UCM-<r>RIU</r></h1>
+        <h1><img src="/img/logoUCM.png" alt="logo de la UCM">UCM-<r>RIU</r></h1>
     </div>
     <div>
         <nav class="container navbar navbar_default">
@@ -54,7 +54,7 @@
                     <li id="user-menu-2">
                         <% if (isAuthenticated) { %>
                             <a href="#" id="link-imagen">                               
-                                <img src="img/users/default.png" alt="<%= currentUser %>" id="user-img">
+                                <img src="/img/users/default.png" alt="<%= currentUser %>" id="user-img">
                             </a>
                             <ul class="navbar-nav" id="user-menu-list-2">
                                 <li><a href="/profile">Perfil</a></li>
@@ -90,7 +90,6 @@
 <div id="cover-ctn-search"></div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
 <script>
         var userMenuList = $('#user-menu-list');
@@ -107,9 +106,6 @@
         $('#user-menu-list a').on("click", function () {
             userMenuList.hide();
         });
-</script>
-
-<script>
         //Lo mismo pero para el que esta en parte de arriba
         var userMenuList2 = $('#user-menu-list-2');
         $('#user-menu-list-2').hide();
@@ -125,9 +121,6 @@
         $('#user-menu-list-2 a').on("click", function () {
             userMenuList2.hide();
         });
-</script>
-
-<script>
     //Foto de perfil
     var link_imagen = $('#link-imagen');
     $.ajax({
@@ -136,9 +129,9 @@
         success: function (data) {
             console.log(data)
             if (data.foto == null) {
-                link_imagen.html('<img src="img/users/default.png" alt="<%= currentUser %>" id="user-img"> ');
+                link_imagen.html('<img src="/img/users/default.png" alt="<%= currentUser %>" id="user-img"> ');
             } else {
-                link_imagen.html('<img src="img/users/'+data.foto + '" alt="<%= currentUser %>" id="user-img">');
+                link_imagen.html('<img src="/img/users/'+data.foto + '" alt="<%= currentUser %>" id="user-img">');
             }
         },
         error: function (error) {
@@ -146,9 +139,6 @@
         }
     });
     
-</script>
-
-<script>
       $('.navbar-toggler').click(function(){
        if($('.collapse').hasClass('show')){
            $('.collapse').removeClass('show');
@@ -211,5 +201,6 @@
        }
    }  
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
 
