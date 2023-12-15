@@ -267,9 +267,9 @@ router.get('/admin', (req, res) => {
 });
 
 //Llamar a admin/usuarios
-router.get('/admin/user', (req, res) => {
+router.get('/user', (req, res) => {
     usuarios = {};
-    res.render('admin/users', { 
+    res.render('users', { 
       errors: [] , 
       exito: false, 
       isAuthenticated: res.locals.isAuthenticated,
@@ -280,7 +280,7 @@ router.get('/admin/user', (req, res) => {
 });
 
 //Mediante Ajax devolver usuarios de la base de datos a la vista
-router.get('/admin/users', (req, res) => {
+router.get('/users', (req, res) => {
   //Leer usuarios de la base de datos
   integracion.leerTodosLosUsuarios((error, results) => {
     if (error) {
@@ -293,7 +293,7 @@ router.get('/admin/users', (req, res) => {
 });
 
 //post para borrar usuarios
-router.post('/admin/expel-users/:correo', (req, res) => {
+router.post('/expel-users/:correo', (req, res) => {
   const correoUsuario = req.params.correo;
   integracion.expulsarUsuario(correoUsuario, (error, results) => {
     if (error) {
@@ -318,7 +318,7 @@ router.post('/admin/validate-users/:correo', (req, res) => {
 });
 
 //Invalidar Usuario
-router.post('/admin/invalidate-users/:correo', (req, res) => {
+router.post('/invalidate-users/:correo', (req, res) => {
   const correoUsuario = req.params.correo;
   integracion.invalidarUsuario(correoUsuario, (error, results) => {
     if (error) {
