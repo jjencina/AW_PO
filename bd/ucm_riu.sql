@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 13, 2023 at 04:09 PM
+-- Generation Time: Dec 15, 2023 at 10:39 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -38,7 +38,9 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`session_id`, `expires`, `data`) VALUES
-('UqnD2jdsdJdu1uiaxm0a40tFFtC8mD4k', 1702566288, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":\"a@ucm.es\"}');
+('3-XrPAgL1AwvXxFueVvtq7Br4w0zKclX', 1702677585, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":\"a@ucm.es\"}'),
+('3cve8nvdbtCztKj4PuCX05sFj4ch4CET', 1702680641, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":\"a@ucm.es\"}'),
+('Am5ZbULhCz7O4XgdjmyU3r8md9MYbECe', 1702670985, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":\"a@ucm.es\"}');
 
 -- --------------------------------------------------------
 
@@ -80,12 +82,12 @@ CREATE TABLE `ucm_aw_riu_ins_instalaciones` (
 --
 
 INSERT INTO `ucm_aw_riu_ins_instalaciones` (`id`, `nombre`, `tipo`, `facultad`) VALUES
-(1, 'Lab 1', 'Laboratorio', 'Informática'),
-(2, 'Lab 2', 'Laboratorio', 'Informática'),
-(3, 'Lab 3', 'Laboratorio', 'Informática'),
-(4, 'Lab 1', 'Laboratorio', 'Biología'),
-(5, 'Lab 2', 'Laboratorio', 'Biología'),
-(6, 'Lab 3', 'Laboratorio', 'Biología'),
+(1, 'Lab 1', 'Laboratorios', 'Informática'),
+(2, 'Lab 2', 'Laboratorios', 'Informática'),
+(3, 'Lab 3', 'Laboratorios', 'Informática'),
+(4, 'Lab 1', 'Laboratorios', 'Biología'),
+(5, 'Lab 2', 'Laboratorios', 'Biología'),
+(6, 'Lab 3', 'Laboratorios', 'Biología'),
 (7, 'Salón de actos', 'Salón de actos', 'Informática');
 
 -- --------------------------------------------------------
@@ -110,10 +112,10 @@ CREATE TABLE `ucm_aw_riu_ins_tipo` (
 --
 
 INSERT INTO `ucm_aw_riu_ins_tipo` (`id`, `tipo`, `imagen`, `descripcion`, `hora_de_apertura`, `hora_de_cierre`, `aforo`, `colectivo`) VALUES
-(1, 'Laboratorio', 'lab1.jpg', 'Reserva un puesto de laboratorio durante dos horas', '09:00:00', '21:00:00', 20, 0),
-(2, 'Sala de grados', 'grados1.jpg', 'Reserva una sala de grados durante dos horas', '10:00:00', '20:00:00', 50, 1),
-(3, 'Salón de actos', 'actos1.jpg', 'Reserva un salón de actos durante dos horas', '10:00:00', '20:00:00', 300, 1),
-(4, 'Sala de reuniones', 'reuniones1.jpg', 'Reserva una sala de reunión durante dos horas', '09:00:00', '21:00:00', 15, 1);
+(1, 'Laboratorios', 'lab1.jpg', 'Reserva un puesto de laboratorio durante dos horas para trabajar como quieras.', '09:00:00', '21:00:00', 20, 0),
+(2, 'Sala de grados', 'grados1.jpg', 'Reserva una sala de grados durante dos horas para tus conferencias.', '10:00:00', '20:00:00', 50, 1),
+(3, 'Salón de actos', 'actos1.jpg', 'Reserva un salón de actos durante dos horas para realizar algún tipo de exposición.', '10:00:00', '20:00:00', 300, 1),
+(4, 'Sala de reuniones', 'reuniones1.jpg', 'Reserva una sala de reunión durante dos horas para tus reuniones.', '09:00:00', '21:00:00', 15, 1);
 
 -- --------------------------------------------------------
 
@@ -142,7 +144,8 @@ INSERT INTO `ucm_aw_riu_msg_mensajes` (`id`, `correoEmisor`, `correoReceptor`, `
 (5, 'a@ucm.es', 'josefa@ucm.es', '2023-12-12', '18:06:19', 'hola josefa'),
 (7, 'a@ucm.es', 'gustabo@ucm.es', '2023-12-12', '19:31:02', 'hola'),
 (9, 'a@ucm.es', 'gustabo@ucm.es', '2023-12-13', '13:57:37', 'hola gustabo, estás?'),
-(13, 'a@ucm.es', 'josefa@ucm.es', '2023-12-13', '16:04:48', 'hola juanjo');
+(14, 'a@ucm.es', 'gustabo@ucm.es', '2023-12-14', '12:29:19', 'hola'),
+(18, 'a@ucm.es', 'josefa@ucm.es', '2023-12-14', '16:21:46', 'patata');
 
 -- --------------------------------------------------------
 
@@ -200,7 +203,9 @@ CREATE TABLE `ucm_aw_riu_usu_usuarios` (
 INSERT INTO `ucm_aw_riu_usu_usuarios` (`id`, `nombre`, `apellido1`, `apellido2`, `correo`, `contrasena`, `admin`, `validado`, `foto`, `facultad`) VALUES
 (1, 'Gustabo', 'Adolfo', 'Roberto', 'gustabo@ucm.es', 'a', 0, 0, 'user1.png', 'Informática'),
 (2, 'a', 'a', 'a', 'a@ucm.es', 'a', 1, 1, 'user2.png', 'Informática'),
-(3, 'Josefa', 'Pérez', 'García', 'josefa@ucm.es', 'a', 0, 1, 'user3.png', 'Informática');
+(3, 'Josefa', 'Pérez', 'García', 'josefa@ucm.es', 'a', 0, 1, 'user3.png', 'Informática'),
+(6, 'b', 'b', 'b', 'b@ucm.es', 'b', 0, 1, 'default.png', 'Informática'),
+(7, 'c', 'c', 'c', 'c@ucm.es', 'c', 1, 1, 'default.png', 'Información');
 
 --
 -- Indexes for dumped tables
@@ -274,7 +279,7 @@ ALTER TABLE `ucm_aw_riu_ins_tipo`
 -- AUTO_INCREMENT for table `ucm_aw_riu_msg_mensajes`
 --
 ALTER TABLE `ucm_aw_riu_msg_mensajes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `ucm_aw_riu_res_reservas`
@@ -286,7 +291,7 @@ ALTER TABLE `ucm_aw_riu_res_reservas`
 -- AUTO_INCREMENT for table `ucm_aw_riu_usu_usuarios`
 --
 ALTER TABLE `ucm_aw_riu_usu_usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
