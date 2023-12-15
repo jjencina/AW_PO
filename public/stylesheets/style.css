@@ -6,9 +6,7 @@
   text-decoration: none;
   font-family: 'Source Sans Pro', sans-serif;
 }
-body {
-  background: rgb(201, 83, 5);
-}
+
 /* Estilos del encabezado */
 header {
   position: fixed;
@@ -41,8 +39,8 @@ header {
   height: 60px;
   width: 60px;
   margin-right: 10px;
-
 }
+
 r{
   color: #fd8f46;
 }

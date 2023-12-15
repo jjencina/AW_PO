@@ -149,7 +149,7 @@ router.get('/reserva/:tipo', buscarTipoIns, (req, res) => {
 });
 
 //Ruta para obtener las instalaciones de un tipo de cada facultad
-router.post('/instalaciones', (req, res) => {
+router.post('/lista-instalaciones', (req, res) => {
   const tipo_ins = req.body.tipo;
   const facultad = req.body.facultad;
   integracion.buscarInstalacionesPorTipoFacultad(tipo_ins, facultad, function (err, resultados) {
@@ -229,8 +229,6 @@ router.post('/horasDisponibles', (req, res) => {
   }
   res.json(returnArray);
 }
-
-  
 });
 
 
