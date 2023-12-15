@@ -64,7 +64,7 @@ router.get('/', (req, res) => {
 });
 
 //Obtener todos los tipos de instalaciones
-router.get('/admin/obtener_tipos_instalacion', (req, res) => {
+router.get('/obtener_tipos_instalacion', (req, res) => {
   integracion.leerTodosLosTiposIns((err, tipo_ins) => {
     if (err) {
       console.error('Error al obtener tipos de instalaciones:', err);
@@ -76,7 +76,7 @@ router.get('/admin/obtener_tipos_instalacion', (req, res) => {
 });
 
 //Obtiene todos las instalaciones
-router.get('/admin/obtener_instalaciones', (req, res) => {
+router.get('/obtener_instalaciones', (req, res) => {
   integracion.leerTodasLasInstalaciones((err, instalaciones) => {
     if (err) {
       console.error('Error al obtener instalaciones:', err);
@@ -88,7 +88,7 @@ router.get('/admin/obtener_instalaciones', (req, res) => {
 });
 
 //crear una instalacion
-router.post('/admin/crear_instalacion', (req, res) => {
+router.post('/crear_instalacion', (req, res) => {
   const nombre_ins = req.body.nombre;
   const tipo_ins = req.body.tipo;
   const facultad = req.body.facultad;
@@ -327,15 +327,15 @@ router.post('/reservar', comprobarLogin, cargarImagen, [
 
  
 //get pagina de de admin/instalaciones
-router.get('/admin/instalaciones', (req, res) => {
-  res.render('admin/instalaciones', { 
+router.get('/instalaciones', (req, res) => {
+  res.render('instalaciones', { 
     isAuthenticated: res.locals.isAuthenticated,
     isAdmin: res.locals.isAdmin,
     });
 });
 
 //get  instalaciones instalaciones
-router.get('/admin/leer-instalaciones', (req, res) => {
+router.get('/leer-instalaciones', (req, res) => {
   integracion.buscarTipoIns((err, tipo_ins) => {
     if (err) {
       console.error('Error al obtener tipos de instalaciones:', err);

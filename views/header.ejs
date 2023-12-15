@@ -2,6 +2,7 @@
     <link rel='stylesheet' href='/stylesheets/style.css'/> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
     <div class="header-content">
     <div class="logo">
         <h1><img src="./img/logoUCM.png">UCM-<r>RIU</r></h1>
@@ -30,8 +31,8 @@
                             <ul class="navbar-nav" id="user-menu-list">
                                 <li class="nav-item"><a href="/profile">Perfil</a></li>
                                 <%if(isAdmin){%>
-                                    <li class="nav-item"><a href="/admin/user">Gestionar Usuarios</a></li>
-                                    <li class="nav-item"><a href="/admin/instalaciones">Gestionar Instalaciones</a></li>
+                                    <li class="nav-item"><a href="/user">Gestionar Usuarios</a></li>
+                                    <li class="nav-item"><a href="/instalaciones">Gestionar Instalaciones</a></li>
                                     <li class="nav-item"><a href="/admin">Ver estadísticas</a></li>
                                 <%}%>
                                 <li class="nav-item"></li><a href="/logout">Logout</a></li>
@@ -53,13 +54,13 @@
                     <li id="user-menu-2">
                         <% if (isAuthenticated) { %>
                             <a href="#" id="link-imagen">                               
-                                <img src="./img/users/default.png" alt="<%= currentUser %>" id="user-img">
+                                <img src="img/users/default.png" alt="<%= currentUser %>" id="user-img">
                             </a>
                             <ul class="navbar-nav" id="user-menu-list-2">
                                 <li><a href="/profile">Perfil</a></li>
                                 <%if(isAdmin){%>
-                                    <li ><a href="/admin/user">Gestionar Usuarios</a></li>
-                                    <li ><a href="/admin/instalaciones">Gestionar Instalaciones</a></li>
+                                    <li ><a href="/user">Gestionar Usuarios</a></li>
+                                    <li ><a href="/instalaciones">Gestionar Instalaciones</a></li>
                                     <li ><a href="/admin">Ver estadísticas</a></li>
                                 <%}%>
                                 <li><a href="/logout">Logout</a></li>
@@ -135,9 +136,9 @@
         success: function (data) {
             console.log(data)
             if (data.foto == null) {
-                link_imagen.html('<img src="./img/users/default.png" alt="<%= currentUser %>" id="user-img"> ');
+                link_imagen.html('<img src="img/users/default.png" alt="<%= currentUser %>" id="user-img"> ');
             } else {
-                link_imagen.html('<img src="./img/users/'+data.foto + '" alt="<%= currentUser %>" id="user-img">');
+                link_imagen.html('<img src="img/users/'+data.foto + '" alt="<%= currentUser %>" id="user-img">');
             }
         },
         error: function (error) {

@@ -12,7 +12,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 <body>
-    <%- include("../header") %>
+    <%- include("header") %>
     
     <div class="container">
         <div class="row">
@@ -43,15 +43,12 @@
         </div>
     </div>
     
-    <%- include("../footer") %>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <%- include("footer") %>
 
     <script>
         $(document).ready(function() {
             $.ajax({
-                url: '/admin/users',
+                url: '/users',
                 type: 'GET',
                 success: function(data) {
                     data.forEach(function(user) {
@@ -89,7 +86,7 @@
         function expelUser(correoUsuario) {
             console.log('Expulsar usuario: ' + correoUsuario);
             $.ajax({
-                url: '/admin/expel-users/' + correoUsuario,
+                url: '/expel-users/' + correoUsuario,
                 type: 'POST',
                 success: function(data) {
                     console.log('Expulsao');
@@ -107,7 +104,7 @@
             console.log('Desvalidar usuario: ' + correoUsuario);
             // Llamada AJAX para desvalidar al usuario
             $.ajax({
-                url: '/admin/invalidate-users/' + correoUsuario, 
+                url: '/invalidate-users/' + correoUsuario, 
                 type: 'POST',
                 success: function(data) {
                     console.log('Usuario desvalidado');
@@ -120,5 +117,8 @@
         }
     
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
 </body>
 </html>
