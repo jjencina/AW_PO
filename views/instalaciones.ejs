@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel='stylesheet' href='/stylesheets/style.css'/>
-    <link rel='stylesheet' href='/stylesheets/admin.css'/> 
+    <link rel='stylesheet' href='/stylesheets/instalaciones.css'/> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
@@ -13,14 +13,13 @@
     <%- include("header") %>
 
     <!-- Lista de Tipos de Instalaciones --> 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="cnt-cuadro">
+    <div class="ctn-tipo-inst">
+        <div id="ctn-inner-inst">   
                     <div class="cnt-admin"><h2>Gestionar Tipos de Instalaciones</h2></div>
+
                     
                     <!-- Lista de tipos de instalacion -->
-                    <table class="lista-tipo-instalaciones" id="lista-tipo-instalaciones">
+                    <table class="table table-striped" id="lista-tipo-instalaciones">
                         <thead>
                             <tr>
                                  <!-- <th>Imagen</th> -->
@@ -124,12 +123,13 @@
                             </div>
                         </div>
                     </div>
-
+                </div>
 
                     <!-- Lista de Instalaciones -->
-                    <div class="cnt-admin"><h2>Gestionar Instalaciones</h2></div>
+                <div id="ctn-inner-inst">
+                    <div ><h2>Gestionar Instalaciones</h2></div>
 
-                    <table class="lista-instalaciones" id="lista-instalaciones">
+                    <table class="table table-striped" id="lista-instalaciones">
                         <thead>
                             <tr>
                                 <th>Seleccionar</th>
@@ -142,22 +142,29 @@
                             <p></p>
                         </tbody>
                     </table>
+
+                    <!-- Botones para Instalaciones -->
+                    <tr>
+                        <td colspan="3">
+                            <button class="btn btn-primary" onclick="botonCrearInstalacion()">Crear Instalación</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <button class="btn btn-danger" onclick="botonEliminarInstalacion()">Eliminar Instalación</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <button class="btn btn-primary" onclick="abrirModalEditarInstalacion()">Editar Instalación</button>
+                        </td>
+                    </tr>
+
+                </div>
+  
+    </div>
            
-    <tr>
-        <td colspan="3">
-            <button class="btn btn-primary" onclick="botonCrearInstalacion()">Crear Instalación</button>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="3">
-            <button class="btn btn-danger" onclick="botonEliminarInstalacion()">Eliminar Instalación</button>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="3">
-            <button class="btn btn-primary" onclick="abrirModalEditarInstalacion()">Editar Instalación</button>
-        </td>
-    </tr>
+
 
     <!-- Ventana modal crear isntalación -->
     <div id="crear-instalacion-modal" class="modal" style="display: none;">
