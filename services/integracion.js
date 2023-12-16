@@ -156,7 +156,22 @@ const integracion = {
       }
     });
   },
-  
+  // Trae todas las reservas
+  leerTodasLasReservas: function(callback) {
+    pool.getConnection((err, conexion) => {
+      if (err) {callback(err);} 
+      else {
+        conexion.query('SELECT * FROM  ucm_aw_riu_res_reservas', (err, results) => {
+          conexion.release();
+          if (err) {
+            callback(err);
+          } else {
+            callback(null, results);
+          }
+        });
+      }
+    });
+  },
   // Insertar reserva en la bd
   insertarReserva: function(nombre_ins, facultad, nombre_usu, correo_usu, fecha_res, hora_res, callback) {
     pool.getConnection((err, conexion) => {
