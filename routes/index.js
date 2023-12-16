@@ -94,12 +94,19 @@ router.post('/crear_instalacion', (req, res) => {
   const nombre_ins = req.body.nombre;
   const tipo_ins = req.body.tipo;
   const facultad = req.body.facultad;
+
+  if (!nombre_ins || !tipo_ins || !facultad) {
+    return res.status(400).send('Faltan campos obligatorios en el formulario.');
+  }
+r
   integracion.insertarInstalacion(nombre_ins, tipo_ins, facultad, (err, results) => {
     if (err) {
-      console.error('Error al insertar instalacion:', err);
+      console.error('Error al insertar instalación:');
+      console.error('Error al insertar instalación:', err);
       res.status(500).send('Error interno del servidor');
     } else {
-      res.json({success: true})
+      console.log('Instalación creada correctamente');
+      res.json({ success: true});
     }
   });
 });

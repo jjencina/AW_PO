@@ -38,6 +38,7 @@
                     </table>
 
                     <!-- Botones para Tipos de Instalaciones -->
+                    <!--
                     <tr>
                         <td colspan="3">
                             <button class="btn btn-primary" onclick="abrirModalCrearTipoInstalacion()">Crear Tipo de Instalación</button>
@@ -51,8 +52,8 @@
                         <td colspan="3">            
                         <button class="btn btn-primary" onclick="abrirModalEditarTipoInstalacion()">Editar Tipo de Instalación</button>
                         </td>
-                    
-
+                    -->
+                        
                     <!-- Ventana modal crear tipo de instalación -->
                     <div id="crear-tipo-instalacion-modal" class="modal" style="display: none;">
                         <div class="modal-dialog">
@@ -149,6 +150,7 @@
                             <button class="btn btn-primary" onclick="botonCrearInstalacion()">Crear Instalación</button>
                         </td>
                     </tr>
+                    <!--
                     <tr>
                         <td colspan="3">
                             <button class="btn btn-danger" onclick="botonEliminarInstalacion()">Eliminar Instalación</button>
@@ -159,6 +161,7 @@
                             <button class="btn btn-primary" onclick="abrirModalEditarInstalacion()">Editar Instalación</button>
                         </td>
                     </tr>
+                    -->
 
                 </div>
   
@@ -177,8 +180,8 @@
                 <div class="modal-body">
                     <form >
                         <div class="mb-3">
-                            <label for="nombre" class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                            <label for="nombreInst" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombreInst" name="nombreInst" required>
                         </div>
                         <div class="mb-3">
                             <label for="tipo" class="form-label">Tipo</label>
@@ -398,26 +401,25 @@
         
         //Botón de crear instalación
         function crearInstalacion() {  
+            event.preventDefault();
             console.log('Crear instalación');
-            console.log($('#nombre').val());
-            console.log($('#tipo').val());
-            console.log($('#facultad').val());
+            
+            //Funcion ajax qu ellame a la funcion post de crear instalacion
             $.ajax({
                 url: '/crear_instalacion',
                 type: 'POST',
                 data: {
-                    nombre: $('#nombre').val(),
+                    nombre: $('#nombreInst').val(),
                     tipo: $('#tipo').val(),
                     facultad: $('#facultad').val()
                 },
-                
                 success: function(response) {
-                    alert("Instalación creada")
+                    alert("Instalación creada correctamente");
                     console.log('Instalación creada');
                     location.reload();
                 },
                 error: function(error) {
-                    alert("Error al crear la instalación")
+                    alert("Error al crear la instalación");
                     console.log(error);
                 }
             });
