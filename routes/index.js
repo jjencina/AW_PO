@@ -356,5 +356,49 @@ router.get('/leer-instalaciones', (req, res) => {
     }
   });
  }); 
+
+ //Historial de reservas
+  router.post('/historial', (req, res) => {
+    nombre = req.body.nombre;
+    console.log(nombre);
+    if(nombre.indexOf('@') !== -1){
+      integracion.buscarReservasPorCorreo(nombre, function (err, resultados) {
+        if (err) {
+          console.error('Error al buscar el usuario por correo:', err);
+          res.status(500).send('Error interno del servidor');
+        } else {
+          for(var i = 0; i < resultados.length; i++){
+            fecha = resultados[i].fecha_res;
+            fecha = new Date(fecha);
+            dia = fecha.getDate();
+            mes = fecha.getMonth() + 1;
+            anio = fecha.getFullYear();
+            fecha = dia + '/' + mes + '/' + anio;
+            resultados[i].fecha_res = fecha;
+          }
+          res.json(resultados);
+        }
+      });
+    }
+    else{
+      integracion.buscarReservasPorInstalacion(nombre, function (err, resultados) {
+        if (err) {
+          console.error('Error al buscar el usuario por correo:', err);
+          res.status(500).send('Error interno del servidor');
+        } else {
+          for(var i = 0; i < resultados.length; i++){
+            fecha = resultados[i].fecha_res;
+            fecha = new Date(fecha);
+            dia = fecha.getDate();
+            mes = fecha.getMonth() + 1;
+            anio = fecha.getFullYear();
+            fecha = dia + '/' + mes + '/' + anio;
+            resultados[i].fecha_res = fecha;
+          }
+          res.json(resultados);
+        }
+      });
+    }
+  });
 module.exports = router;
    

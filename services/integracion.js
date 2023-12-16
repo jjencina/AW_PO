@@ -105,6 +105,38 @@ const integracion = {
       }
     });
   },
+  //Buscar reservas por correo
+  buscarReservasPorCorreo: function(correo, callback){
+    pool.getConnection(function(err, conexion){
+      if(err){callback(err);}
+      else {
+        conexion.query('SELECT * FROM ucm_aw_riu_res_reservas WHERE correo_usu = ?', [correo], function (err, rows) {
+          conexion.release();
+          if (err) {
+            callback(err);
+          } else {
+            callback(null, rows);
+          }
+        });
+      }
+    });
+  },
+  //Buscar reservas por instalacion
+  buscarReservasPorInstalacion: function(instalacion, callback){
+    pool.getConnection(function(err, conexion){
+      if(err){callback(err);}
+      else {
+        conexion.query('SELECT * FROM ucm_aw_riu_res_reservas WHERE nombre_ins = ?', [instalacion], function (err, rows) {
+          conexion.release();
+          if (err) {
+            callback(err);
+          } else {
+            callback(null, rows);
+          }
+        });
+      }
+    });
+  },
   //Devuelve las horas que están reservadas ese día en esa instalación
   buscarHorasReservadas: function(instalacion, fecha, facultad, callback){
     pool.getConnection(function(err, conexion){

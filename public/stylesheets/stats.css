@@ -10,4 +10,17 @@
     margin-bottom: 20px;
     padding:10px;
 }
-
+#mhistorial{
+    display: none;
+    width: 50%;
+    max-height: 70%;
+    display:none;
+    position:fixed;
+    left:50%;
+    top:60%;
+    transform: translate(-50%, -50%);
+    overflow-y: auto;
+}
+#mhistorial modal-content{
+    padding:10px;
+}
