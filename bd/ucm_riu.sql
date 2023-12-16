@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Dec 15, 2023 at 10:39 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 16-12-2023 a las 19:48:56
+-- Versión del servidor: 10.4.28-MariaDB
+-- Versión de PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `ucm_riu`
+-- Base de datos: `ucm_riu`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `sessions`
+-- Estructura de tabla para la tabla `sessions`
 --
 
 CREATE TABLE `sessions` (
@@ -33,19 +33,31 @@ CREATE TABLE `sessions` (
   `data` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `sessions`
+-- Estructura de tabla para la tabla `ucm_aw_riu_facultades`
 --
 
-INSERT INTO `sessions` (`session_id`, `expires`, `data`) VALUES
-('3-XrPAgL1AwvXxFueVvtq7Br4w0zKclX', 1702677585, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":\"a@ucm.es\"}'),
-('3cve8nvdbtCztKj4PuCX05sFj4ch4CET', 1702680641, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":\"a@ucm.es\"}'),
-('Am5ZbULhCz7O4XgdjmyU3r8md9MYbECe', 1702670985, '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"currentUser\":\"a@ucm.es\"}');
+CREATE TABLE `ucm_aw_riu_facultades` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `nombre` varchar(255) NOT NULL,
+  `foto` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `ucm_aw_riu_facultades`
+--
+
+INSERT INTO `ucm_aw_riu_facultades` (`id`, `nombre`, `foto`) VALUES
+(1, 'Informática', 'logo_informatica.png'),
+(2, 'Biología', 'logo_biologia.png'),
+(3, 'Información', 'logo_informacion.png');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ucm_aw_riu_img_imagenes`
+-- Estructura de tabla para la tabla `ucm_aw_riu_img_imagenes`
 --
 
 CREATE TABLE `ucm_aw_riu_img_imagenes` (
@@ -55,19 +67,19 @@ CREATE TABLE `ucm_aw_riu_img_imagenes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Dumping data for table `ucm_aw_riu_img_imagenes`
+-- Volcado de datos para la tabla `ucm_aw_riu_img_imagenes`
 --
 
 INSERT INTO `ucm_aw_riu_img_imagenes` (`id`, `nombre_ins`, `nombre_imagen`) VALUES
 (1, 'Salon de actos', 'actos1.jpg'),
 (2, 'Sala de grados', 'grados1.jpg'),
-(3, 'Laboratorios', 'lab1.jpg'),
+(3, 'Laboratorio', 'lab1.jpg'),
 (4, 'Sala de reuniones', 'reuniones1.jpg');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ucm_aw_riu_ins_instalaciones`
+-- Estructura de tabla para la tabla `ucm_aw_riu_ins_instalaciones`
 --
 
 CREATE TABLE `ucm_aw_riu_ins_instalaciones` (
@@ -78,7 +90,7 @@ CREATE TABLE `ucm_aw_riu_ins_instalaciones` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Dumping data for table `ucm_aw_riu_ins_instalaciones`
+-- Volcado de datos para la tabla `ucm_aw_riu_ins_instalaciones`
 --
 
 INSERT INTO `ucm_aw_riu_ins_instalaciones` (`id`, `nombre`, `tipo`, `facultad`) VALUES
@@ -88,12 +100,15 @@ INSERT INTO `ucm_aw_riu_ins_instalaciones` (`id`, `nombre`, `tipo`, `facultad`) 
 (4, 'Lab 1', 'Laboratorios', 'Biología'),
 (5, 'Lab 2', 'Laboratorios', 'Biología'),
 (6, 'Lab 3', 'Laboratorios', 'Biología'),
-(7, 'Salón de actos', 'Salón de actos', 'Informática');
+(7, 'Salón de actos', 'Salón de actos', 'Informática'),
+(8, '', 'Laboratorios', 'Informática'),
+(9, 'asd', 'Laboratorios', 'Informática'),
+(10, 'alksjdlka', 'Laboratorios', 'Informática');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ucm_aw_riu_ins_tipo`
+-- Estructura de tabla para la tabla `ucm_aw_riu_ins_tipo`
 --
 
 CREATE TABLE `ucm_aw_riu_ins_tipo` (
@@ -108,7 +123,7 @@ CREATE TABLE `ucm_aw_riu_ins_tipo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `ucm_aw_riu_ins_tipo`
+-- Volcado de datos para la tabla `ucm_aw_riu_ins_tipo`
 --
 
 INSERT INTO `ucm_aw_riu_ins_tipo` (`id`, `tipo`, `imagen`, `descripcion`, `hora_de_apertura`, `hora_de_cierre`, `aforo`, `colectivo`) VALUES
@@ -120,7 +135,7 @@ INSERT INTO `ucm_aw_riu_ins_tipo` (`id`, `tipo`, `imagen`, `descripcion`, `hora_
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ucm_aw_riu_msg_mensajes`
+-- Estructura de tabla para la tabla `ucm_aw_riu_msg_mensajes`
 --
 
 CREATE TABLE `ucm_aw_riu_msg_mensajes` (
@@ -133,7 +148,7 @@ CREATE TABLE `ucm_aw_riu_msg_mensajes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Dumping data for table `ucm_aw_riu_msg_mensajes`
+-- Volcado de datos para la tabla `ucm_aw_riu_msg_mensajes`
 --
 
 INSERT INTO `ucm_aw_riu_msg_mensajes` (`id`, `correoEmisor`, `correoReceptor`, `fecha`, `hora`, `mensaje`) VALUES
@@ -145,12 +160,18 @@ INSERT INTO `ucm_aw_riu_msg_mensajes` (`id`, `correoEmisor`, `correoReceptor`, `
 (7, 'a@ucm.es', 'gustabo@ucm.es', '2023-12-12', '19:31:02', 'hola'),
 (9, 'a@ucm.es', 'gustabo@ucm.es', '2023-12-13', '13:57:37', 'hola gustabo, estás?'),
 (14, 'a@ucm.es', 'gustabo@ucm.es', '2023-12-14', '12:29:19', 'hola'),
-(18, 'a@ucm.es', 'josefa@ucm.es', '2023-12-14', '16:21:46', 'patata');
+(18, 'a@ucm.es', 'josefa@ucm.es', '2023-12-14', '16:21:46', 'patata'),
+(22, 'a@ucm.es', 'gustabo@ucm.es', '2023-12-15', '23:26:39', 'asdasd'),
+(23, 'a@ucm.es', 'gustabo@ucm.es', '2023-12-16', '00:35:53', 'a'),
+(24, 'a@ucm.es', 'josefa@ucm.es', '2023-12-16', '00:36:15', 'asd'),
+(26, 'a@ucm.es', 'josefa@ucm.es', '2023-12-16', '01:12:55', 'Tu cuenta ha sido validada'),
+(27, 'a@ucm.es', 'a@ucm.es', '2023-12-16', '13:57:09', 'Tu cuenta ha sido validada'),
+(28, 'a@ucm.es', 'a@ucm.es', '2023-12-16', '14:32:45', 'Tu cuenta ha sido validada');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ucm_aw_riu_res_reservas`
+-- Estructura de tabla para la tabla `ucm_aw_riu_res_reservas`
 --
 
 CREATE TABLE `ucm_aw_riu_res_reservas` (
@@ -164,7 +185,7 @@ CREATE TABLE `ucm_aw_riu_res_reservas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Dumping data for table `ucm_aw_riu_res_reservas`
+-- Volcado de datos para la tabla `ucm_aw_riu_res_reservas`
 --
 
 INSERT INTO `ucm_aw_riu_res_reservas` (`id`, `nombre_ins`, `facultad`, `nombre_usu`, `correo_usu`, `fecha_res`, `hora_res`) VALUES
@@ -180,7 +201,7 @@ INSERT INTO `ucm_aw_riu_res_reservas` (`id`, `nombre_ins`, `facultad`, `nombre_u
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ucm_aw_riu_usu_usuarios`
+-- Estructura de tabla para la tabla `ucm_aw_riu_usu_usuarios`
 --
 
 CREATE TABLE `ucm_aw_riu_usu_usuarios` (
@@ -197,98 +218,109 @@ CREATE TABLE `ucm_aw_riu_usu_usuarios` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Dumping data for table `ucm_aw_riu_usu_usuarios`
+-- Volcado de datos para la tabla `ucm_aw_riu_usu_usuarios`
 --
 
 INSERT INTO `ucm_aw_riu_usu_usuarios` (`id`, `nombre`, `apellido1`, `apellido2`, `correo`, `contrasena`, `admin`, `validado`, `foto`, `facultad`) VALUES
-(1, 'Gustabo', 'Adolfo', 'Roberto', 'gustabo@ucm.es', 'a', 0, 0, 'user1.png', 'Informática'),
 (2, 'a', 'a', 'a', 'a@ucm.es', 'a', 1, 1, 'user2.png', 'Informática'),
-(3, 'Josefa', 'Pérez', 'García', 'josefa@ucm.es', 'a', 0, 1, 'user3.png', 'Informática'),
-(6, 'b', 'b', 'b', 'b@ucm.es', 'b', 0, 1, 'default.png', 'Informática'),
-(7, 'c', 'c', 'c', 'c@ucm.es', 'c', 1, 1, 'default.png', 'Información');
+(3, 'Josefa', 'Pérez', 'García', 'josefa@ucm.es', 'a', 1, 1, 'user3.png', 'Informática'),
+(6, 'b', 'b', 'b', 'b@ucm.es', 'b', 1, 1, 'default.png', 'Informática'),
+(7, 'c', 'c', 'c', 'c@ucm.es', 'c', 0, 1, 'default.png', 'Información');
 
 --
--- Indexes for dumped tables
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `sessions`
+-- Indices de la tabla `sessions`
 --
 ALTER TABLE `sessions`
   ADD PRIMARY KEY (`session_id`);
 
 --
--- Indexes for table `ucm_aw_riu_img_imagenes`
+-- Indices de la tabla `ucm_aw_riu_facultades`
+--
+ALTER TABLE `ucm_aw_riu_facultades`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `ucm_aw_riu_img_imagenes`
 --
 ALTER TABLE `ucm_aw_riu_img_imagenes`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `ucm_aw_riu_ins_instalaciones`
+-- Indices de la tabla `ucm_aw_riu_ins_instalaciones`
 --
 ALTER TABLE `ucm_aw_riu_ins_instalaciones`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `ucm_aw_riu_ins_tipo`
+-- Indices de la tabla `ucm_aw_riu_ins_tipo`
 --
 ALTER TABLE `ucm_aw_riu_ins_tipo`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `ucm_aw_riu_msg_mensajes`
+-- Indices de la tabla `ucm_aw_riu_msg_mensajes`
 --
 ALTER TABLE `ucm_aw_riu_msg_mensajes`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `ucm_aw_riu_res_reservas`
+-- Indices de la tabla `ucm_aw_riu_res_reservas`
 --
 ALTER TABLE `ucm_aw_riu_res_reservas`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `ucm_aw_riu_usu_usuarios`
+-- Indices de la tabla `ucm_aw_riu_usu_usuarios`
 --
 ALTER TABLE `ucm_aw_riu_usu_usuarios`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `ucm_aw_riu_img_imagenes`
+-- AUTO_INCREMENT de la tabla `ucm_aw_riu_facultades`
+--
+ALTER TABLE `ucm_aw_riu_facultades`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `ucm_aw_riu_img_imagenes`
 --
 ALTER TABLE `ucm_aw_riu_img_imagenes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `ucm_aw_riu_ins_instalaciones`
+-- AUTO_INCREMENT de la tabla `ucm_aw_riu_ins_instalaciones`
 --
 ALTER TABLE `ucm_aw_riu_ins_instalaciones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT for table `ucm_aw_riu_ins_tipo`
+-- AUTO_INCREMENT de la tabla `ucm_aw_riu_ins_tipo`
 --
 ALTER TABLE `ucm_aw_riu_ins_tipo`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `ucm_aw_riu_msg_mensajes`
+-- AUTO_INCREMENT de la tabla `ucm_aw_riu_msg_mensajes`
 --
 ALTER TABLE `ucm_aw_riu_msg_mensajes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
--- AUTO_INCREMENT for table `ucm_aw_riu_res_reservas`
+-- AUTO_INCREMENT de la tabla `ucm_aw_riu_res_reservas`
 --
 ALTER TABLE `ucm_aw_riu_res_reservas`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
--- AUTO_INCREMENT for table `ucm_aw_riu_usu_usuarios`
+-- AUTO_INCREMENT de la tabla `ucm_aw_riu_usu_usuarios`
 --
 ALTER TABLE `ucm_aw_riu_usu_usuarios`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
