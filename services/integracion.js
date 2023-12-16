@@ -435,6 +435,44 @@ const integracion = {
     });
   },
 
+  //Leer facultad
+  leerNombreOrganizacion: function(callback) {
+    pool.getConnection((err, conexion) => {
+      if (err) {callback(err);} 
+      else {
+        const sql = 'SELECT * FROM  ucm_aw_riu_facultades WHERE nombre = ?';
+        const values = ['ucm'];
+        conexion.query(sql, values, (err, results) => {
+          conexion.release();
+          if (err) {
+            callback(err);
+          } else {
+            callback(null, results);
+          }
+        });
+      }
+    });
+  },
+
+  //Cambiar titulo ucm
+  cambiarTituloUCM: function(titulo, callback) {
+    pool.getConnection((err, conexion) => {
+      if (err) {callback(err);}
+      else{
+        const sql = 'UPDATE ucm_aw_riu_facultades SET titulo = ? WHERE nombre = ?';
+        const values = [titulo, 'ucm'];
+        conexion.query(sql, values, (error, results) => {
+          conexion.release(); 
+          if (error) {
+            callback(error);
+          } else {
+            callback(null, results);
+          }
+        });
+      }
+    });
+  },
+
   //Buscar id usuario por correo
   buscarUsuarioPorCorreo: function(correo, callback) {
     pool.getConnection((err, conexion) => {

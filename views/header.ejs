@@ -105,8 +105,8 @@
                         <input type="file" id="file-input" name="file-input" accept=".png">
                     </div>
                     <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre de la Organización</label>
-                        <input type="text" class="form-control" id="nombre" name="nombre" required value="<%= FormData.nomapellido2bre || '' %>">
+                        <label for="nombre_facultad" class="form-label">Nombre de la Organización</label>
+                        <input type="text" class="form-control" id="nombre_facultad" name="nombre_facultad" required value="<%= FormData.nomapellido2bre || '' %>">
                     </div>  
                     <button type="button" class="btn btn-primary" id="submit-file-btn" onclick="configurarSistema()">Aplicar cambios</button>      
             </div>
@@ -138,48 +138,61 @@
         });
     });
 
-
-        //Funcion para configurar el sistema
-        function configurarSistema(){
-            var formData = new FormData();
-            var nuevo_nombre = $('#nombre').val();
-            formData.append('nombre', nuevo_nombre);
-            formData.append('file', $('#file-input')[0].files[0]);
-            console.log(formData);
-            $.ajax({
-                url: '/configurar-sistema',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (data) {
-
-                    location.reload();
-                },
-                error: function (error) {
-                    console.log("MAAAAAAAAAAAAL");
-                    console.log(xhr.responseText);
-                    console.log(error);
-                }
-            });
-        }
-
-        //Funcion para abrir la ventana modal de configuracion del sistema
-        $('#linkConfig').on("click", function (e) {
-            e.preventDefault();
-            $('#confuguracion-sistema-modal').show();
+    //Ajax para get obtener el nombre-org de la base de datos
+    $(document).ready(function () {
+        $.ajax({
+            url: '/nombre-org',
+            type: 'GET',
+            success: function (titulo) {
+                var nombre_org = $('#nombre-org');
+                nombre_org.empty();
+                nombre_org.append('<img id="foto-org" src="/img/logoUCM.png" alt="logo de la UCM">' + titulo);
+            },
+            error: function (error) {
+                console.log(error);
+            }
         });
+    });
 
-         //Funcion para abrir la ventana modal de configuracion del sistema navbar
-         $('#linkConfig2').on("click", function (e) {
-            e.preventDefault();
-            $('#confuguracion-sistema-modal').show();
-        });
 
-        // Agrega un evento de clic para cerrar la ventana modal cuando se hace clic en la "x"
-        $('.btn-close').on("click", function () {
-            $('#confuguracion-sistema-modal').hide();
+    //Funcion para configurar el sistema
+    function configurarSistema(){
+        var formData = new FormData();
+        var nuevo_nombre = $('#nombre_facultad').val();
+        formData.append('nombre_facultad', nuevo_nombre);
+        formData.append('file', $('#file-input')[0].files[0]);
+        console.log(formData);
+        $.ajax({
+            url: '/configurar-sistema',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                location.reload();
+            },
+            error: function (error) {
+                console.log(error);
+            }
         });
+    }
+
+    //Funcion para abrir la ventana modal de configuracion del sistema
+    $('#linkConfig').on("click", function (e) {
+        e.preventDefault();
+        $('#confuguracion-sistema-modal').show();
+    });
+
+        //Funcion para abrir la ventana modal de configuracion del sistema navbar
+        $('#linkConfig2').on("click", function (e) {
+        e.preventDefault();
+        $('#confuguracion-sistema-modal').show();
+    });
+
+    // Agrega un evento de clic para cerrar la ventana modal cuando se hace clic en la "x"
+    $('.btn-close').on("click", function () {
+        $('#confuguracion-sistema-modal').hide();
+    });
 
     var userMenuList = $('#user-menu-list');
     $('#user-menu-list').hide();

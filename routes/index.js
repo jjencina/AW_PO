@@ -410,6 +410,19 @@ router.get('/leer-instalaciones', (req, res) => {
     }
   });
 
+  //Get titulo ucm de la bd
+  router.get('/nombre-org', (req, res) => {
+    integracion.leerNombreOrganizacion((err, facultad) => {
+      var titulo = facultad[0].titulo;
+      if (err) {
+        console.error('Error al obtener nombre de la organizacion:', err);
+        res.status(500).send('Error interno del servidor');
+      } else {
+        res.json(titulo);
+      }
+    });
+  });
+
 // Configurar multer para subir archivos
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -424,7 +437,18 @@ const upload = multer({ storage: storage });
 
 // Ruta para configurar el sistema y cambiar la foto del logo
 router.post('/configurar-sistema', upload.single('file'), (req, res) => {
-  res.json({ success: true });
+  //Cambiar el nombre de la organizacion
+  console.log(req.body.nombre_facultad);
+  const titulo = req.body.nombre_facultad;
+  integracion.cambiarTituloUCM(titulo, (err, results) => {
+    if (err) {
+      console.error('Error al cambiar el titulo de la organizacion:', err);
+      res.status(500).send('Error interno del servidor');
+    } else {
+      console.log('Titulo cambiado correctamente');
+      res.json({ success: true });
+    }
+  }); 
 });
 
 module.exports = router;
