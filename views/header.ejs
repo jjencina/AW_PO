@@ -33,7 +33,7 @@
                                 <%if(isAdmin){%>
                                     <li class="nav-item"><a href="/user">Gestionar Usuarios</a></li>
                                     <li class="nav-item"><a href="/instalaciones">Gestionar Instalaciones</a></li>
-                                    <li class="nav-item"><a href="/admin">Ver estadísticas</a></li>
+                                    <li class="nav-item"><a href="/stats">Ver estadísticas</a></li>
                                 <%}%>
                                 <li class="nav-item"></li><a href="/logout">Logout</a></li>
                             </ul>
@@ -61,7 +61,7 @@
                                 <%if(isAdmin){%>
                                     <li ><a href="/user">Gestionar Usuarios</a></li>
                                     <li ><a href="/instalaciones">Gestionar Instalaciones</a></li>
-                                    <li ><a href="/admin">Ver estadísticas</a></li>
+                                    <li ><a href="/stats">Ver estadísticas</a></li>
                                 <%}%>
                                 <li><a href="/logout">Logout</a></li>
                             </ul>
@@ -127,7 +127,6 @@
         url: '/user-photo',
         type: 'POST',
         success: function (data) {
-            console.log(data)
             if (data.foto == null) {
                 link_imagen.html('<img src="/img/users/default.png" alt="<%= currentUser %>" id="user-img"> ');
             } else {
