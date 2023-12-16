@@ -34,6 +34,8 @@
                                     <li class="nav-item"><a href="/user">Gestionar Usuarios</a></li>
                                     <li class="nav-item"><a href="/instalaciones">Gestionar Instalaciones</a></li>
                                     <li class="nav-item"><a href="/stats">Ver estadísticas</a></li>
+                                    <li class="nav-item" id="linkConfig2"></li><a href="">Configuracion del sistema</a></li>
+                                
                                     <%}%>
                                 <li class="nav-item"></li><a href="/logout">Logout</a></li>
                             </ul>
@@ -89,7 +91,7 @@
 
 
 <!-- Ventana modal crear isntalación -->
-<div id="confuguracion-sistema-modal" class="modal" style="display: none;" >
+<div id="confuguracion-sistema-modal" class="modal" >
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -140,7 +142,8 @@
         //Funcion para configurar el sistema
         function configurarSistema(){
             var formData = new FormData();
-            formData.append('nombre', $('#nombre').val());
+            var nuevo_nombre = $('#nombre').val();
+            formData.append('nombre', nuevo_nombre);
             formData.append('file', $('#file-input')[0].files[0]);
             console.log(formData);
             $.ajax({
@@ -150,14 +153,12 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    alert("Se ha configurado el sistema correctamente");
-                    //cambiar foto organizacion
-                    $(this).find('foto-org').attr('src', '/img/logoUCM.png');
-                    //cambiar nombre organizacion
-                    $(this).find('nombre-org').text(data.nombre);
+
                     location.reload();
                 },
                 error: function (error) {
+                    console.log("MAAAAAAAAAAAAL");
+                    console.log(xhr.responseText);
                     console.log(error);
                 }
             });
@@ -165,6 +166,12 @@
 
         //Funcion para abrir la ventana modal de configuracion del sistema
         $('#linkConfig').on("click", function (e) {
+            e.preventDefault();
+            $('#confuguracion-sistema-modal').show();
+        });
+
+         //Funcion para abrir la ventana modal de configuracion del sistema navbar
+         $('#linkConfig2').on("click", function (e) {
             e.preventDefault();
             $('#confuguracion-sistema-modal').show();
         });

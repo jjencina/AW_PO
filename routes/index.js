@@ -6,6 +6,8 @@ const { body, validationResult } = require('express-validator');
 
 //Metodos de Integracion
 const integracion = require('../services/integracion');
+const multer = require('multer');
+const path = require('path');
 
 
 
@@ -400,5 +402,23 @@ router.get('/leer-instalaciones', (req, res) => {
       });
     }
   });
+
+// Configurar multer para subir archivos
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/img');
+  },
+  filename: function (req, file, cb) {
+    cb(null, 'logoUCM.png');
+  }
+});
+
+const upload = multer({ storage: storage });
+
+// Ruta para configurar el sistema y cambiar la foto del logo
+router.post('/configurar-sistema', upload.single('file'), (req, res) => {
+  res.json({ success: true });
+});
+
 module.exports = router;
    
