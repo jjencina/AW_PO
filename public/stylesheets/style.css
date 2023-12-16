@@ -298,3 +298,8 @@ p {
 #user-img:hover {
   border-color: black; 
 }
+
+
+#confuguracion-sistema-modal{
+  display: none;
+}

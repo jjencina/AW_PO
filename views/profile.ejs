@@ -17,11 +17,9 @@
         
         <div id="profile-info">
             <div class="profile-container" id="profile-image-container">
-                <div class="profile-container" id="profile-image-container">
-                    <div class="image-wrapper">
-                        <img src="img/users/<%=usuario.foto || 'default.png'%>" alt="<%= usuario.correo %>" id="profile-image" class="profile-image">
-                        <p id="change-photo-msg" class="photo-msg" style="display: none; cursor: pointer;">Cambiar foto de perfil</p>
-                    </div>
+                <div class="image-wrapper">
+                    <img src="img/users/<%=usuario.foto || 'default.png'%>" alt="<%= usuario.correo %>" id="profile-image" class="profile-image">
+                    <p id="change-photo-msg" class="photo-msg" style="display: none; cursor: pointer;">Cambiar foto de perfil</p>               
                 </div>
             </div>
             <p>Nombre: <%= usuario.nombre %></p>
