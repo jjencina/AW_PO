@@ -61,7 +61,7 @@ CREATE TABLE `ucm_aw_riu_img_imagenes` (
 INSERT INTO `ucm_aw_riu_img_imagenes` (`id`, `nombre_ins`, `nombre_imagen`) VALUES
 (1, 'Salon de actos', 'actos1.jpg'),
 (2, 'Sala de grados', 'grados1.jpg'),
-(3, 'Laboratorio', 'lab1.jpg'),
+(3, 'Laboratorios', 'lab1.jpg'),
 (4, 'Sala de reuniones', 'reuniones1.jpg');
 
 -- --------------------------------------------------------

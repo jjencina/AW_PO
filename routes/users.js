@@ -257,8 +257,8 @@ router.post('/user-photo', (req, res) => {
 });
   
 //Llamar admin
-router.get('/admin', (req, res) => {
-  res.render('admin', { 
+router.get('/stats', (req, res) => {
+  res.render('stats', { 
     errors: [], 
     isAuthenticated: res.locals.isAuthenticated,
     FormData: req.body,
