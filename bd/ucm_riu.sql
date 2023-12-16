@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-12-2023 a las 19:48:56
+-- Tiempo de generación: 17-12-2023 a las 00:34:06
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -42,17 +42,19 @@ CREATE TABLE `sessions` (
 CREATE TABLE `ucm_aw_riu_facultades` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `nombre` varchar(255) NOT NULL,
-  `foto` varchar(255) DEFAULT NULL
+  `foto` varchar(255) DEFAULT NULL,
+  `titulo` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `ucm_aw_riu_facultades`
 --
 
-INSERT INTO `ucm_aw_riu_facultades` (`id`, `nombre`, `foto`) VALUES
-(1, 'Informática', 'logo_informatica.png'),
-(2, 'Biología', 'logo_biologia.png'),
-(3, 'Información', 'logo_informacion.png');
+INSERT INTO `ucm_aw_riu_facultades` (`id`, `nombre`, `foto`, `titulo`) VALUES
+(1, 'Informática', 'logo_informatica.png', 'Fdi Informática'),
+(2, 'Biología', 'logo_biologia.png', 'Fdi Biología'),
+(3, 'Información', 'logo_informacion.png', 'Fdi Información'),
+(4, 'ucm', 'logoUCM.png', 'UCM-<r>RIU</r>');
 
 -- --------------------------------------------------------
 
@@ -73,7 +75,7 @@ CREATE TABLE `ucm_aw_riu_img_imagenes` (
 INSERT INTO `ucm_aw_riu_img_imagenes` (`id`, `nombre_ins`, `nombre_imagen`) VALUES
 (1, 'Salon de actos', 'actos1.jpg'),
 (2, 'Sala de grados', 'grados1.jpg'),
-(3, 'Laboratorio', 'lab1.jpg'),
+(3, 'Laboratorios', 'lab1.jpg'),
 (4, 'Sala de reuniones', 'reuniones1.jpg');
 
 -- --------------------------------------------------------
@@ -100,10 +102,7 @@ INSERT INTO `ucm_aw_riu_ins_instalaciones` (`id`, `nombre`, `tipo`, `facultad`) 
 (4, 'Lab 1', 'Laboratorios', 'Biología'),
 (5, 'Lab 2', 'Laboratorios', 'Biología'),
 (6, 'Lab 3', 'Laboratorios', 'Biología'),
-(7, 'Salón de actos', 'Salón de actos', 'Informática'),
-(8, '', 'Laboratorios', 'Informática'),
-(9, 'asd', 'Laboratorios', 'Informática'),
-(10, 'alksjdlka', 'Laboratorios', 'Informática');
+(7, 'Salón de actos', 'Salón de actos', 'Informática');
 
 -- --------------------------------------------------------
 
@@ -196,7 +195,8 @@ INSERT INTO `ucm_aw_riu_res_reservas` (`id`, `nombre_ins`, `facultad`, `nombre_u
 (17, 'Salón de actos', 'Informática', 'a', 'a@ucm.es', '2023-12-14', '14:00:00'),
 (18, 'Salón de actos', 'Informática', 'a', 'a@ucm.es', '2023-12-14', '14:00:00'),
 (19, 'Salón de actos', 'Informática', 'a', 'a@ucm.es', '2023-12-14', '14:00:00'),
-(20, 'Salón de actos', 'Informática', 'a', 'a@ucm.es', '2023-12-14', '14:00:00');
+(20, 'Salón de actos', 'Informática', 'a', 'a@ucm.es', '2023-12-14', '14:00:00'),
+(21, 'Lab 1', 'Informática', 'a', 'a@ucm.es', '2222-02-22', '11:00:00');
 
 -- --------------------------------------------------------
 
@@ -287,7 +287,7 @@ ALTER TABLE `ucm_aw_riu_usu_usuarios`
 -- AUTO_INCREMENT de la tabla `ucm_aw_riu_facultades`
 --
 ALTER TABLE `ucm_aw_riu_facultades`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `ucm_aw_riu_img_imagenes`
@@ -317,7 +317,7 @@ ALTER TABLE `ucm_aw_riu_msg_mensajes`
 -- AUTO_INCREMENT de la tabla `ucm_aw_riu_res_reservas`
 --
 ALTER TABLE `ucm_aw_riu_res_reservas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `ucm_aw_riu_usu_usuarios`
