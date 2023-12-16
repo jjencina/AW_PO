@@ -256,9 +256,69 @@ router.post('/user-photo', (req, res) => {
   });
 });
   
-//Llamar admin
-router.get('/stats', (req, res) => {
+//Middleware para obtener a todos los usuarios
+const obtenerUsuarios = (req, res, next) => {
+  integracion.leerTodosLosUsuarios((error, results) => {
+    if (error) {
+      console.error('Error al buscar usuarios:', error);
+      return res.status(500).send('Error interno del servidor');
+    }
+    res.locals.usuarios = [];
+    for(var i = 0; i < results.length; i++){
+      res.locals.usuarios.push(results[i].correo)
+    }
+    next();
+  });
+};
+
+//Middleware para obtener las instalaciones
+const obtenerInstalaciones = (req, res, next) => {
+  integracion.leerTodasLasInstalaciones((error, results) => {
+    if (error) {
+      console.error('Error al buscar instalaciones:', error);
+      return res.status(500).send('Error interno del servidor');
+    }
+    res.locals.instalaciones = [];
+    res.locals.facultades = [];
+    for(var i = 0; i < results.length; i++){
+      res.locals.instalaciones.push(results[i].nombre)
+      res.locals.facultades.push(results[i].facultad)
+    }
+    next();
+  });  
+};
+
+//Middleware para obtener las reservas
+const obtenerReservas = (req, res, next) => {
+  integracion.leerTodasLasReservas((error, results) => {
+    if (error) {
+      console.error('Error al buscar reservas:', error);
+      return res.status(500).send('Error interno del servidor');
+    }
+    res.locals.reservas = results;
+    next();
+  });
+};
+
+//Carga la pagina de estadisticas
+router.get('/stats', obtenerUsuarios, obtenerInstalaciones, obtenerReservas,(req, res) => {
+  const usuarios = res.locals.usuarios;
+  const instalaciones = res.locals.instalaciones;
+  const reservas = res.locals.reservas;
+  const facultades = res.locals.facultades;
+  var reservasUsuario = new Array(usuarios.length).fill(0);
+  var reservasInstalacion = new Array(instalaciones.length).fill(0);
+
+  for(var i = 0; i < reservas.length; i++){
+    reservasUsuario[usuarios.indexOf(reservas[i].correo_usu)]++;
+    reservasInstalacion[instalaciones.indexOf(reservas[i].nombre_ins)]++;
+  }
   res.render('stats', { 
+    usuarios,
+    instalaciones,
+    facultades,
+    reservasUsuario,
+    reservasInstalacion,
     errors: [], 
     isAuthenticated: res.locals.isAuthenticated,
     FormData: req.body,
