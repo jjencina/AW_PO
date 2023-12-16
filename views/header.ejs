@@ -34,8 +34,7 @@
                                     <li class="nav-item"><a href="/user">Gestionar Usuarios</a></li>
                                     <li class="nav-item"><a href="/instalaciones">Gestionar Instalaciones</a></li>
                                     <li class="nav-item"><a href="/stats">Ver estadísticas</a></li>
-                                    <li class="nav-item" id="linkConfig2"></li><a href="">Configuracion del sistema</a></li>
-                                
+                                    <li class="nav-item" id="linkConfig2"></li><a href="#" data-bs-toggle="modal" data-bs-target="#modalConfiguracion">Configuracion del sistema</a></li>    
                                     <%}%>
                                 <li class="nav-item"></li><a href="/logout">Logout</a></li>
                             </ul>
@@ -64,7 +63,7 @@
                                     <li ><a href="/user">Gestionar Usuarios</a></li>
                                     <li ><a href="/instalaciones">Gestionar Instalaciones</a></li>
                                     <li ><a href="/stats">Ver estadísticas</a></li>
-                                    <li id="linkConfig"><a href="">Configuracion del sistema</a></li>
+                                    <li id="linkConfig"><a href="#" data-bs-toggle="modal" data-bs-target="#modalConfiguracion">Configuracion del sistema</a></li>
                                 <%}%>
                                 <li><a href="/logout">Logout</a></li>
                             </ul>
@@ -90,30 +89,33 @@
 <div id="cover-ctn-search"></div>
 
 
-<!-- Ventana modal crear isntalación -->
-<div id="confuguracion-sistema-modal" class="modal" >
+<!-- Ventana modal cambiar logo y nombre facultad -->
+<div class="modal fade" id="modalConfiguracion" tabindex="-1" aria-labelledby="modalConfiguracionLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Configuración del Sistema</h5>
+                <h5 class="modal-title" id="modalConfiguracionLabel">Cambiar logo y nombre de la facultad</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="file-upload-form" enctype="multipart/form-data">
+                <form id="configForm">
                     <div class="mb-3">
-                        <label for="file" class="form-label">Icono Organización</label>
-                        <input type="file" id="file-input" name="file-input" accept=".png">
+                        <label for="logoInput" class="form-label">Nuevo logotipo</label>
+                        <input type="file" class="form-control" id="logoInput" accept="image/*">
                     </div>
                     <div class="mb-3">
-                        <label for="nombre_facultad" class="form-label">Nombre de la Organización</label>
-                        <input type="text" class="form-control" id="nombre_facultad" name="nombre_facultad" required value="<%= FormData.nomapellido2bre || '' %>">
-                    </div>  
-                    <button type="button" class="btn btn-primary" id="submit-file-btn" onclick="configurarSistema()">Aplicar cambios</button>      
+                        <label for="nombreInput" class="form-label">Nuevo nombre de la facultad</label>
+                        <input type="text" class="form-control" id="nombreInput">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="configurarSistema()">Guardar</button>
             </div>
         </div>
     </div>
 </div>
-
 
 
 
@@ -157,10 +159,11 @@
 
     //Funcion para configurar el sistema
     function configurarSistema(){
+        console.log("Configurando sistema");
         var formData = new FormData();
-        var nuevo_nombre = $('#nombre_facultad').val();
-        formData.append('nombre_facultad', nuevo_nombre);
-        formData.append('file', $('#file-input')[0].files[0]);
+        var nuevo_nombre = $('#nombreInput').val();
+        formData.append('nombre_facultad', $('#nombreInput').val());
+        formData.append('file', $('#configForm #logoInput')[0].files[0]);
         console.log(formData);
         $.ajax({
             url: '/configurar-sistema',

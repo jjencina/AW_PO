@@ -433,6 +433,8 @@ const storage = multer.diskStorage({
   }
 });
 
+                                   
+
 const upload = multer({ storage: storage });
 
 // Ruta para configurar el sistema y cambiar la foto del logo
