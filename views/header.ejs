@@ -5,7 +5,7 @@
     
     <div class="header-content">
     <div class="logo">
-        <h1><img src="/img/logoUCM.png" alt="logo de la UCM">UCM-<r>RIU</r></h1>
+        <h1 id="nombre-org"><img id="foto-org" src="/img/logoUCM.png" alt="logo de la UCM">UCM-<r>RIU</r></h1>
     </div>
     <div>
         <nav class="container navbar navbar_default">
@@ -34,7 +34,7 @@
                                     <li class="nav-item"><a href="/user">Gestionar Usuarios</a></li>
                                     <li class="nav-item"><a href="/instalaciones">Gestionar Instalaciones</a></li>
                                     <li class="nav-item"><a href="/stats">Ver estadísticas</a></li>
-                                <%}%>
+                                    <%}%>
                                 <li class="nav-item"></li><a href="/logout">Logout</a></li>
                             </ul>
                         <% } else { %>
@@ -62,6 +62,7 @@
                                     <li ><a href="/user">Gestionar Usuarios</a></li>
                                     <li ><a href="/instalaciones">Gestionar Instalaciones</a></li>
                                     <li ><a href="/stats">Ver estadísticas</a></li>
+                                    <li id="linkConfig"><a href="">Configuracion del sistema</a></li>
                                 <%}%>
                                 <li><a href="/logout">Logout</a></li>
                             </ul>
@@ -89,9 +90,75 @@
 </ul>
 <div id="cover-ctn-search"></div>
 
+
+<!-- Ventana modal crear isntalación -->
+<div id="confuguracion-sistema-modal" class="modal" style="display: none;" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Configuración del Sistema</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="file-upload-form" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Icono Organización</label>
+                        <input type="file" id="file-input" name="file-input" accept=".png">
+                    </div>
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre de la Organización</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required value="<%= FormData.nomapellido2bre || '' %>">
+                    </div>  
+                    <button type="button" class="btn btn-primary" id="submit-file-btn" onclick="configurarSistema()">Aplicar cambios</button>      
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
+
+        //Funcion para configurar el sistema
+        function configurarSistema(){
+            var formData = new FormData();
+            formData.append('nombre', $('#nombre').val());
+            formData.append('file', $('#file-input')[0].files[0]);
+            console.log(formData);
+            $.ajax({
+                url: '/configurar-sistema',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    alert("Se ha configurado el sistema correctamente");
+                    //cambiar foto organizacion
+                    $(this).find('foto-org').attr('src', '/img/logoUCM.png');
+                    //cambiar nombre organizacion
+                    $(this).find('nombre-org').text(data.nombre);
+                    location.reload();
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        //Funcion para abrir la ventana modal de configuracion del sistema
+        $('#linkConfig').on("click", function (e) {
+            e.preventDefault();
+            $('#confuguracion-sistema-modal').show();
+        });
+
+        // Agrega un evento de clic para cerrar la ventana modal cuando se hace clic en la "x"
+        $('.btn-close').on("click", function () {
+            $('#confuguracion-sistema-modal').hide();
+        });
+
         var userMenuList = $('#user-menu-list');
         $('#user-menu-list').hide();
         // Mostrar u ocultar la lista al hacer clic en el nombre del usuario
