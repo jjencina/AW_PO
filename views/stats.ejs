@@ -78,7 +78,8 @@
             </table>
         </div>        
     </div>
-    
+    <div id="ctn-nc-cover"></div>
+
     <%- include("footer") %>
 
     <script>
@@ -98,8 +99,14 @@
                             $('#reservas').append('<tr><td>'+reservas[i].nombre_ins+'</td><td>'+reservas[i].facultad+'</td><td>'+reservas[i].correo_usu+'</td><td>'+reservas[i].fecha_res+'</td><td>'+reservas[i].hora_res+'</td><tr>')
                         }
                         $('#mhistorial').show();
+                        $('#ctn-nc-cover').show();
                     }   
                 })
+            })
+            $('#ctn-nc-cover').on('click', function(){
+                $('#mhistorial').hide();
+                $('#ctn-nc-cover').hide();
+                $('#reservas').empty();
             })
         })
     </script>

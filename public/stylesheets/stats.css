@@ -19,8 +19,18 @@
     left:50%;
     top:60%;
     transform: translate(-50%, -50%);
+    z-index:3;
     overflow-y: auto;
 }
-#mhistorial modal-content{
-    padding:10px;
+
+
+#ctn-nc-cover{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top:80px;
+    background: rgba(0,0,0,0.5);
+    z-index: 2;
+    display: none;
 }
