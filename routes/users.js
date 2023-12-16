@@ -300,7 +300,7 @@ router.post('/expel-users/:correo', (req, res) => {
       console.error('Error al borrar usuario:', error);
       return res.status(500).send('Error interno del servidor');
     }
-    res.redirect('/users/admin/user');
+    res.json({success: true})
   });
 });
 
@@ -312,8 +312,10 @@ router.post('/validate-users/:correo', (req, res) => {
       console.error('Error al validar usuario:', error);
       return res.status(500).send('Error interno del servidor');
     }
-    //TODO: Enviar correo de validacion
-    res.redirect('/users/admin/user');
+    var mensaje = "Tu cuenta ha sido validada";
+    var correoEmisor = req.session.currentUser;
+    enviarMensages(correoEmisor, correoUsuario, mensaje);
+    res.json({success: true})
   });
 });
 
@@ -325,7 +327,7 @@ router.post('/invalidate-users/:correo', (req, res) => {
       console.error('Error al invalidar usuario:', error);
       return res.status(500).send('Error interno del servidor');
     }
-    res.redirect('/users/admin/user');
+    res.json({success: true})
   });
 });
 
@@ -337,7 +339,7 @@ router.post('/make-admin/:correo', (req, res) => {
       console.error('Error al hacer admin:', error);
       return res.status(500).send('Error interno del servidor');
     }
-    res.redirect('/users/admin/user');
+    res.json({success: true})
   });
 });
 
@@ -349,7 +351,7 @@ router.post('/remove-admin/:correo', (req, res) => {
       console.error('Error al quitar admin:', error);
       return res.status(500).send('Error interno del servidor');
     }
-    res.redirect('/users/admin/user');
+    res.json({success: true})
   });
 });
 
@@ -499,8 +501,33 @@ router.post('/cargarMensajes',buscarMensajesEnviados, buscarMensajesRecibidos, t
   res.json(res.locals.mensajes.reverse());
 });
 
+function enviarMensages(correoEmisor ,correoReceptor, mensaje){
+  var fechaActual = new Date();
+
+  // Obtener los componentes de fecha y hora
+  var anio = fechaActual.getFullYear();
+  var mes = fechaActual.getMonth() + 1; // Los meses van de 0 a 11, por lo que sumamos 1
+  var dia = fechaActual.getDate();
+
+  var horas = fechaActual.getHours();
+  var minutos = fechaActual.getMinutes();
+  var segundos = fechaActual.getSeconds();
+
+  // Formatear la fecha y hora
+  var fechaFormateada = anio + '-' + mes + '-' + dia;
+  var horaFormateada = horas + ':' + minutos + ':' + segundos;
+  
+  integracion.enviarMensaje(correoEmisor, correoReceptor, fechaFormateada, horaFormateada, mensaje, (error, results) => {
+    if (error) {
+      console.error('Error al enviar mensaje:', error);
+      return res.status(500).send('Error interno del servidor');
+    }
+  });  
+};
+
 //Insertar mensajes en la BD
 router.post('/enviarMensaje', (req, res) => {
+  console.log("MARACULLA");
   const correoEmisor = req.session.currentUser;
   const correoReceptor = req.body.correoReceptor;
   const mensaje = req.body.mensaje;
