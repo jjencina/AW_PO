@@ -319,6 +319,31 @@ router.post('/validate-users/:correo', (req, res) => {
   });
 });
 
+//Enviar mensaje
+function enviarMensages(correoEmisor ,correoReceptor, mensaje){
+  var fechaActual = new Date();
+
+  // Obtener los componentes de fecha y hora
+  var anio = fechaActual.getFullYear();
+  var mes = fechaActual.getMonth() + 1; // Los meses van de 0 a 11, por lo que sumamos 1
+  var dia = fechaActual.getDate();
+
+  var horas = fechaActual.getHours();
+  var minutos = fechaActual.getMinutes();
+  var segundos = fechaActual.getSeconds();
+
+  // Formatear la fecha y hora
+  var fechaFormateada = anio + '-' + mes + '-' + dia;
+  var horaFormateada = horas + ':' + minutos + ':' + segundos;
+  
+  integracion.enviarMensaje(correoEmisor, correoReceptor, fechaFormateada, horaFormateada, mensaje, (error, results) => {
+    if (error) {
+      console.error('Error al enviar mensaje:', error);
+      return res.status(500).send('Error interno del servidor');
+    }
+  });  
+};
+
 //Invalidar Usuario
 router.post('/invalidate-users/:correo', (req, res) => {
   const correoUsuario = req.params.correo;
@@ -501,29 +526,7 @@ router.post('/cargarMensajes',buscarMensajesEnviados, buscarMensajesRecibidos, t
   res.json(res.locals.mensajes.reverse());
 });
 
-function enviarMensages(correoEmisor ,correoReceptor, mensaje){
-  var fechaActual = new Date();
 
-  // Obtener los componentes de fecha y hora
-  var anio = fechaActual.getFullYear();
-  var mes = fechaActual.getMonth() + 1; // Los meses van de 0 a 11, por lo que sumamos 1
-  var dia = fechaActual.getDate();
-
-  var horas = fechaActual.getHours();
-  var minutos = fechaActual.getMinutes();
-  var segundos = fechaActual.getSeconds();
-
-  // Formatear la fecha y hora
-  var fechaFormateada = anio + '-' + mes + '-' + dia;
-  var horaFormateada = horas + ':' + minutos + ':' + segundos;
-  
-  integracion.enviarMensaje(correoEmisor, correoReceptor, fechaFormateada, horaFormateada, mensaje, (error, results) => {
-    if (error) {
-      console.error('Error al enviar mensaje:', error);
-      return res.status(500).send('Error interno del servidor');
-    }
-  });  
-};
 
 //Insertar mensajes en la BD
 router.post('/enviarMensaje', (req, res) => {
