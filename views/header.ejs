@@ -82,45 +82,60 @@
     <input type="text" id="inputSearch" placeholder="Buscar...">
 </div>
 <ul id="box-search">
-    <li><a href="/reserva/Laboratorios"><i class="bi bi-search"></i>Laboratorios</a></li>
-    <li><a href="/reserva/Salas de grados"><i class="bi bi-search"></i>Salas de grados</a></li>
-    <li><a href="/reserva/Salón de actos"><i class="bi bi-search"></i>Salón de actos</a></li>
-    <li><a href="/reserva/Salas de reunión"><i class="bi bi-search"></i>Salas de reunión</a></li>
+   
 </ul>
 <div id="cover-ctn-search"></div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-        var userMenuList = $('#user-menu-list');
-        $('#user-menu-list').hide();
-        // Mostrar u ocultar la lista al hacer clic en el nombre del usuario
-        $('#user-menu').on("click", function () {
-            if (userMenuList.is(':visible')) {
-                userMenuList.hide();
-            } else {
-                userMenuList.show();
+    //Carga de la barra de búsqueda
+    $(document).ready(function () {
+        $.ajax({
+            url: '/buscarTipos',
+            type: 'POST',
+            success: function (data) {
+                var box_search = $('#box-search');
+                box_search.empty();
+                for (var i = 0; i < data.length; i++) {
+                    box_search.append('<li><a href="/instalaciones/' + data[i].tipo + '">' + data[i].tipo + '</a></li>');
+                }
+            },
+            error: function (error) {
+                console.log(error);
             }
         });
-        // Cerrar la lista si se hace clic en algún enlace dentro de la lista
-        $('#user-menu-list a').on("click", function () {
+    });
+
+    var userMenuList = $('#user-menu-list');
+    $('#user-menu-list').hide();
+    // Mostrar u ocultar la lista al hacer clic en el nombre del usuario
+    $('#user-menu').on("click", function () {
+        if (userMenuList.is(':visible')) {
             userMenuList.hide();
-        });
-        //Lo mismo pero para el que esta en parte de arriba
-        var userMenuList2 = $('#user-menu-list-2');
-        $('#user-menu-list-2').hide();
-        // Mostrar u ocultar la lista al hacer clic en el nombre del usuario
-        $('#user-menu-2').on("click", function () {
-            if (userMenuList2.is(':visible')) {
-                userMenuList2.hide();
-            } else {
-                userMenuList2.show();
-            }
-        });
-        // Cerrar la lista si se hace clic en algún enlace dentro de la lista
-        $('#user-menu-list-2 a').on("click", function () {
+        } else {
+            userMenuList.show();
+        }
+    });
+    // Cerrar la lista si se hace clic en algún enlace dentro de la lista
+    $('#user-menu-list a').on("click", function () {
+        userMenuList.hide();
+    });
+    //Lo mismo pero para el que esta en parte de arriba
+    var userMenuList2 = $('#user-menu-list-2');
+    $('#user-menu-list-2').hide();
+    // Mostrar u ocultar la lista al hacer clic en el nombre del usuario
+    $('#user-menu-2').on("click", function () {
+        if (userMenuList2.is(':visible')) {
             userMenuList2.hide();
-        });
+        } else {
+            userMenuList2.show();
+        }
+    });
+    // Cerrar la lista si se hace clic en algún enlace dentro de la lista
+    $('#user-menu-list-2 a').on("click", function () {
+        userMenuList2.hide();
+    });
     //Foto de perfil
     var link_imagen = $('#link-imagen');
     $.ajax({
@@ -175,8 +190,8 @@
        box_search.style.display = "none";
    }
    //Creando filtrado de busqueda
-
-   document.getElementById("inputSearch").addEventListener("keyup", buscador_interno);
+    $("#inputSearch").on("keyup", buscador_interno);      
+  
 
    function buscador_interno(){
        filter = inputSearch.value.toUpperCase();

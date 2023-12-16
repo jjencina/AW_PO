@@ -345,6 +345,16 @@ router.get('/leer-instalaciones', (req, res) => {
   });
 });
 
-  
+ //Buscar tipos
+ router.post('/buscarTipos', (req, res) => {
+  integracion.leerTodosLosTiposIns((err, tipo_ins) => {
+    if (err) {
+      console.error('Error al obtener tipos de instalaciones:', err);
+      res.status(500).send('Error interno del servidor');
+    } else {
+      res.json(tipo_ins);
+    }
+  });
+ }); 
 module.exports = router;
    
