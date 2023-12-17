@@ -36,12 +36,18 @@
                             <!--Lista de nuevos chats posibles-->
                             <ul id="lista-nuevos-contactos">
                                 <% for (let i = 0; i < listaNuevosUsuarios.length; i++) { %>
-                                    <li class="nuevo-contacto">
-                                        <a href="" id="<%= listaNuevosUsuarios[i].correo %>">                       
-                                            <img src="img/users/<%= listaNuevosUsuarios[i].foto%>" alt="<%= listaNuevosUsuarios[i].foto%>">                    
-                                            <%= listaNuevosUsuarios[i].correo %>                        
-                                        </a>
-                                    </li>
+                                    <% if (listaNuevosUsuarios[i].correo !== currentUser){ %>
+                                        <li class="nuevo-contacto">
+                                            <a href="" id="<%= listaNuevosUsuarios[i].correo %>">   
+                                                <%  if(listaNuevosUsuarios[i].foto  != null){  %>                
+                                                    <img src="img/users/<%= listaNuevosUsuarios[i].foto%>" alt="<%= listaNuevosUsuarios[i].foto%>"> 
+                                                <% } else {%>   
+                                                    <img src="img/users/default.png" alt="default.png">
+                                                <% } %>                
+                                                <%= listaNuevosUsuarios[i].correo %>                        
+                                            </a>
+                                        </li>
+                                    <% } %>
                                 <% } %>
                             </ul>
                         </div>
@@ -127,7 +133,12 @@
                     $("#lista-nuevos-contactos").empty();
                     //Añadimos los nuevos usuarios a la lista
                     for (var i=0; i < results.length; i++){
-                        $("#lista-nuevos-contactos").append('<li class="nuevo-contacto"><a href="" id="'+results[i].correo+'"><img src="img/users/'+results[i].foto+'" alt="'+results[i].foto+'">'+results[i].correo+'</a></li>');
+                        if(results[i].foto == null){
+                            results[i].foto = "default.png";
+                        }
+                        if(results[i].correo != "<%= currentUser %>"){
+                            $("#lista-nuevos-contactos").append('<li class="nuevo-contacto"><a href="" id="'+results[i].correo+'"><img src="img/users/'+results[i].foto+'" alt="'+results[i].foto+'">'+results[i].correo+'</a></li>');                      
+                        }
                     }
                 }
             });
@@ -143,8 +154,14 @@
                     $("#lista-nuevos-contactos").empty();
                     //Añadimos los nuevos usuarios a la lista
                     for (var i=0; i < results.length; i++){
-                        $("#lista-nuevos-contactos").append('<li class="nuevo-contacto"><a href="" id="'+results[i].correo+'"><img src="img/users/'+results[i].foto+'" alt="'+results[i].foto+'">'+results[i].correo+'</a></li>');
-                        //<i class="bi bi-star-fill"></i> WIP
+                        //Si la foto es null, se pone una por defecto
+                        if(results[i].foto == null){
+                            results[i].foto = "default.png";
+                        }
+                        if(results[i].correo != "<%= currentUser %>"){
+                            $("#lista-nuevos-contactos").append('<li class="nuevo-contacto"><a href="" id="'+results[i].correo+'"><img src="img/users/'+results[i].foto+'" alt="'+results[i].foto+'">'+results[i].correo+'</a></li>');
+                        }
+                        //<i class="bi bi-star-fill"></i> WIP                        
                     }
                 }
             });

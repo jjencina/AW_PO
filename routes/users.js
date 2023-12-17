@@ -160,6 +160,13 @@ router.post('/register', [
   body('apellido1').notEmpty().withMessage('El primer apellido es obligatorio'),
   body('correo').isEmail().withMessage('El correo electrónico no es válido'),
   body('facultad').notEmpty().withMessage('La facultad es obligatoria'),
+  //confirma que el correo sea "ucm.es"
+  body('correo').custom((value, { req }) => {
+    if (!value.includes('ucm.es')) {
+      throw new Error('El correo debe ser de la UCM');
+    }
+    return true;
+  }),
   body('password').notEmpty().withMessage('La contraseña es obligatoria'),
   body('confirmPassword').custom((value, { req }) => {
     const contrasenias = req.body.password;
