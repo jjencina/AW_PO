@@ -139,6 +139,7 @@ router.get('/reserva/:tipo', buscarTipoIns, (req, res) => {
       console.error('Error al buscar el imagen por destino:', err);
       res.status(500).send('Error interno del servidor');
     } else {
+      console.log(resultados)
       imagenes = resultados;
     }
     render();

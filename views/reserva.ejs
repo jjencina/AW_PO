@@ -18,10 +18,15 @@
                 <div class="container">
                     <div id="imagenCarousel" class="carousel slide" data-bs-ride="carousel">
                     <!--Las imagenes del carrusel-->
-                    <div class="carousel-inner">                  
-                        <div class="carousel-item active">
-                            <img src="/img/<%= imagenes[0].nombre_imagen %>" class="card img-fluid mx-auto" alt="<%=imagenes[0].nombre_ins%>">
-                        </div>                
+
+                    <div class="carousel-inner">
+                        
+                        <% imagenes.forEach(function(imagen, index) { %>
+                            <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                                <img src="/img/<%= imagen.nombre_imagen %>" class="card img-fluid mx-auto" alt="<%= imagen.nombre_ins %>">
+                            </div>
+                        <% }); %>
+                      
                     </div>
                     <!--Botones de control del carrusel-->
                     <a class="carousel-control-prev" href="#imagenCarousel" role="button" data-bs-slide="prev" style="width: 10%;">
