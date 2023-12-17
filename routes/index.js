@@ -98,7 +98,7 @@ router.post('/crear_instalacion', (req, res) => {
   if (!nombre_ins || !tipo_ins || !facultad) {
     return res.status(400).send('Faltan campos obligatorios en el formulario.');
   }
-r
+
   integracion.insertarInstalacion(nombre_ins, tipo_ins, facultad, (err, results) => {
     if (err) {
       console.error('Error al insertar instalación:');
