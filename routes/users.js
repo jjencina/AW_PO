@@ -354,8 +354,23 @@ router.get('/users', (req, res) => {
       console.error('Error al buscar usuarios:', error);
       return res.status(500).send('Error interno del servidor');
     }
-    usuarios = results;
-    res.json(usuarios);
+    users = results;
+    const filters = req.query;
+    //Aplicar los filtros
+    console.log(filters.admin);
+    console.log(filters.validado);
+    const filteredUsers = users.filter(user => {
+      return (
+        (!filters.username || user.nombre.toLowerCase().includes(filters.username.toLowerCase())) &&
+        (!filters.lastname || user.apellido1.toLowerCase().includes(filters.lastname.toLowerCase())) &&
+        (!filters.faculty || user.facultad.toLowerCase().includes(filters.faculty.toLowerCase())) &&
+        (!filters.email || user.correo.toLowerCase().includes(filters.email.toLowerCase())) &&
+        (!filters.correo || user.correo.toLowerCase().includes(filters.correo.toLowerCase())) &&
+        (!filters.validado || user.validado == filters.validado) &&
+        (!filters.admin || user.admin == filters.admin)
+      );
+    });
+    res.json(filteredUsers);
   });
 });
 

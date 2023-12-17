@@ -16,6 +16,45 @@
         <div id="ctn-inner-users">
             <h2>Gestionar Usuarios</h2>
             
+            <!-- Filtros de búsqueda -->
+            <form class="modal-body" id="search-form">
+                <div class="form-control">
+                    <label for="username">Nombre usuario:</label>
+                    <input type="text" id="username" name="username">
+
+                    <label for="lastname">Primer Apellido:</label>
+                    <input type="text" id="lastname" name="lastname">
+
+                    <label for="correo">Correo:</label>
+                    <input type="text" id="correo" name="correo">
+                </div>
+                <div class="form-control">
+                    <label for="faculty">Facultad:</label>
+                    <select id="faculty" name="faculty">
+                        <option value="">Todas</option>
+                        <option value="Informática">Informática</option>
+                        <option value="Biología">Biología</option>
+                        <option value="Información">Información</option>
+                    </select>
+                
+                    <label  for="admin">Admin:</label>
+                    <select id="admin" name="admin">
+                        <option value="">Todos</option>
+                        <option value="1">Si</option>
+                        <option value="0">No</option>
+                    </select>
+
+                    <label  for="validado">Validado:</label>
+                    <select id="validado" name="validado">
+                        <option value="">Todos</option>
+                        <option value="1">Si</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+                <button class="form-control" type="button" onclick="applyFilters()">Aplicar Filtros</button>
+            </form>
+
+
             <!-- Lista de usuarios -->
             <table class="table table-striped">
                         <thead>
@@ -47,10 +86,26 @@
 
     <script>
         $(document).ready(function() {
+            getUsers();          
+        });
+
+        //funcion para conseguir la lista de usuarios
+        function getUsers(){
+            var filters = {
+                username: $('#username').val(),
+                lastname: $('#lastname').val(),
+                faculty: $('#faculty').val(),
+                validado: $('#validado').val(),
+                admin: $('#admin').val(),
+                correo: $('#correo').val()
+            };
+
             $.ajax({
                 url: '/users',
-                type: 'GET',
+                type: 'GET',              
+                data: filters,
                 success: function(data) {
+                    $('#user-list').empty();
                     data.forEach(function(user) {
                         var validationButton = user.validado
                         ? '<button class="btn btn-danger" onclick="invalidateUser(\'' + user.correo + '\', true)"><i class="bi bi-x"></i> Invalidar</button>'
@@ -80,8 +135,13 @@
                     console.log(error);
                 }
             });
-        });
+        }
     
+        // Función para aplicar filtros
+        function applyFilters() {
+            getUsers();
+        }
+
         // Función para expulsión de usuarios
         function expelUser(correoUsuario) {
             console.log('Expulsar usuario: ' + correoUsuario);
@@ -97,7 +157,6 @@
                 }
             });
         }
-
 
         // Llamada AJAX para invalidar usuarios
         function invalidateUser(correoUsuario) {
@@ -162,6 +221,7 @@
                 }
             });
         }
+
 
     </script>
 </body>
