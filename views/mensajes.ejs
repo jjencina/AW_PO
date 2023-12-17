@@ -57,8 +57,12 @@
                     <ul id="lista-chat">         
                     <% for (let i = 0; i < listaUsuarios.length; i++) { %>
                         <li class="chat">
-                            <a href="" id="<%= listaUsuarios[i] %>">                       
-                                <img src="img/users/<%= fotoUsuario[i]%>" alt="<%= fotoUsuario[i]%>">                    
+                            <a href="" id="<%= listaUsuarios[i] %>">     
+                                <%  if(fotoUsuario[i] != null){  %>                
+                                    <img src="img/users/<%= fotoUsuario[i]%>" alt="<%= fotoUsuario[i]%>">
+                                <% } else {%>   
+                                    <img src="img/users/default.png" alt="default.png">
+                                <% } %>                                                                       
                                 <%= listaUsuarios[i] %>                        
                             </a>
                         </li>
