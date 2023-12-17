@@ -137,6 +137,7 @@ const integracion = {
       }
     });
   },
+
   //Devuelve las horas que están reservadas ese día en esa instalación
   buscarHorasReservadas: function(instalacion, fecha, facultad, callback){
     pool.getConnection(function(err, conexion){
@@ -291,6 +292,7 @@ const integracion = {
     });
   },
 
+  //Buscar instalacion por tipo
   buscarImagenesPorTipoIns: function(tipo_ins, callback){
     pool.getConnection(function(err, conexion){
       if(err){callback(err);}
@@ -306,6 +308,35 @@ const integracion = {
       }
     });
   },
+
+
+//Editar tipo instalacion
+editarTipoIns: function(tipo_ins, hora_de_apertura, hora_de_cierre, colectivo, aforo, descripcion, callback) {
+  pool.getConnection((err, conexion) => {
+    if (err) {callback(err);} 
+    else {
+      if(colectivo == 'Si'){colectivo = 1;}
+      else{colectivo = 0;}
+      console.log(colectivo);
+      console.log(tipo_ins);
+      console.log(hora_de_apertura);
+      console.log(hora_de_cierre);
+      console.log(aforo);
+      console.log(descripcion);
+      const sql = 'UPDATE ucm_aw_riu_ins_tipo SET hora_de_apertura = ?, hora_de_cierre = ?, colectivo = ?, aforo = ?, descripcion = ? WHERE tipo = ?';
+      const values = [hora_de_apertura, hora_de_cierre, colectivo, aforo, descripcion, tipo_ins];
+      conexion.query(sql, values, (error, results) => {
+        conexion.release(); 
+        if (error) {
+          callback(error);
+        } else {
+          callback(null, results);
+        }
+      });
+    }
+  });
+},
+
 
 //Validar usuario
   validarUsuario: function(correo, callback) {

@@ -43,16 +43,17 @@
                         <td colspan="3">
                             <button class="btn btn-primary" onclick="abrirModalCrearTipoInstalacion()">Crear Tipo de Instalación</button>
                         </td>
-                    </tr>
+                    <tr>
                         <td colspan="3">           
                             <button class="btn btn-danger" onclick="confirmarEliminaTipoInstalaciones()">Eliminar Tipo de Instalación</button>
                         </td>
                     </tr>
-                    </tr>
+                    -->
+                    <tr>
                         <td colspan="3">            
                         <button class="btn btn-primary" onclick="abrirModalEditarTipoInstalacion()">Editar Tipo de Instalación</button>
                         </td>
-                    -->
+                    </tr>
                         
                     <!-- Ventana modal crear tipo de instalación -->
                     <div id="crear-tipo-instalacion-modal" class="modal" style="display: none;">
@@ -91,14 +92,37 @@
                                 <div class="modal-body">
                                     <form>
                                         <div class="mb-3">
-                                            <label for="nombreTipoEditar" class="form-label">Nuevo Nombre</label>
-                                            <input type="text" class="form-control" id="nombreTipoEditar" required>
+                                            <label for="nombreTipoEditar" class="form-label">Tipo</label>
+                                            <select class="form-control" id="tipoEditar" required>
+                                                <option value="Laboratorios">Laboratorios</option>
+                                                <option value="Sala de reuniones">Sala de reuniones</option>
+                                                <option value="Salón de actos">Salón de actos</option>
+                                                <option value="Sala de grados">Sala de grados</option>
+                                            </select>
                                         </div>
                                         <div class="mb-3">
                                             <label for="descripcionTipoEditar" class="form-label">Nueva Descripción</label>
                                             <textarea class="form-control" id="descripcionTipoEditar" rows="3" required></textarea>
                                         </div>
-                                        <!-- Agrega más campos según sea necesario -->
+                                        <div class="mb-3">
+                                            <label for="horaAperturaEditar" class="form-label">Nueva Hora de Apertura</label>
+                                            <input type="time" class="form-control" id="horaAperturaEditar" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="horaCierreEditar" class="form-label">Nueva Hora de Cierre</label>
+                                            <input type="time" class="form-control" id="horaCierreEditar" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="aforoEditar" class="form-label">Nuevo Aforo</label>
+                                            <input type="number" class="form-control" id="aforoEditar" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="colectivoEditar" class="form-label">Nuevo Colectivo</label>
+                                            <select class="form-control" id="colectivoEditar" required>
+                                                <option value="Si">Si</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                        </div>
                                         <button type="button" class="btn btn-primary" onclick="editarTipoInstalacion()">Guardar Cambios</button>
                                     </form>
                                 </div>
@@ -474,25 +498,21 @@
 
         // Función para editar instalación (realiza la llamada POST)
         function editarInstalacion() {
-            // Obtén los valores del formulario de edición
-            var nuevoNombre = $('#nombreEditar').val();
-            var nuevoTipo = $('#tipoEditar').val();
-            var nuevaFacultad = $('#facultadEditar').val();
+            event.preventDefault();
+            console.log('Editar instalación');
 
-            // Realiza la llamada AJAX para editar la instalación seleccionada
+            //Funcion ajax qu ellame a la funcion post de editar instalacion
             $.ajax({
                 url: '/editar_instalacion',
                 type: 'POST',
                 data: {
-                    nombre: nuevoNombre,
-                    tipo: nuevoTipo,
-                    facultad: nuevaFacultad
-                    // También puedes incluir otros parámetros según sea necesario
+                    nombre: $('#nombreEditar').val(),
+                    tipo: $('#tipoEditar').val(),
+                    facultad: $('#facultadEditar').val()
                 },
                 success: function(response) {
                     alert("Instalación editada correctamente");
                     console.log('Instalación editada');
-                    // Puedes realizar acciones adicionales después de la edición, como recargar la página
                     location.reload();
                 },
                 error: function(error) {
@@ -500,9 +520,7 @@
                     console.log(error);
                 }
             });
-
-            // Cierra la ventana modal después de la acción
-            $('#editarInstalacionModal').modal('hide');
+           
         }
 
 //TIPO INSTALACIONES
@@ -534,8 +552,38 @@
             $('#crear-tipo-instalacion-modal').modal('hide'); // Cierra la ventana modal después de la acción
         }
 
-        // Función para editar tipo de instalación
+        // Función para editar tipo de instalación con el formulario editar-tipo-instalacion-modal
         function editarTipoInstalacion() {
+            var tipoEditar = $('#tipoEditar').val();
+            var descripcionEditar = $('#descripcionTipoEditar').val();
+            var aforoEditar = $('#aforoEditar').val();
+            var horaCierreEditar = $('#horaCierreEditar').val();
+            var horaAperturaEditar = $('#horaAperturaEditar').val();
+            var colectivoEditar = $('#colectivoEditar').val();
+            console.log(descripcionEditar);
+            console.log(aforoEditar);
+            // Realiza la llamada AJAX para editar el tipo de instalación
+            $.ajax({
+                url: '/editar_tipo_instalacion',
+                type: 'POST',
+                data: {
+                    tipo: tipoEditar,
+                    descripcion: descripcionEditar,
+                    aforo: aforoEditar,
+                    horaCierre: horaCierreEditar,
+                    horaApertura: horaAperturaEditar,
+                    colectivo: colectivoEditar
+                },
+                success: function(response) {
+                    alert("Tipo de instalación editado correctamente");
+                    console.log('Tipo de instalación editado');
+                    location.reload();
+                },
+                error: function(error) {
+                    alert("Error al editar el tipo de instalación");
+                    console.log(error);
+                }
+            });
 
             $('#editar-tipo-instalacion-modal').modal('hide'); // Cierra la ventana modal después de la acción
         }

@@ -367,6 +367,26 @@ router.get('/leer-instalaciones', (req, res) => {
   });
  }); 
 
+ //Editar tipo de instalacion
+  router.post('/editar_tipo_instalacion', (req, res) => {
+    const tipo_ins = req.body.tipo;
+    const descripcion = req.body.descripcion;
+    const hora_de_apertura = req.body.horaApertura;
+    const hora_de_cierre = req.body.horaCierre;
+    const colectivo = req.body.colectivo;
+    const aforo = req.body.aforo;
+    console.log(req.body);
+    integracion.editarTipoIns(tipo_ins, hora_de_apertura, hora_de_cierre, colectivo, aforo, descripcion, (err, results) => {
+      if (err) {
+        console.error('Error al editar tipo de instalacion:', err);
+        res.status(500).send('Error interno del servidor');
+      } else {
+        console.log('Tipo de instalacion editada correctamente');
+        res.json({ success: true});
+      }
+    });
+  });
+
  //Historial de reservas
   router.post('/historial', (req, res) => {
     nombre = req.body.nombre;
