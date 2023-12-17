@@ -57,6 +57,32 @@
                 </tbody>
             </table>
         </div>
+        <!--Tabla con todas las reservas realizadas-->
+        <div id="ctn-inner-stats">
+            <h2>Listado de Reservas</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Instalación</th>
+                        <th scope="col">Facultad</th>
+                        <th scope="col">Usuario</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Hora</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(var i=0; i<reservas.length; i++){ %>
+                        <tr>
+                            <td><%= reservas[i].nombre_ins %></td>
+                            <td><%= reservas[i].facultad %></td>
+                            <td><%= reservas[i].correo_usu %></td>
+                            <td><%= reservas[i].fecha_res %></td>
+                            <td><%= reservas[i].hora_res %></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div class="modal" id="mhistorial">
