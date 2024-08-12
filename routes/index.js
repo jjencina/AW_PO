@@ -9,8 +9,6 @@ const integracion = require('../services/integracion');
 const multer = require('multer');
 const path = require('path');
 
-
-
 //Middleware para comprobar que el usuario está logueado
 const comprobarLogin = (req, res, next) => {
   var correo = req.session.currentUser;
